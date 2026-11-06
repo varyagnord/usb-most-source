@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="18 18 72 72">
+  <title>USB Мост</title>
+  <desc>Два USB-разъёма, соединённые дугой моста.</desc>
+  <path fill="#F0F7F4" d="M18 18h72v72H18z"/>
+  <g transform="translate(54 54) scale(0.86) translate(-54 -54)">
+  <path d="M31,53 L31,51 C31,20 77,20 77,51 L77,53" fill="none" stroke="#168577" stroke-width="8" stroke-linecap="round"/>
+  <path d="M31,51 H77 M43,33 V51 M65,33 V51 M54,28 V51" fill="none" stroke="#168577" stroke-width="3"/>
+  <path d="M26,53 H36 Q40,53 40,57 V73 Q40,77 36,77 H26 Q22,77 22,73 V57 Q22,53 26,53 Z M27,59 H30 V65 H27 Z M32,59 H35 V65 H32 Z M72,53 H82 Q86,53 86,57 V73 Q86,77 82,77 H72 Q68,77 68,73 V57 Q68,53 72,53 Z M73,59 H76 V65 H73 Z M78,59 H81 V65 H78 Z" fill="#174F57" fill-rule="evenodd"/>
+  </g>
+</svg>

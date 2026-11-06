@@ -1,0 +1,30 @@
+[Unit]
+Description=USB Most receiver
+After=network.target systemd-modules-load.service
+
+[Service]
+Type=exec
+ExecStart=/usr/local/libexec/usb-most/usb-most-desktop --serve
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=100
+User=root
+Group=root
+UMask=0077
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/usb-most /sys/devices/platform/vhci_hcd.0/attach
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+PrivateTmp=yes
+PrivateDevices=yes
+# getifaddrs uses read-only route netlink to discover LAN interfaces. Dropping
+# all capabilities still prevents changing routes or network configuration.
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
+RestrictSUIDSGID=yes
+LockPersonality=yes
+
+[Install]
+WantedBy=multi-user.target

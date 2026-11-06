@@ -1,0 +1,70 @@
+# JNI entry points are resolved by their exported Java_* symbol names.
+-keep,allowoptimization class org.cgutman.usbip.jni.NativeUsb {
+    public static native <methods>;
+}
+
+# Rust jni_api.rs caches this class and its constructor (III[BZ)V through JNI.
+# Keep this constructor even when R8 cannot see a Java caller. Fields and
+# unrelated members may still be optimized/renamed.
+-keep,allowoptimization class org.cgutman.usbip.core.UsbBackend$Completion {
+    public <init>(int, int, int, byte[], boolean);
+    public <init>(int, int, int, byte[], boolean, long, long);
+}
+
+# App policy uses exported JNI names just like the USB transfer API.
+-keep,allowoptimization class org.cgutman.usbip.jni.NativePolicy {
+    public static native <methods>;
+}
+
+# Stable Android adapter contracts, used across the presentation/system boundary.
+# Instrumentation injects its adapter in-process; there is no exported test IPC.
+-keep,allowoptimization class org.cgutman.usbip.service.UsbInventory { public <methods>; }
+-keep,allowoptimization interface org.cgutman.usbip.service.UsbInventory$Access { *; }
+-keep,allowoptimization class org.cgutman.usbip.service.UsbInventory$Description { public <init>(...); }
+-keep,allowoptimization class org.cgutman.usbip.service.UsbInventory$Item { public <fields>; }
+-keepclassmembers class org.cgutman.usbip.service.BridgeApplication { org.cgutman.usbip.service.UsbInventory inventory; }
+# In-process system adapter injection on owned emulators, before repository
+# admission. No test implementation or externally callable configuration ships.
+-keepclassmembers class org.cgutman.usbip.service.UsbIpService {
+    org.cgutman.usbip.server.UsbIpServer server;
+    org.cgutman.usbip.server.UsbRequestHandler usbRequests;
+}
+-keepclassmembers class org.cgutman.usbip.connection.ComputerRepository {
+    java.util.concurrent.ExecutorService queue;
+}
+
+-keep,allowoptimization class org.cgutman.usbip.jni.NativeConnection { public static native <methods>; }
+-keep,allowoptimization class org.cgutman.usbip.jni.NativeManagement { public static native <methods>; }
+
+# Stable metadata/Android lease boundary, like UsbInventory.Access above.
+# Implementations and private bookkeeping remain optimizable; no exported test IPC.
+-keep,allowoptimization class org.cgutman.usbip.core.ManagedImports { public <init>(...); public <methods>; }
+-keep,allowoptimization interface org.cgutman.usbip.core.ManagedImports$Model { *; }
+-keep,allowoptimization interface org.cgutman.usbip.core.ManagedImports$Binder { *; }
+-keep,allowoptimization interface org.cgutman.usbip.core.ManagedImports$Lease { *; }
+
+# USB server/backend boundary. The test APK supplies an owned QEMU backend to
+# exercise the production framing and lease model against actual receiving OSes.
+# Preserve only this contract; no test implementation or exported IPC is shipped.
+-keep,allowoptimization interface org.cgutman.usbip.server.UsbRequestHandler { *; }
+-keep,allowoptimization interface org.cgutman.usbip.server.ManagementAccess { *; }
+-keep,allowoptimization class org.cgutman.usbip.server.UsbIpServer { public <init>(...); public <methods>; }
+-keep,allowoptimization class org.cgutman.usbip.server.UsbDeviceInfo { public <init>(...); public <fields>; public <methods>; }
+-keep,allowoptimization class org.cgutman.usbip.server.protocol.UsbIpDevice { public <init>(...); public <fields>; public <methods>; }
+-keep,allowoptimization class org.cgutman.usbip.server.protocol.UsbIpInterface { public <init>(...); public <fields>; public <methods>; }
+-keep,allowoptimization class org.cgutman.usbip.server.protocol.dev.UsbIpDevicePacket { public <fields>; }
+-keep,allowoptimization class org.cgutman.usbip.server.protocol.dev.UsbIpSubmitUrb { public <fields>; }
+-keep,allowoptimization class org.cgutman.usbip.server.protocol.dev.UsbIpUnlinkUrb { public <fields>; }
+
+# Stable persistence/presentation and service ownership contracts. No exported IPC.
+-keep,allowoptimization class org.cgutman.usbip.connection.ComputerVault { public <methods>; }
+-keep,allowoptimization class org.cgutman.usbip.connection.ComputerRepository { public <methods>; }
+-keep,allowoptimization class org.cgutman.usbip.connection.ComputerRepository$Computer { public <fields>; }
+-keep,allowoptimization class org.cgutman.usbip.connection.ComputerRepository$Snapshot { public <fields>; public <methods>; }
+-keep,allowoptimization class org.cgutman.usbip.connection.ComputerRepository$Session { public <methods>; }
+-keep,allowoptimization class org.cgutman.usbip.connection.ComputerRepository$Status { public <fields>; public <methods>; }
+-keep,allowoptimization class org.cgutman.usbip.connection.ConnectionObservation { public <methods>; }
+-keep,allowoptimization class org.cgutman.usbip.connection.ConnectionObservation$State { public <fields>; }
+# Android entry-point adapter boundary, exercised by the actual optimized test APK.
+-keep,allowoptimization class org.cgutman.usbip.config.QuickActions { public <methods>; }
+-keep,allowoptimization class org.cgutman.usbip.config.QuickActions$Binding { public <fields>; }

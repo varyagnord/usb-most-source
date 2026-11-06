@@ -1,0 +1,61 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <uses-feature android:name="android.hardware.usb.host" android:required="true" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera.any" android:required="false" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    
+    <application
+        android:name="org.cgutman.usbip.service.BridgeApplication"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        
+        <service
+            android:label="@string/service_name"
+            android:name="org.cgutman.usbip.service.UsbIpService"
+            android:foregroundServiceType="specialUse"
+            android:exported="false">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="Allows continued access to USB devices via USB/IP while in the background" />
+        </service>
+        
+        <activity android:name="org.cgutman.usbip.connection.PairScanner" android:exported="false" />
+        <activity android:name="org.cgutman.usbip.connection.ConnectionSetup" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <activity android:name="org.cgutman.usbip.config.LicensesActivity" android:exported="false" />
+        <activity android:name="org.cgutman.usbip.config.PrivacyActivity" android:exported="false" />
+        <activity android:name="org.cgutman.usbip.config.ConnectionDiagnostics" android:exported="false" />
+        <activity android:name="org.cgutman.usbip.config.ComputersActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <activity android:name="org.cgutman.usbip.config.QuickActionActivity" android:exported="false" android:excludeFromRecents="true" android:taskAffinity="" />
+        <service android:name="org.cgutman.usbip.config.BridgeTileService"
+            android:label="@string/app_name" android:icon="@drawable/ic_bridge_tile"
+            android:exported="true" android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+        <activity
+            android:name="org.cgutman.usbip.config.UsbIpConfig"
+            android:exported="true"
+            android:resizeableActivity="true"
+            android:windowSoftInputMode="adjustResize" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,260 @@
+Upstream: https://github.com/cgutman/USBIPServerForAndroid
+Base commit: 07464906b5652081a7694aa81adaf19c85aaf4be
+Local modifications: USB Most 1.0.13, 2026-11-05; GPLv3 (see LICENSE).
+The source distribution includes production code, build inputs and automated
+test harnesses. Private test results, lab credentials and release keys are excluded.
+
+Prerequisites
+- Linux, JDK 21 (Gradle 8.7 also supports JDK 17)
+- Android SDK platform 34, build-tools 34.0.0, NDK 27.0.12077973
+- Set ANDROID_HOME to the SDK installation. Accept Google's SDK license.
+- Rustup with the dated nightly and targets in rust-toolchain.toml; Cargo.lock
+  is mandatory. Do not replace the dated channel with a moving "nightly".
+  rustup toolchain install nightly-2026-11-02 --profile minimal
+  rustup target add --toolchain nightly-2026-11-02 aarch64-linux-android \
+    armv7-linux-androideabi i686-linux-android x86_64-linux-android
+  rustup component add --toolchain nightly-2026-11-02 rustfmt clippy miri rust-src
+- C compiler supporting ASan/UBSan, Python 3.11+, Java for host regression tests.
+- musl-tools (musl-gcc) and x86_64-unknown-linux-musl Rust target for the
+  bundled static Linux receiver in the development connection branch.
+- Cargo must be on PATH (usually $HOME/.cargo/bin). Gradle invokes
+  tools/build-rust.py with the pinned NDK to build all four Android ABIs.
+  The script currently supports Linux x86_64 build hosts.
+- The SSH key parser is pinned to an upstream RustCrypto Git commit in
+  Cargo.toml/Cargo.lock. GitHub access is needed on the first uncached build.
+  third_party/russh contains the source-compatible RSA dependency adaptation;
+  see its USB-MOST-UPSTREAM.txt for provenance and the complete change list.
+  Do not replace it with the unadapted registry package or RSA rc.18.
+
+Build and checks
+  cargo fmt --check
+  bash tests/run-rust.sh
+  bash tests/run-jni.sh
+  cargo miri test --locked -p usb-most-native -p usb-most-protocol --lib
+  CARGO_TARGET_DIR=build/rust-asan RUSTFLAGS=-Zsanitizer=address \
+    cargo test --locked --target x86_64-unknown-linux-gnu --lib
+  bash tests/run-native.sh
+  python3 -m unittest discover -s tests -p 'test_*.py'
+  bash gradlew assembleRelease assembleReleaseAndroidTest lintRelease bundleRelease --no-daemon
+
+Unsigned internal release: app/build/outputs/apk/release/app-release-unsigned.apk
+Unsigned bundle: app/build/outputs/bundle/release/app-release.aab
+All production native code is now Rust; tests/reference contains the old C
+engine solely as a host-test oracle. tests/run-rust.sh checks 96 matching C/Rust
+traces. tests/run-jni.sh exercises the real shared library under JVM -Xcheck:jni.
+See native/usb-most/SAFETY.txt for kernel ownership and failure-mode contracts.
+The Gradle build checks UAPI layouts against NDK headers for each ABI. Native
+ELF segments and APK entries use 16 KiB alignment. tests/check-rust-apk.py checks
+these properties and the exact production JNI exports on the actual signed APK.
+It also decompresses and verifies the final APK's bundled receiver assets,
+including their SHA-256 and sizes, and rejects private receiver fixture assets.
+Release uses opt-level 3, thin LTO, one codegen unit, checked integer overflow,
+zeroized retired buffers and panic unwinding caught at JNI boundaries. General
+allocation failure in Rust/std can still abort; normal request buffers, Box
+and Arc allocations are fallible. The connection layer uses a bounded Tokio
+runtime; no Rust GUI or Python/Ansible runtime is embedded.
+The Android test APK is optional and is NOT distributed for normal installation.
+Run it only on a disposable emulator. Sign app/test/baseline with the same test
+key, then use tools/run-release-e2e.py below. The runner handles temporary hidden
+framework-constructor access needed only by the test APK's synthetic UsbDevice
+fixtures, restoring the setting afterwards. The production app uses public USB
+APIs and needs neither this setting, root nor the instrumentation APK.
+The fixture injects the public Access boundary in-process and exercises the real
+release Activity, inventory and Rust selection model. It never emulates actual
+USB hardware or enables test IPC in the production app.
+The release enables R8 code optimization and resource shrinking. Keep the JNI
+entry points and the native-created Completion constructor in
+app/proguard-rules.txt. Do not add broad keep rules for AndroidX or for tests.
+Archive app/build/outputs/mapping/release/mapping.txt with each shipped binary
+so optimized stack traces can be decoded. Never replace a release mapping with
+one from another build.
+
+SmokeInstrumentation exercises the optimized release through Android components,
+UI, TCP, JNI and the narrow repository/inventory adapter APIs. Framework USB
+fixtures exist only in the test APK; there is no production fixture IPC.
+The suite supports API 26+; run API 26, 31 and 34 for release optimization.
+It checks JNI-to-Java construction, bounds and fd ownership; input validation;
+notification denial; malformed/partial USB/IP requests, concurrent connections
+and timeouts; foreground lifecycle, rotation, background and sleep; log rotation
+and document-picker cancellation. An emulator has no physical USB token.
+
+Full emulator E2E, including upgrade, settings persistence, clean state,
+notification grant, real Storage Access Framework export and process relaunch:
+  python3 tools/run-release-e2e.py --adb "$ANDROID_HOME/platform-tools/adb" \
+    --serial emulator-5554 --apk PATH_TO_SIGNED_OPTIMIZED_APK \
+    --baseline PATH_TO_TEST_SIGNED_BASELINE --test-apk PATH_TO_SIGNED_TEST_APK \
+    --output validation/rust/lan-verified-api31
+Use the same disposable test key for all three APKs, including a re-signed
+copy of the baseline. This verifies Android update/data behavior, not ownership
+of the production signing key. The runner rejects non-emulator serials and
+resets this application's data on the selected disposable emulator. Do not
+distribute test-signed APKs. Keep the original released APK untouched.
+The runner saves the tested APK SHA-256, assertions, instrumentation output,
+last UI hierarchy and crash log. A failed command/assertion fails the run.
+
+Sign a release
+  # AGP already aligns this APK; verify it and sign directly.
+  # Do not realign native libraries to 4 KiB with an old zipalign.
+  python3 tests/check-rust-apk.py app-release-unsigned.apk
+  apksigner sign --ks YOUR_PRIVATE_KEYSTORE --ks-key-alias bridge \
+    --ks-pass file:YOUR_PRIVATE_PASSWORD_FILE --out usb-most-1.0.13.apk app-release-unsigned.apk
+  apksigner verify --verbose --print-certs usb-most-1.0.13.apk
+  python3 tests/check-rust-apk.py usb-most-1.0.13.apk
+Never include signing keys or passwords in source or download archives.
+
+Sign a RuStore AAB with a separate private upload key (JDK 17 or newer):
+  python3 tools/sign-bundle.py unsigned.aab signed.aab \
+    --keystore /PRIVATE/upload.jks --password-file /PRIVATE/password --alias upload
+This refuses existing output, shared-readable signing inputs and duplicate ZIP
+entries; verifies all payload signatures against the selected certificate and
+checks that signing preserved the payload. It never uploads anything. The upload
+certificate and RuStore application signing setup are separate from an APK
+signature. Before distributing a build, publish its corresponding source and
+retain a release record tying source identity, versions, tools and artifact hashes.
+Real JDK signing/tamper regression tests (disposable keys and synthetic payloads):
+  python3 -m unittest discover -s tests -p test_bundle_signing.py -v
+
+The tools/download_*.py scripts are optional build-environment helpers; the
+standard Android SDK manager can install the same pinned build packages.
+SDK archives are verified against checksums in Google's repository manifest.
+
+Bundled receivers (1.0.13)
+The normal build requires a static Linux x86_64 receiver and a tested Windows
+x86_64 receiver containing the pinned signed USB/IP driver. Android itself is
+built for four ABIs. ARM64 desktop receivers are not packaged by this build.
+
+Build the Windows bundle on an owned, disposable Windows VM with no physical USB:
+  $env:USB_MOST_WINDOWS_VM_LAB='1'
+  ./tools/prepare-windows-driver-lab.ps1 -ProductPreparation
+This exercises driver preparation, actual kernel HID, cmd/PowerShell bootstrap,
+SCM health, embedded SSH, direct TLS pairing and saved-token reconnect. Copy build/windows-receiver-artifact/
+from that VM to build/windows-receiver-local/ in this checkout, then run:
+  python3 tools/pin-windows-receiver.py --local-directory build/windows-receiver-local
+  export USB_MOST_WINDOWS_RECEIVER_DIR="$PWD/build/windows-receiver-local"
+Private maintainers may instead pin a completed successful workflow:
+  python3 tools/pin-windows-receiver.py --run-id SUCCESSFUL_RUN_ID
+Public source builders do not need access to the private GitHub repository.
+The local route produces its own pin from its own tested binary; it does not
+pretend to reproduce our private CI attestation. Never edit a binary hash to
+bypass a source mismatch: rebuild and re-test the receiver.
+
+tools/build-receivers.py checks the Windows source fingerprint, binary hash,
+PE32+ architecture, version and driver pin; it builds/checks static Linux ELF.
+Both artifacts use deterministic gzip assets ending in .gz.bin: AAPT otherwise
+unpacks .gz and strips its name. The manifest is generated from these local
+trusted artifacts, never from a target computer. Normal Gradle builds fail if
+the Windows bundle is missing, stale, modified or not pinned.
+tools/build-notices.py collects exact Cargo/Gradle license texts offline and
+packages their bounded, deduplicated index. tests/check-rust-apk.py checks the
+actual APK assets, four native ABIs, JNI exports and 16 KiB alignment.
+
+Actual first-use E2E uses an isolated QEMU Linux guest without host USB/FS
+passthrough. Prepare it with tools/linux-vm-lab.py, then create private fixture
+assets with tools/prepare-android-receiver-fixture.py. Pass their directory only
+to the test source set:
+  bash gradlew :app:assembleRelease :app:assembleReleaseAndroidTest --offline \
+    -PbridgeReceiverTestAssets=build/e2e/receiver-fixture/assets
+For QR/camera suites also pass -PbridgeQrTestAssets=build/e2e/qr-fixture
+(the fixture is generated by tests/run-jni.sh). These two properties affect only
+the test APK; never add their directories to the main source set.
+Sign both APKs with the same disposable test key and run:
+  python3 tools/run-android-connection-e2e.py --adb "$ANDROID_HOME/platform-tools/adb" \
+    --serial emulator-5558 --apk TEST_SIGNED_PRODUCT_APK --test-apk TEST_APK \
+    --lab build/vm-lab/OWNED_LAB --output build/e2e/OWNED_RESULT
+Only emulator serials and a verified, live owned QEMU lab are accepted. The test
+APK contains the private lab SSH key and sudo password: never distribute it.
+The runner checks instrumentation result codes as adb exit0 can hide failures.
+ConnectionSuite exercises actual R8 UI, configuration retention, Android
+Keystore/GCM, SSH trust denial/approval, separate sudo credentials, automatic
+Linux stack preparation, repeat starts and rejection of a tampered vault.
+This UI suite is not an Android physical USB/HID test. For a complete transport
+path from optimized ART/JNI to a real Linux VHCI/HID kernel, build the synthetic
+endpoint and run the additional owned-emulator fixture:
+  CARGO_TARGET_DIR=build/rust-connect-new-nightly cargo build --locked \
+    -p usb-most-connection --example android_usb_fixture
+  python3 tools/run-android-usb-transport-e2e.py --adb "$ANDROID_HOME/platform-tools/adb" \
+    --serial emulator-5558 --apk TEST_SIGNED_PRODUCT_APK --test-apk TEST_APK \
+    --lab build/vm-lab/OWNED_LAB --output build/e2e/UNIQUE_RESULT [--direct]
+The guest must be the owned sudo-n fixture. Without --direct it exercises SSH
+provisioning; --direct tests pairing/TLS. Both verify reconnect, five buttons,
+axes/wheel and exactly two imports for two sessions. Only the synthetic USB
+endpoint uses ADB reverse. The SSH/TLS connection uses actual TCP to the guest.
+This proves the transport/JNI/receiver path, not Android usbfs or physical USB.
+The runner writes test credentials only to its private output and disposable
+emulator fixture; those files and the instrumentation APK are not distributable.
+
+LAN and device selection
+Rust policy.rs owns canonical IPv4 network validation, device-selection models,
+capabilities and raw-descriptor framing. Android UsbInventory owns permissions,
+generation-bound system access and global leases across service restarts. Native
+control/bulk/interrupt engine limits are 1 MiB per bulk/interrupt request and
+8 MiB of retained request buffers per session, including completed buffers
+still held by the caller. See native/usb-most/SAFETY.txt for ownership, control
+limits and quarantine. ISO transfers and USB bulk streams are unsupported.
+The full E2E runner verifies source-IP isolation with actual TCP from host into
+Android; API26 uses a temporary loopback-only guest LAN relay because its older
+Wi-Fi image lacks the classic NAT interface. Real LAN hardware is a separate test.
+Three synthetic devices are also tested with JVM -Xcheck:jni and real TCP by
+PolicyJniRegressionTests, as part of tests/run-jni.sh.
+Responsive, real-touch checks (disposable emulator only; settings restored):
+  python3 tools/check-responsive-ui.py --adb "$ANDROID_HOME/platform-tools/adb" \
+    --serial emulator-5558 --apk PATH_TO_SIGNED_APK \
+    --test-apk PATH_TO_SIGNED_TEST_APK --geometry-matrix \
+    --output validation/rust/light-ui-verified-responsive
+With --geometry-matrix this covers four real-touch/keyboard scenarios and
+13 USB-fixture/text-bound/dialog configurations, including system dark mode.
+The geometry matrix covers 320x640, 360x800, 412x915, 640x360, 600x960 and
+800x1280, font scales 1.0/1.3/2.0, plus live parent resizing at 280/320/360/600dp.
+Only the TEST APK enables fixtures; production has no fixture IPC or hidden API.
+Results bind APK SHA-256; --resume accepts only a checkpoint for the exact same
+APK. All temporary display/font/keyboard/night/hidden-api settings are restored.
+Without --geometry-matrix, the touch suite runs 12 configurations and optional
+--test-apk adds four fixture configurations. This does not establish physical
+compatibility with an arbitrary USB model.
+
+Diagnostic build (internal; same applicationId and versionCode as release)
+  bash tests/run-diagnostics.sh
+  cargo test --locked --features diagnostics
+  cargo clippy --locked --features diagnostics --all-targets -- -D warnings
+  cargo miri test --locked -p usb-most-native -p usb-most-protocol --features usb-most-native/diagnostics --lib
+  CARGO_TARGET_DIR=build/rust-asan-diagnostics RUSTFLAGS=-Zsanitizer=address \
+    cargo test --locked --features diagnostics --target x86_64-unknown-linux-gnu --lib
+  bash gradlew assembleDiagnostic assembleDiagnosticAndroidTest lintDiagnostic \
+    -PbridgeTestBuildType=diagnostic --no-daemon
+  python3 tests/check-rust-apk.py app/build/outputs/apk/diagnostic/app-diagnostic-unsigned.apk --diagnostic
+Sign with tools/sign-release.sh INPUT OUTPUT --diagnostic (same production key).
+E2E runner requires --diagnostic for this variant. Test APK/baseline/candidate
+must be signed with the same TEST key, never distribute those test copies.
+Native build directories and JNI inputs are separated between build variants.
+Normal release has 27 JNI exports and refuses diagnostic protocol commands.
+Diagnostic adds 5 exports, retains R8/resource shrinking and release Rust flags.
+Diagnostic endpoints are disabled in normal builds. Do not distribute the test
+APK or expose diagnostic access to an untrusted network. Legacy synthetic WAN
+checks are in tools/wan-netem-child.py; the optimized transport runner accepts
+--delay-ms and --jitter-ms for isolated latency tests.
+
+For isolated core/service or layout regressions on a fresh owned emulator sandbox:
+  python3 tools/run-android-core-e2e.py --adb "$ANDROID_HOME/platform-tools/adb" \
+    --serial emulator-5558 --apk PATH_TO_SIGNED_OPTIMIZED_APK \
+    --test-apk PATH_TO_SIGNED_TEST_APK --output PATH_TO_NEW_INTERNAL_REPORT_DIR
+Use --suite layout or --suite connection-layout for the corresponding UI suite.
+Use --suite key-import for real bounded file/pipe I/O, cancellation and rotation;
+the test APK needs the isolated receiver fixture key asset (no SSH is contacted).
+This runner clears only the application sandbox of an explicitly verified emulator,
+restores temporary hidden API policy and binds results to both APK SHA-256 values.
+It does not replace the upgrade/host-TCP/SAF runner above or physical device testing.
+
+Long idle Android service observation
+First run tools/run-android-connection-e2e.py with --prepare-soak on an owned
+emulator and QEMU lab. It retains only that lab profile after successful trust,
+password-sudo, provisioning and recovery tests. Instrumentation then ends.
+  python3 tools/android-idle-soak.py --adb "$ANDROID_HOME/platform-tools/adb" \
+    --serial emulator-5558 --apk TEST_SIGNED_PRODUCT_APK \
+    --lab build/vm-lab/OWNED_LAB --preparation build/e2e/PREPARATION \
+    --seconds 28800 --output build/e2e/NEW_IDLE_SOAK
+This runner starts a normal application process through its actual UI, observes
+foreground-service and PSS with the screen off, periodically checks the connected
+UI, then stops through the UI. Do not reuse that emulator or VM while it runs.
+This is an idle SSH/lifecycle check, not active USB throughput or battery evidence.
+The receiver/HID soak is separate: tools/linux-soak-e2e.py. Do not call an
+interrupted or still-running observation a completed duration test.

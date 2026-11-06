@@ -1,22 +1,58 @@
+# built application files
 *.apk
-*.aab
 *.ap_
-*.idsig
-*.jks
-*.keystore
-*.p12
-*.pfx
-*.key
-.env
-.env.*
+*.aab
+output.json
+output-metadata.json
+out/
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
 local.properties
-.gradle/
-**/build/
-.cxx/
-.idea/
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+.idea
+#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
+.gradle
+build/
 *.iml
+
+# Compiled JNI libraries folder
+**/jniLibs
+app/.externalNativeBuild/
+
+# NDK stuff
+.cxx/
+# Local test/cache and private signing material
 __pycache__/
 *.pyc
-*.log
-*.pcap
-*.pcapng
+*.p12
+*.jks
+*.keystore
+
+release/
+
+# Local emulator diagnostics; compact validation summary is tracked separately.
+validation/optimization/
+
+/target/
+validation/rust/

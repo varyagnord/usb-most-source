@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "applicationId": "ru.levchatkin.rutokenbridge",
+  "versionName": "1.0.13",
+  "versionCode": 10015,
+  "sourceTag": "v1.0.13-vc10015",
+  "artifactType": "aab",
+  "artifactSha256": "b516f6c7434cbc65b3ade927ae6cddb6aa93d09e646e638ff438383465111980",
+  "status": "prepared_not_submitted_to_RuStore",
+  "sourceFileCount": 468,
+  "sourceManifestSha256": "73d0733ea99f6122b42c55fccb8602d868c1b2ce7c4aa7765a65f33257d45cf0",
+  "toolchain": {
+    "rust": "nightly-2026-11-02; rustc 1.101.0-nightly (3e92e1a2d)",
+    "gradle": "8.7",
+    "androidGradlePlugin": "8.5.1",
+    "jdk": "OpenJDK 21.0.13",
+    "compileSdk": 34,
+    "targetSdk": 34,
+    "minSdk": 26,
+    "ndk": "27.0.12077973"
+  },
+  "validation": {
+    "fourAndroidAbis": true,
+    "nativeAndApk16KiBAlignment": true,
+    "independentSourceBuild": true,
+    "equivalence": "All APK/AAB payload entries identical except AGP no-Git metadata",
+    "androidCoreApis": [
+      26,
+      31,
+      34
+    ],
+    "windows": "Windows 11 LTSC2024 26100.1742; signed driver, service identity, journal rollback, synthetic kernel HID/storage, actual Android SSH/TLS",
+    "linux": "Ubuntu 24.04.5; actual Android SSH/TLS and five-button synthetic HID",
+    "scope": "Emulators and owned VMs; no universal physical USB or all-OS claim"
+  },
+  "changes": [
+    "Saved SSH trust survives endpoint edits; paired TLS host can be edited without reusing a different claim",
+    "Windows installer configures per-service SID for its constrained LAN firewall rule and preserves prior SID for rollback",
+    "Source-only snapshot includes complete production code, build inputs and selected test harnesses"
+  ],
+  "rustoreListingUrl": null,
+  "rustoreUploadedAt": null
+}

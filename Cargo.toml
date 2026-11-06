@@ -1,0 +1,20 @@
+[workspace]
+members = ["native/usb-most", "native/usb-most-protocol", "native/usb-most-connection", "native/usb-most-desktop", "native/usb-most-platform", "native/usb-most-artifacts"]
+default-members = ["native/usb-most", "native/usb-most-protocol", "native/usb-most-connection", "native/usb-most-desktop", "native/usb-most-platform"]
+resolver = "3"
+exclude = ["third_party/russh"]
+
+[patch.crates-io]
+# russh still pins RSA rc.18. Its manifests and one DER type alias are adapted;
+# SSH key conversion uses RustCrypto's reviewed upstream rc.20 integration.
+russh = { path = "third_party/russh" }
+ssh-key = { git = "https://github.com/RustCrypto/SSH", rev = "beb2d1a4a5cbda803dad5610a803517756c4ee7f" }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = "symbols"
+overflow-checks = true
+# JNI boundaries catch unwinding and convert failures to Java exceptions.
+panic = "unwind"

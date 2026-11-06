@@ -1,0 +1,7 @@
+Google Material Icons: usb (24px), Apache License 2.0.
+https://github.com/google/material-design-icons
+Source: https://github.com/google/material-design-icons/blob/d3d4aca5a7cf50bc68bbd401cefa708e364194e8/src/device/usb/materialicons/24px.svg
+License: https://github.com/google/material-design-icons/blob/d3d4aca5a7cf50bc68bbd401cefa708e364194e8/LICENSE
+Local license text: third_party/Apache-2.0.txt.
+Original SVG SHA-256: 3a3cf1ee41921a75503d1507896a35c160a8cc94639277a0db6861b8d17d2806.
+USB Most changes: converted to Android VectorDrawable; white fill for SystemUI tint.

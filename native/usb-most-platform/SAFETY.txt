@@ -1,0 +1,100 @@
+Windows OS boundary, USB Most 1.0.11 (implementation in progress)
+
+Unsafe code is confined to windows.rs and its child modules. The connection,
+protocol and desktop crates retain forbid(unsafe_code). No arbitrary pointer or
+raw HANDLE is exposed through this crate's safe public API.
+
+Win32 allocations are owned immediately after successful calls and released by
+LocalFree/CoTaskMemFree exactly once. Buffers passed to synchronous APIs remain
+live and suitably aligned through return. UTF16 strings are NUL-terminated and
+interior NULs/oversized paths are rejected. Error paths free successful earlier
+allocations using RAII, never a guessed length or an unchecked null pointer.
+
+Private state: Known Folder APIs provide the OS path; no inherited environment
+variable determines elevated installation paths. Protected DACLs permit only
+SYSTEM and Builtin Administrators with full access; inherited or additional ACEs
+are refused. Owner must also be SYSTEM or Builtin Administrators. Reparse points
+and filesystem races require handle-based validation before secret access.
+
+This file is an ownership contract, NOT evidence that driver install/IOCTL
+cancellation or DACL enforcement has passed Windows OS E2E. Keep production
+installation feature-gated until those tests pass. Driver buffers may never be
+freed merely because CancelIo/CancelSynchronousIo returned successfully.
+
+Driver adapter added (still requires actual driver E2E before product enablement)
+- Enumerates only fixed GUID B4030C06-DC5F-4FCC-87EB-E5515A0935C0 and selects
+  exact ROOT\USBMOST\0000. Other public USBip controller instances are ignored.
+- Full administrator-only object DACL is validated before a control handle is
+  returned. Device registry security is set BEFORE DIF_REGISTERDEVICE/start.
+- Uses pinned 0.9.8.1 PLUGIN_HARDWARE_ONCE, never persistent reattach. The 120-bit
+  one-use busid capability is delivered in the IOCTL buffer, not argv/logs.
+- METHOD_BUFFERED input/output is retained by one dedicated synchronous worker
+  through actual DeviceIoControl return. JoinHandle supplies the live thread
+  handle for CancelSynchronousIo. Cancellation alone never frees storage.
+- Control calls are serialized with try_lock. If cancellation has not retired
+  within two seconds, the worker/file/buffer remain owned and further controls
+  are refused for the process lifetime. Late successful attach cleans up only
+  its confirmed positive port. No PORT_ALL/global unplug operation is used.
+- Raw SetupDi detail buffers use u64 alignment and validated size; UTF16 path is
+  bounded and copied/consumed before information-set/allocation destruction.
+- The desktop proxy owns/closes its accepted socket as well as the confirmed
+  port. Unknown/replayed local capabilities never open a remote USB connection.
+
+Safe-ejection preparation (not enabled in product yet)
+- GET_IMPORTED_DEVICES is a read-only METHOD_BUFFERED query with a fixed maximum
+  4 + 255*1132 byte zeroizing buffer. The pinned vendor structs/offsets/IOCTL are
+  asserted in the MSVC ABI test. Caller alias/port dimensions are checked before
+  entering the driver. Kernel return length is checked before truncation, which
+  happens only AFTER synchronous DeviceIoControl return. The existing retained
+  worker/file/buffer and quarantine contract applies unchanged on timeout.
+- A safe Rust decoder rejects truncated/oversized/wrong-ABI records, duplicate
+  ports and unterminated strings. Ownership requires the exact confirmed port,
+  120-bit one-use alias, loopback host and private proxy port together. Numeric
+  location_hash, VID/PID and serial are not used as ownership evidence.
+- windows-eject adds a separately gated CM_Request_Device_EjectW adapter. It
+  walks only the validated controller's direct USBHUB3 root hubs, then matches
+  CM_DRP_ADDRESS to the confirmed driver port. It requires an immediate USB
+  storage child (USBSTOR/UASPSTOR, class08, removable, started, no problem).
+  Composite/hub/dock/ambiguous mappings are refused. It rechecks both the exact
+  driver import and the same PnP identity immediately before the OS mutation.
+- At most four dedicated ejection threads own their controller, alias, local
+  device identity and synchronous veto buffer through the actual OS return.
+  A dropped JoinHandle does not cancel or free that ownership. No thread pool
+  is used. SeLoadDriverPrivilege is enabled only if already held, on the new
+  worker's impersonation token; the process token is never modified. RevertToSelf
+  runs on that same worker before it terminates. Veto names are zeroized and
+  never logged/exported; only positive CR_SUCCESS maps to Safe.
+- The receiver must retain its live attachment/socket and authenticated import
+  ledger across a UI timeout and until actual worker completion. Platform calls
+  alone do not provide wire authentication, deduplication or reimport suppression.
+  Real Windows OS tests and receiver integration are still required before
+  enabling this feature in production. Current desktop dependency enables it
+  only for tests; the synthetic fixture owns a newly allocated RAM disk only.
+
+Managed receiver integration (2026-11-05; integrated OS gates pending)
+- A process-wide Permit bounds legacy and managed imports together to four,
+  including workers retained after profile withdrawal. Managed workers own the
+  actual socket/attachment and Ledger through the synchronous OS adapter return.
+  UI/transport stop detaches only an observer. Graceful shutdown drains workers.
+  Forced process termination remains OS policy and never produces Safe.
+- A terminal ledger survives USB EOF, empty device lists, lost/malformed metadata
+  and UI timeout until exact-key Retire, proven session replacement or explicit
+  stop. A caught adapter panic quarantines its attachment AND permit; its observer
+  remains a tombstone rather than triggering automatic reimport.
+- Windows connection teardown now uses detach_owned: under one CONTROL guard,
+  query exact port/one-use alias/private proxy identity then PLUGOUT if matched.
+  It runs before closing our original socket; concurrent in-process attachment
+  cannot reuse the port between those driver calls. A stale identity is a no-op.
+  This connection teardown is not OS-safe storage removal. No global unplug.
+- New exact-port-reuse test keeps the old managed owner until a replacement
+  import exists, then acknowledges and retires the old owner. It must preserve
+  the replacement and its RAM data. Windows CI is required; cross compilation
+  and host synthetic tests alone do not establish this property on the driver.
+
+2026-11-05 Windows data connection after confirmed removal
+The desktop adapter may close its owned proxy socket only AFTER the dedicated
+OS ejection worker has returned Outcome::Safe. Busy/Denied/Unsupported/Uncertain
+retain the data connection. Ledger/result delivery remains owned until explicit
+Retire/stop. A retained old attachment still checks exact alias/private-port
+ownership on Drop and must not unplug a replacement. This is not timeout-based
+cancellation and does not release any live OS worker buffer.

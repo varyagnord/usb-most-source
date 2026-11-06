@@ -1,0 +1,2 @@
+# Embedded commands have a cmd.exe length bound and stable byte-level tests.
+native/usb-most-connection/src/bootstrap/* text eol=lf

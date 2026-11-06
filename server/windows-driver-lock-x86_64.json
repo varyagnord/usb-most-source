@@ -1,0 +1,34 @@
+{
+  "arch": "x86_64",
+  "files": {
+    "usbip2_filter.cat": {
+      "bytes": 11425,
+      "sha256": "f259d60bdb5ad9d7a976418bfc9156b788dfcec9b67c8d05d036eb03fb18ffe1"
+    },
+    "usbip2_filter.inf": {
+      "bytes": 2051,
+      "sha256": "b7fe01b04793d2f83cf3407601f2c835f1a10c2618e32a52c8fdef1da6b79bff"
+    },
+    "usbip2_filter.sys": {
+      "bytes": 61928,
+      "sha256": "b93a5fc3c23d56f9b49634742374e32f269e53f764caa2d5fcb43e3259f7eced"
+    },
+    "usbip2_ude.cat": {
+      "bytes": 11404,
+      "sha256": "84dd6cc5985857adf1514a9ee202210ff3ee1384c9be40fd49d6810e23e25f3a"
+    },
+    "usbip2_ude.inf": {
+      "bytes": 2964,
+      "sha256": "1ae9e8dc497929de1a6be1291ae1dca6a19e7fd6c0351e8c266f65dd91f15073"
+    },
+    "usbip2_ude.sys": {
+      "bytes": 157200,
+      "sha256": "abd4fc43dce40e027e4acc884cbfe92433e026206f6565c5ee5284a39441169a"
+    }
+  },
+  "schema": 1,
+  "source_bytes": 26083632,
+  "source_sha256": "38cad6d4432b52d5bb9409d9ad03b72fdffc4ada4cd3a48fbeca1a2752a8518a",
+  "vendor": "usbip-win2",
+  "version": "0.9.8.1"
+}

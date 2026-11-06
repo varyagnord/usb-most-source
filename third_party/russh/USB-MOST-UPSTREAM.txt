@@ -1,0 +1,26 @@
+Source: https://crates.io/crates/russh/0.65.1
+Upstream: https://github.com/Eugeny/russh
+Upstream commit: b33092aad1e51c66258a12e8b83fc473a68d9d34
+Crate SHA-256: 94be3d86c71b9ed220a675c405e35c7a02565a009bf8da2e9cc13a700320a5c5
+License: Apache-2.0 (standard text included as LICENSE-APACHE).
+
+USB Most changes, 2026-11-05:
+- Cargo.toml and Cargo.toml.orig: rsa =0.10.0-rc.18 -> =0.10.0-rc.20;
+  pkcs1 =0.8.0-rc.4 -> =0.8.0, matching the new RSA encoding API.
+- src/keys/format/pkcs8.rs: use the RsaPrivateKeyRef alias introduced by
+  pkcs1 0.8 for the same borrowed DER decoder (one type-name adaptation).
+- Omitted the package's unused standalone Cargo.lock. The application root
+  Cargo.lock is authoritative. All other upstream Rust sources are unchanged.
+- Removed trailing spaces on three README.md lines (no text change).
+- Added this provenance file and the standard Apache license text.
+
+The root workspace pins RustCrypto/SSH commit
+beb2d1a4a5cbda803dad5610a803517756c4ee7f, which implements upstream's
+RSA rc.20 API adaptation (https://github.com/RustCrypto/SSH/pull/611).
+RSA rc.20 includes RustCrypto/RSA#739 and #749 (blinding/implicit rejection).
+This integration is not a replacement cryptographic implementation or an
+independent security audit. The RustSec database may still report
+RUSTSEC-2023-0071 until its affected-version metadata is updated; do not hide it.
+
+Remove this local dependency adaptation when an upstream russh release supports
+the required RSA version, after the SSH/Windows/Android regression gates pass.

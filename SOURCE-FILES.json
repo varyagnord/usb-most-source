@@ -1,0 +1,2813 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "path": ".cargo/config.toml",
+      "mode": "100644",
+      "bytes": 41,
+      "sha256": "2766a681c3a5db7b3a7012a750daea37f21e15fa9069b5f0da2be34f5c72e0ba"
+    },
+    {
+      "path": ".gitattributes",
+      "mode": "100644",
+      "bytes": 132,
+      "sha256": "8e89e79cd2a776691b9a07bb3040fac41c82cf96e7511aceccd4a63a1ebb3703"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "bytes": 778,
+      "sha256": "c9ef7612f1746fe66723054b4c44e124f94ad708dea290ddec1a57bc321b66b3"
+    },
+    {
+      "path": "BUILDING.txt",
+      "mode": "100644",
+      "bytes": 17624,
+      "sha256": "02efbd02147ecf2218fbcadcb72e04d0fac5ee757142ddef21ba405e12c06d19"
+    },
+    {
+      "path": "Cargo.lock",
+      "mode": "100644",
+      "bytes": 73521,
+      "sha256": "6411f88fa96a721cb6ca0575e39a27c0ae50bb74da415324ecf4ec82980421be"
+    },
+    {
+      "path": "Cargo.toml",
+      "mode": "100644",
+      "bytes": 898,
+      "sha256": "b206db4b4318883b4d234cc57bc102d5ec23d7a889c575049484693b0123101a"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "bytes": 35120,
+      "sha256": "fe3eea6c599e23a00c08c5f5cb2320c30adc8f8687db5fcec9b79a662c53ff6b"
+    },
+    {
+      "path": "app/build.gradle",
+      "mode": "100644",
+      "bytes": 6538,
+      "sha256": "e2f50fac58f045b641409b8d926fecc08b71047f5301f3693cbb523e29b1ea14"
+    },
+    {
+      "path": "app/lint.xml",
+      "mode": "100644",
+      "bytes": 109,
+      "sha256": "dae1afc0e417c4b1eac23a3ccfd4b4ea970eafa838343be490a04f1ebd0cde49"
+    },
+    {
+      "path": "app/proguard-rules.txt",
+      "mode": "100644",
+      "bytes": 5065,
+      "sha256": "56c96723f2f0a457bd577ed59ca7b3054579c33e837e1d8a020bce4cce692e70"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/AccessSuite.java",
+      "mode": "100644",
+      "bytes": 32411,
+      "sha256": "a18042351688ae08d730ce11bf040571b25b282f7befe71d10667418bcf26dc5"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/ComputerStoreSuite.java",
+      "mode": "100644",
+      "bytes": 21179,
+      "sha256": "a7dc4ea72a56aa2e59914e5c8a61d3532a540bdd0b07190154817cba7b429b0a"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/ConnectionLayoutSuite.java",
+      "mode": "100644",
+      "bytes": 9766,
+      "sha256": "df08990257e5ac71710c2fdb5c394ff19ea2ed57ecba96755a4653f6778a92f2"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/ConnectionSuite.java",
+      "mode": "100644",
+      "bytes": 20967,
+      "sha256": "57d1dd3ae215b1e7ff4178fc9a63efa93e2a5f9d41e956946411110da2f9742b"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/DiagnosticsSuite.java",
+      "mode": "100644",
+      "bytes": 41098,
+      "sha256": "c93fc21eec99d45ca16bbc3d3b938a3035a6fa3a01d15c451b447b9d82682aa1"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/KeyImportSuite.java",
+      "mode": "100644",
+      "bytes": 13254,
+      "sha256": "239474435ca0327ed3ca71b240c0dd213b5046de078485531acded22cb21168f"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/LicensesSuite.java",
+      "mode": "100644",
+      "bytes": 3417,
+      "sha256": "a512c8220c06ca42f54d2520d0788921fd41bceac4cb3c123f76b8dde67ad26f"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/ManagedEjectionSuite.java",
+      "mode": "100644",
+      "bytes": 18546,
+      "sha256": "5211addc878407f1effa6d2f6a1b249300dc5f5a122cb3516cae45f4346b53ba"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/NavigationSuite.java",
+      "mode": "100644",
+      "bytes": 32823,
+      "sha256": "55f0ed01a26e14a475b8351ec1f440e7123f010750d4ef15f2282da5fe5b92e3"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/OsEjectionSuite.java",
+      "mode": "100644",
+      "bytes": 39066,
+      "sha256": "13afc20a0e0498f7c62fd27e190ae2d3f229f876f8b21d6e09aa6a40e7a21323"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/PairingSuite.java",
+      "mode": "100644",
+      "bytes": 15781,
+      "sha256": "a02c559df8fa5c1493cf70f02c5b4c25d6c298f9d5015cbdaaa9ef4fb1b1815b"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/PrivacySuite.java",
+      "mode": "100644",
+      "bytes": 9660,
+      "sha256": "8d9adc2e658ac4afd36d82c36121b501623922b92b9ba36666807fbb16cdcbde"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/QemuUsbBackend.java",
+      "mode": "100644",
+      "bytes": 12635,
+      "sha256": "5ff8843518673e7903c2ed1d98c36db9b97b93de4fe7683ed112e0711b1b92d5"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/QuickActionsSuite.java",
+      "mode": "100644",
+      "bytes": 38192,
+      "sha256": "c8273ad9f53794fe9373aa61725ee864da5d86ef0d7c3df2609ef00de0d2cf2b"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/SmokeInstrumentation.java",
+      "mode": "100644",
+      "bytes": 81432,
+      "sha256": "55045133b2f04b91cf35ee783e3f315c4a2b5221fd9f305dd28c2ff77e0cc352"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/TransportRecoverySuite.java",
+      "mode": "100644",
+      "bytes": 8003,
+      "sha256": "e67243d0e6a9d73933a587bf11e3b66346fe10e3beb7a140beec0ed1102c9d1f"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/TransportSuite.java",
+      "mode": "100644",
+      "bytes": 6976,
+      "sha256": "c7877858fa5c4dc9faec02a459afe20708de0fa1e2c37cbeaacaf89f8b5a6280"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/UsbFixture.java",
+      "mode": "100644",
+      "bytes": 9778,
+      "sha256": "da96b68cb14f64d2fae0b0face374b418c0fb4491e03984345e0b71c5d1cd0f5"
+    },
+    {
+      "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/UsbRulesSuite.java",
+      "mode": "100644",
+      "bytes": 35965,
+      "sha256": "acf884a800df0bd20ae6ab7f5529aaa335ee1697237204fb9d35bf8488d42fe8"
+    },
+    {
+      "path": "app/src/main/AndroidManifest.xml",
+      "mode": "100644",
+      "bytes": 3689,
+      "sha256": "2b733c02d7f1e317bc6fd2fd621276f981058e59777b80cc52d9a3c91bd0cd11"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/config/BridgeTileService.java",
+      "mode": "100644",
+      "bytes": 2846,
+      "sha256": "31e13c72657e0ff1b35eb7888c5b91983ad8711d83f64e8670d474870eee963d"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/config/BridgeUi.java",
+      "mode": "100644",
+      "bytes": 1368,
+      "sha256": "fa13bc2a3f7d0da0eeb98fa50fe81776548162cfb1699fbd65d3417fe55383cb"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/config/ComputersActivity.java",
+      "mode": "100644",
+      "bytes": 24406,
+      "sha256": "01fe618f6e061a8e60fb7b1c8a95805efc4aca0cd8fa8562ebf2faede1a55db7"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/config/ConnectionDiagnostics.java",
+      "mode": "100644",
+      "bytes": 22266,
+      "sha256": "d7936c754cca0d40a0ab60df4cd6673a5c5cac5b0feadae172da09b4e35c51a0"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/config/ConnectionSummary.java",
+      "mode": "100644",
+      "bytes": 1419,
+      "sha256": "d2f7d0218b70eaab76718bb19430735f2838310c0550df51fbcd009becfc0dfc"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/config/LicensesActivity.java",
+      "mode": "100644",
+      "bytes": 4369,
+      "sha256": "44824c45f88021d4e63b6c4c97c094a886cbe7f3022edd11108409e9ed347984"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/config/PrivacyActivity.java",
+      "mode": "100644",
+      "bytes": 4807,
+      "sha256": "390d9b1ecf1ac97451825640ea8a8b6b30c15ba29b5b711bf2d127c45c3f24fa"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/config/QuickActionActivity.java",
+      "mode": "100644",
+      "bytes": 787,
+      "sha256": "7129575a007042ab4c153aa331d6f827e8ca5a568d2cb0374c49872fcd31a71c"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/config/QuickActions.java",
+      "mode": "100644",
+      "bytes": 6493,
+      "sha256": "c1ec0c89c0c9508197f1270e078eee1aab2cd494b8e35b4f7ece93b22d9677d6"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/config/UsbDeviceSettings.java",
+      "mode": "100644",
+      "bytes": 10994,
+      "sha256": "bf6c409026bce29a84e44fb92a37873d85948b32d9d8b36d3ef6d5dc98c64744"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/config/UsbIpConfig.java",
+      "mode": "100644",
+      "bytes": 51681,
+      "sha256": "8805d3876417a87378b9a3c358f3c4932c37484771033dd124482b232ed39102"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/connection/ComputerDiscovery.java",
+      "mode": "100644",
+      "bytes": 6330,
+      "sha256": "329baa9545c9c389718a4d1783076606162453aa84a1f7f5e9e4026d86b9ff2f"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/connection/ComputerRepository.java",
+      "mode": "100644",
+      "bytes": 19272,
+      "sha256": "fdaa44e1c32227765f96338f9b8a70f15992161bf9856d403cb2f4acc4753210"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/connection/ComputerVault.java",
+      "mode": "100644",
+      "bytes": 7032,
+      "sha256": "4c6c13855d9f8dc00780810820de62626add6b69d02d3b2304e43d41841b47d9"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/connection/ConnectionController.java",
+      "mode": "100644",
+      "bytes": 12274,
+      "sha256": "4c9528beb538a4298ad66a48ea61200dbd1aac0b65d90468fcdf51e650b877e5"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/connection/ConnectionObservation.java",
+      "mode": "100644",
+      "bytes": 1974,
+      "sha256": "343213b8d7386d1c483474e007725bc9b63fc784e52811655869b8f54617a2eb"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/connection/ConnectionSetup.java",
+      "mode": "100644",
+      "bytes": 38445,
+      "sha256": "72fd4e829d5dad7bcd6b6a59d764c4cbf5103bd677820e5c9d3ee68c24e2ba1e"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/connection/KeyImport.java",
+      "mode": "100644",
+      "bytes": 4723,
+      "sha256": "0d8139a09893ba1e655de0448721c533ca9434ac5c4a5f7f5e66f10ac8a0dfe7"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/connection/PairScanner.java",
+      "mode": "100644",
+      "bytes": 13074,
+      "sha256": "555cfaf75b3a482fb8597f7d6649dd266a5f36b9abb0d1dee14920bfe9a4c5c4"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/connection/ReceiverAssets.java",
+      "mode": "100644",
+      "bytes": 3992,
+      "sha256": "6bcf78f6ef041cd1a0c0ca5f0528747b6e66e08c404abacfa20e0da4d6916c15"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/connection/SecretVault.java",
+      "mode": "100644",
+      "bytes": 4093,
+      "sha256": "cc9d7d4926693b1c61add6f04a2afbbad4c4a5858412ca17fc011d264886a7f8"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/connection/UsbRules.java",
+      "mode": "100644",
+      "bytes": 3062,
+      "sha256": "2c3856853aa294ee51ec169c076fc9c461d60a068d9c6009c9e62eddb909580b"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/core/AndroidReferenceBackend.java",
+      "mode": "100644",
+      "bytes": 12051,
+      "sha256": "e878f7449011e4c2e49f7f1de94004fc57aa3b2047a43ec48691e419a48a863c"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/core/ConfigurationTransition.java",
+      "mode": "100644",
+      "bytes": 674,
+      "sha256": "8d43c5d53a733802f5ff1ab88359b3ecb78f8e9491bc9813b739226aa5679262"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/core/HidObservation.java",
+      "mode": "100644",
+      "bytes": 1315,
+      "sha256": "f31f1f95610dccb12cdf7f3fe1dbe8e84c087f0bdedf958bc58de660105a69c1"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/core/HidTrace.java",
+      "mode": "100644",
+      "bytes": 7650,
+      "sha256": "fcf75e6630958eb0e7fa8dfefeaa58d6497b162da57ea45cc51bd31a6ec7a574"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/core/ManagedImports.java",
+      "mode": "100644",
+      "bytes": 6472,
+      "sha256": "af53a391587f1598f7bcdd06222a05519b7b9b37af95b6a8c0c204f0344a0ecc"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/core/TransferCoordinator.java",
+      "mode": "100644",
+      "bytes": 5631,
+      "sha256": "cc78e1d024984c2709d1901e52a05ee7b45d834c828d7fbf322021ef401ef559"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/core/TransferLimits.java",
+      "mode": "100644",
+      "bytes": 393,
+      "sha256": "3173c0104636e98aa61fde009ddbf23e8dd5315a7e751b8b715b0bb466709ab3"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/core/UsbBackend.java",
+      "mode": "100644",
+      "bytes": 1141,
+      "sha256": "92855dc818f590b593dc6f8a1ca903158d4673752b6b136f936bf9adc746da0f"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/core/UsbTransport.java",
+      "mode": "100644",
+      "bytes": 455,
+      "sha256": "ce87b7bc0e23f820a58a1898ad9857031d6dd5dbd0522508b8a6e0c48e2379ed"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/jni/NativeConnection.java",
+      "mode": "100644",
+      "bytes": 1139,
+      "sha256": "0c1c5d99546b409832f89ff50dcdb3d3648e95ffce114984d5e01def195ab00b"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/jni/NativeManagement.java",
+      "mode": "100644",
+      "bytes": 1034,
+      "sha256": "9b611199bbc8594104aa7c47f5d2010e49d94b8e140e273b334c19fb80e5c04c"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/jni/NativePolicy.java",
+      "mode": "100644",
+      "bytes": 901,
+      "sha256": "3ac1370d79dc14d003ab9f430cd43f237a83b532aeb42bc9a6ce0ee20f0830a7"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/jni/NativeUsb.java",
+      "mode": "100644",
+      "bytes": 1563,
+      "sha256": "cd97bf3ec344eb5b39b235bf2fac92cdf4007f9d89584d2220295931eec2f157"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/DiagnosticAccess.java",
+      "mode": "100644",
+      "bytes": 289,
+      "sha256": "13f74795f0dc560ac69704e602a6e4154eba608b1f7a0992f31937cf70d3b07e"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/ManagementAccess.java",
+      "mode": "100644",
+      "bytes": 500,
+      "sha256": "e57730bc822c19d69d3846866d5513d550356f275aa6ed615c2e0d4b46e1796b"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/UsbDeviceInfo.java",
+      "mode": "100644",
+      "bytes": 673,
+      "sha256": "32df820f774ce1884293b3b6e5b9738d955e825206012e5bcf87d1d925482ddc"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/UsbIpServer.java",
+      "mode": "100644",
+      "bytes": 14853,
+      "sha256": "bc22443f7fa5fafe13084576ab2179750220b8f853a44534e41ff427ec26b22a"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/UsbRequestHandler.java",
+      "mode": "100644",
+      "bytes": 1179,
+      "sha256": "e52758108866463ee3aa0f980f1c37fa720bf96bd325fc11997febd857ad2ab7"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/ProtoDefs.java",
+      "mode": "100644",
+      "bytes": 1067,
+      "sha256": "c58aefd04aea05d861a43e6d3c643881cb044d2d04a464b8294f913e8a4ad8e9"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/UsbIpDevice.java",
+      "mode": "100644",
+      "bytes": 1784,
+      "sha256": "1b5e993b166592bd6450270af41aac6bd0fe5ac4390a5cdae5da968dd4fa721b"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/UsbIpInterface.java",
+      "mode": "100644",
+      "bytes": 535,
+      "sha256": "363d9475a00565e2493b44cd2bcdbd366ac676510b7a99502af23d356302149b"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/cli/CommonPacket.java",
+      "mode": "100644",
+      "bytes": 2574,
+      "sha256": "d3c0f2b2529f07be46a48d9a1091c5bd40144a251353ec98a4d1c1b071a8282a"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/cli/DevListReply.java",
+      "mode": "100644",
+      "bytes": 937,
+      "sha256": "b6ed35ab9f8171efcb3c9c46eb2555780a17eadf1282c9cff9b25501d07a16a2"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/cli/DevListRequest.java",
+      "mode": "100644",
+      "bytes": 292,
+      "sha256": "3f9dffd37ec1b6f3477799a470a25f6193c5d9959154807e6cf6472415aa9315"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/cli/DiagnosticRequest.java",
+      "mode": "100644",
+      "bytes": 978,
+      "sha256": "806ef861744eeb5c23fcc84302c0682c4f5670aa641deb0ed5ae132baf83a8a7"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/cli/ImportDeviceReply.java",
+      "mode": "100644",
+      "bytes": 543,
+      "sha256": "0c7bf1dbd9a3cedbbd7d0ba29943cb8d9abe02710855c3f04194bc325e7d3e0f"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/cli/ImportDeviceRequest.java",
+      "mode": "100644",
+      "bytes": 899,
+      "sha256": "a9b1c14e761a6a10855d6cd91f7230cb8bc4b10900bff894f18ad92432d0cc1e"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/cli/ManagedRequest.java",
+      "mode": "100644",
+      "bytes": 891,
+      "sha256": "51972b5b0540d0a15e3f206f083bcbf68a20067249492a0323c37919fe7211b7"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/cli/WanImportRequest.java",
+      "mode": "100644",
+      "bytes": 1313,
+      "sha256": "94af2414bb1cd56540fd7d336e173409fdc118743f47b7b4f6672690801a034f"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/dev/UsbIpDevicePacket.java",
+      "mode": "100644",
+      "bytes": 3095,
+      "sha256": "d1471cf9fb302aea6ee51a2bfae998482164c9065f297c79c928c4f38a1fd861"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/dev/UsbIpSubmitUrb.java",
+      "mode": "100644",
+      "bytes": 2928,
+      "sha256": "6eb681a67490ef15fca0a68a028b9e68b80c0d908f5db9c79871d0a6553e200e"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/dev/UsbIpSubmitUrbReply.java",
+      "mode": "100644",
+      "bytes": 1795,
+      "sha256": "0d85a67a755cc338737494acdc10e1d6d6d53db46023884cbc1c129085ba77db"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/dev/UsbIpUnlinkUrb.java",
+      "mode": "100644",
+      "bytes": 1216,
+      "sha256": "1056da82e50ef60444e3bff083ecccd399c7cafe7058c4846bdd89e0543a3838"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/dev/UsbIpUnlinkUrbReply.java",
+      "mode": "100644",
+      "bytes": 708,
+      "sha256": "4309affeeea1a3a56352e201c37252affc238bcdccc4e5214434281550f071ce"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/server/protocol/dev/WanControl.java",
+      "mode": "100644",
+      "bytes": 1586,
+      "sha256": "7af066ebd5a01473ca4d704dabeab1191f7e4584d078d3024b7516914b4f59a8"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/service/AndroidSdkPort.java",
+      "mode": "100644",
+      "bytes": 2056,
+      "sha256": "00d6dc196e120ff75bdefc36a27db081cc21fe6034c7e3546f0994c6e8f4b91d"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/service/BridgeApplication.java",
+      "mode": "100644",
+      "bytes": 685,
+      "sha256": "8e17aa33d6e835ba870be5221767f58cd530bf925d153c2f435a05a0fe5f0b61"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/service/DiagnosticController.java",
+      "mode": "100644",
+      "bytes": 5930,
+      "sha256": "2a99f789f4b07ea0f9e2822a6f0070439514a94d0b57af80d9ea5e9dd3d123a1"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/service/DiagnosticLog.java",
+      "mode": "100644",
+      "bytes": 3280,
+      "sha256": "e1f524b7a2e9ed25b41eef91340a6d2758688e1d866a9873dc2361aec8c6415b"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/service/DiagnosticSelfTest.java",
+      "mode": "100644",
+      "bytes": 8384,
+      "sha256": "58136719fe017bd85a36159456b829416892786036899a96da34d8c88f3cf05d"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/service/RustUsbTransport.java",
+      "mode": "100644",
+      "bytes": 1793,
+      "sha256": "95a102fac1362b5b167f3ac2c9ae75cd6751fbce7f71e81bf17d86d1fc81a208"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/service/UsbInventory.java",
+      "mode": "100644",
+      "bytes": 31195,
+      "sha256": "e9d73a40875a260e89bfde1445a301fe09174ada2ec8ea7a6c9bd2b4153957a2"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/service/UsbIpService.java",
+      "mode": "100644",
+      "bytes": 23149,
+      "sha256": "6155d68db202520525d979d3d6bc5bfd7f6106f86e12f3359b58a7a7fbb29308"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/service/UsbSession.java",
+      "mode": "100644",
+      "bytes": 13921,
+      "sha256": "ce2cf60c6891b520a2892536deae2a3e6753bdea63967250eeb2bcf34f3ae91c"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/service/WanProfile.java",
+      "mode": "100644",
+      "bytes": 845,
+      "sha256": "15577c9052748f522f903b2089d1e350294bd94b30893e4793e62af95716a1f1"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/usb/UsbDeviceDescriptor.java",
+      "mode": "100644",
+      "bytes": 1062,
+      "sha256": "ae1c7e5cbc6a6b2e7cdde09e1e92156fdb289a13c6994a01ae31d2288a3bb5f5"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/utils/StreamUtils.java",
+      "mode": "100644",
+      "bytes": 532,
+      "sha256": "4d555d685bbeff28770b89ce98f14be317b6188dd6f9c799bf46b91b86fe2cb2"
+    },
+    {
+      "path": "app/src/main/res/drawable-nodpi/notification_icon.png",
+      "mode": "100644",
+      "bytes": 401,
+      "sha256": "548b070ebab85e128fd52b39f47e47c7e29fdc3879c74feaf15d9927d0b3a2b5"
+    },
+    {
+      "path": "app/src/main/res/drawable/ic_bridge_tile.xml",
+      "mode": "100644",
+      "bytes": 704,
+      "sha256": "63a55368798b8d13ea50316b13ce500d4ca7e2dab5f59051ad4e0f564050cb0f"
+    },
+    {
+      "path": "app/src/main/res/drawable/ic_launcher_foreground.xml",
+      "mode": "100644",
+      "bytes": 976,
+      "sha256": "2ba6ccb2ffbaea814f1d3ce28299d891aec9e50c78c07e6976b7bd0c6235eb29"
+    },
+    {
+      "path": "app/src/main/res/drawable/ic_launcher_monochrome.xml",
+      "mode": "100644",
+      "bytes": 976,
+      "sha256": "ef93c9d7bc15f538e50b3c75ca904209ecb23b9f738b681c0eee8b9f88e8532f"
+    },
+    {
+      "path": "app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
+      "mode": "100644",
+      "bytes": 228,
+      "sha256": "58a573fd230af0532c0f386ef03949c5fd04a5fd6014f9e22a4163642d91c22e"
+    },
+    {
+      "path": "app/src/main/res/mipmap-anydpi-v33/ic_launcher.xml",
+      "mode": "100644",
+      "bytes": 299,
+      "sha256": "72ad104952968a4d812ccb2bde15532dede04df6e2c0b09802de327a4132e009"
+    },
+    {
+      "path": "app/src/main/res/values-v27/styles.xml",
+      "mode": "100644",
+      "bytes": 154,
+      "sha256": "2c375986f6a9631c72bf8f5c4293ea2b9374c9843d2c1e74d3017fb339f8cfd4"
+    },
+    {
+      "path": "app/src/main/res/values-v29/styles.xml",
+      "mode": "100644",
+      "bytes": 213,
+      "sha256": "0b9c1a9eeb8737d40806c76c237ee050f5e38929a4fd3deccc3f4705fbab90cd"
+    },
+    {
+      "path": "app/src/main/res/values/ids.xml",
+      "mode": "100644",
+      "bytes": 1380,
+      "sha256": "6cbc9f044a20aeb1bcad3c57ab4de5b3b7e56641ba606f1a656f3437c4e2dd68"
+    },
+    {
+      "path": "app/src/main/res/values/launcher_colors.xml",
+      "mode": "100644",
+      "bytes": 79,
+      "sha256": "b207c39983b4bdd149309890428e1992f7da059eb7d0f93d43cfa6abed514a67"
+    },
+    {
+      "path": "app/src/main/res/values/privacy.xml",
+      "mode": "100644",
+      "bytes": 4664,
+      "sha256": "314f2d0ef48b2f11a36b09af8a3a0fa2eab943aa676977049b31bf7ed187011c"
+    },
+    {
+      "path": "app/src/main/res/values/strings.xml",
+      "mode": "100644",
+      "bytes": 131,
+      "sha256": "e85202023144cd0549133bda70c5e50aa370c130287f162e24ad02788fc608d6"
+    },
+    {
+      "path": "app/src/main/res/values/styles.xml",
+      "mode": "100644",
+      "bytes": 831,
+      "sha256": "9f8cb5537b8d6e73d1aaed5e05f2a1c7bfc9e245d7c20049a6b31216f389bcfb"
+    },
+    {
+      "path": "app/src/main/res/xml/data_extraction_rules.xml",
+      "mode": "100644",
+      "bytes": 1011,
+      "sha256": "b0e88f2e1ffb1c8de5783db430a938f0bb86987ded7aca3b5cf77590247ae09d"
+    },
+    {
+      "path": "branding/README.txt",
+      "mode": "100644",
+      "bytes": 1387,
+      "sha256": "6b3700e78dc5a7a2b8c407df1507fb1235a2eeab3705720ba4423e0fdb6962b3"
+    },
+    {
+      "path": "branding/usb-most-icon-512.png",
+      "mode": "100644",
+      "bytes": 9379,
+      "sha256": "4879e3063ebd229da34096b1da9df42bbb659d2ac02548d050d8045a567e1bca"
+    },
+    {
+      "path": "branding/usb-most-icon.svg",
+      "mode": "100644",
+      "bytes": 846,
+      "sha256": "bcaf67cb224b2a4a30791310e5c2e87d4fd835317c9f515def77df4436435135"
+    },
+    {
+      "path": "build.gradle",
+      "mode": "100644",
+      "bytes": 345,
+      "sha256": "1d77e28d3bded2f892000197d77eada249f6b1fe02370f632bced742b8bcc30c"
+    },
+    {
+      "path": "NOTICE.txt",
+      "mode": "100644",
+      "bytes": 1405,
+      "sha256": "945d7345a6f8724e1cf10fcba8c014400590d6ca469efa786d1ba882a37f4c8d"
+    },
+    {
+      "path": "README.txt",
+      "mode": "100644",
+      "bytes": 6680,
+      "sha256": "c7889a5047094ec5d439228c3a71ed50d9ad17a80c9c5d5777dab595d53b6d17"
+    },
+    {
+      "path": "gradle.properties",
+      "mode": "100644",
+      "bytes": 24,
+      "sha256": "3c615e2ed6188701d1d496405e5189b638afbb8aa499413ff97e94d938ad6a6b"
+    },
+    {
+      "path": "gradle/wrapper/gradle-wrapper.jar",
+      "mode": "100644",
+      "bytes": 59203,
+      "sha256": "e996d452d2645e70c01c11143ca2d3742734a28da2bf61f25c82bdc288c9e637"
+    },
+    {
+      "path": "gradle/wrapper/gradle-wrapper.properties",
+      "mode": "100644",
+      "bytes": 230,
+      "sha256": "5c9d6fdfcf4eb84e282bfdf20be649fb67a8e704de9e77f586d5f6929a63ad14"
+    },
+    {
+      "path": "gradlew",
+      "mode": "100644",
+      "bytes": 5766,
+      "sha256": "63135287117a1e6d12c84580f1f49c61d1ba02218ecd28660605e97f976e7d65"
+    },
+    {
+      "path": "gradlew.bat",
+      "mode": "100644",
+      "bytes": 2674,
+      "sha256": "c46a27c79007746de5922b17abb6230d64ad8b1ba3ad1585ee5c6543c2a9b129"
+    },
+    {
+      "path": "native/usb-most-artifacts/Cargo.toml",
+      "mode": "100644",
+      "bytes": 253,
+      "sha256": "3b65137198e5c9f53069ffe10ba505aa5a67d40704cf04bc612405dac68f5f3e"
+    },
+    {
+      "path": "native/usb-most-artifacts/src/main.rs",
+      "mode": "100644",
+      "bytes": 4813,
+      "sha256": "5629b168f6f5e96e662ef62485a6c4d3e109bb0f843c294c6c3ecb2c7df3f7c7"
+    },
+    {
+      "path": "native/usb-most-connection/Cargo.toml",
+      "mode": "100644",
+      "bytes": 1272,
+      "sha256": "da5e2c9bc6d837bb511e37ba1d348ec380795e0a8a0bee904633b8ee31e1c2ac"
+    },
+    {
+      "path": "native/usb-most-connection/examples/android_mixed_fixture.rs",
+      "mode": "100644",
+      "bytes": 12444,
+      "sha256": "a79337c02e36e75697989d2b56d7f1b5591629c8fb0698d8c860c5422588c2cd"
+    },
+    {
+      "path": "native/usb-most-connection/examples/android_usb_fixture.rs",
+      "mode": "100644",
+      "bytes": 1334,
+      "sha256": "dc2551b825f7e403288ea9b8c17099df877eea5ae4593425ee768ab01e6e27b2"
+    },
+    {
+      "path": "native/usb-most-connection/examples/pairing_qr_fixture.rs",
+      "mode": "100644",
+      "bytes": 1518,
+      "sha256": "d064dffde6ec148bf8aa642331dbb49590d8e7d8eb3c53ecf36e94407df25774"
+    },
+    {
+      "path": "native/usb-most-connection/examples/receiver_lab.rs",
+      "mode": "100644",
+      "bytes": 11067,
+      "sha256": "85dc1a999a4ec1b0cf76aaeee7b0917e1bebe4a7af5e34adae77f7c8bafe1309"
+    },
+    {
+      "path": "native/usb-most-connection/examples/receiver_lab/usb.rs",
+      "mode": "100644",
+      "bytes": 10079,
+      "sha256": "8e6e3097a6dac841bf2fdcb3b943b79dc963739533b23fc20fac1412c6b65650"
+    },
+    {
+      "path": "native/usb-most-connection/examples/ssh_fixture.rs",
+      "mode": "100644",
+      "bytes": 15378,
+      "sha256": "2541813dce459628fedb5a74b73fe5206876554d15ac9fec9e68a83ca7681209"
+    },
+    {
+      "path": "native/usb-most-connection/examples/windows_bootstrap.rs",
+      "mode": "100644",
+      "bytes": 5809,
+      "sha256": "9fce92ac79bfb53dbb26ed83bad011e59b41017fee29ee50fc4c9bf07795934e"
+    },
+    {
+      "path": "native/usb-most-connection/examples/windows_direct_lab.rs",
+      "mode": "100644",
+      "bytes": 5283,
+      "sha256": "a97fcc6ebc1755d8ea1bacee1b825f1baf2d5d6c7c548738a4e3acd94c5e8d7b"
+    },
+    {
+      "path": "native/usb-most-connection/examples/windows_ssh_lab.rs",
+      "mode": "100644",
+      "bytes": 6131,
+      "sha256": "60e22a0a43807b1478806ee9e5384d1436cac8d86284aeb525eaf70eb231125f"
+    },
+    {
+      "path": "native/usb-most-connection/src/bootstrap.rs",
+      "mode": "100644",
+      "bytes": 11999,
+      "sha256": "abebd043830b076d80260f198ca1801439d02beb920846c3ac06cef32bba4715"
+    },
+    {
+      "path": "native/usb-most-connection/src/bootstrap/configure-linux.sh",
+      "mode": "100644",
+      "bytes": 1588,
+      "sha256": "11b7ce8b711445216b77a71c4a3f727fe60942348380fb9f074510abadfaa7bb"
+    },
+    {
+      "path": "native/usb-most-connection/src/bootstrap/configure-windows.ps1",
+      "mode": "100644",
+      "bytes": 2262,
+      "sha256": "602382c2c4f20534cf6cfb1571a3005ae83b16d68c4b518a3ccf34ead0a21bc5"
+    },
+    {
+      "path": "native/usb-most-connection/src/bootstrap/install-linux.sh",
+      "mode": "100644",
+      "bytes": 1370,
+      "sha256": "f12af4cd6e8f9b86515474dd2eb14c04855f44d787d9ae7065251be41374c66a"
+    },
+    {
+      "path": "native/usb-most-connection/src/bootstrap/install-windows.ps1",
+      "mode": "100644",
+      "bytes": 4060,
+      "sha256": "0b3a7543f809bffdc764b187e47b701a759ba68ecf3505247c824320d37271cd"
+    },
+    {
+      "path": "native/usb-most-connection/src/bootstrap/probe-linux.sh",
+      "mode": "100644",
+      "bytes": 2851,
+      "sha256": "9c65f5225f72207e6e666d05d4717e7678057ad5c4d61bfb926f8853a755f3e7"
+    },
+    {
+      "path": "native/usb-most-connection/src/bootstrap/probe-windows.ps1",
+      "mode": "100644",
+      "bytes": 3032,
+      "sha256": "20ca4ba45d9497f2d1e55f6163f1ee6473c1d3d1f05e8e855d5254327dcbf965"
+    },
+    {
+      "path": "native/usb-most-connection/src/bootstrap/protection-windows.ps1",
+      "mode": "100644",
+      "bytes": 1915,
+      "sha256": "73e246f8198f9e83d1a1e493e3745cb725af2b5d9153f74a2f09b96e6534148c"
+    },
+    {
+      "path": "native/usb-most-connection/src/bridge.rs",
+      "mode": "100644",
+      "bytes": 1367,
+      "sha256": "105f61e3def04abab31f2562b6e27709440a2024dbcbb43b17c8275fc52cd0c4"
+    },
+    {
+      "path": "native/usb-most-connection/src/computers.rs",
+      "mode": "100644",
+      "bytes": 25246,
+      "sha256": "20d2c153bde7f249b31c1b00ed38811f7aa9bfd4d29292ce188e46834c048918"
+    },
+    {
+      "path": "native/usb-most-connection/src/computers_tests.rs",
+      "mode": "100644",
+      "bytes": 21163,
+      "sha256": "0458592eeb622eec4f3583c00f2eaba08393afead689cc7ce35c7233457f3650"
+    },
+    {
+      "path": "native/usb-most-connection/src/config.rs",
+      "mode": "100644",
+      "bytes": 8178,
+      "sha256": "a29ccee29d74c4a0a24e1464327de0a562538764d119dfa6151f004fc4faac23"
+    },
+    {
+      "path": "native/usb-most-connection/src/diagnosis.rs",
+      "mode": "100644",
+      "bytes": 14686,
+      "sha256": "0bde036f72aa4903dc22597ace9da795b4c8469d7d513b0f3cb180718c6cae61"
+    },
+    {
+      "path": "native/usb-most-connection/src/direct.rs",
+      "mode": "100644",
+      "bytes": 18523,
+      "sha256": "39d4f46fdfb5c35393f6b1a0ebbbcacc149ba147f937bc5db0faaeceb12972a1"
+    },
+    {
+      "path": "native/usb-most-connection/src/direct/tests.rs",
+      "mode": "100644",
+      "bytes": 26593,
+      "sha256": "455769280ed9921d1e7a29c4058287abf1808ae93a3a248c922d1ba2c1e287c4"
+    },
+    {
+      "path": "native/usb-most-connection/src/gateway.rs",
+      "mode": "100644",
+      "bytes": 3810,
+      "sha256": "ed0c98e3e32e3928424797738b018a6bdce4eb32a6cca0b9da5ad67b2045b028"
+    },
+    {
+      "path": "native/usb-most-connection/src/key_guard.rs",
+      "mode": "100644",
+      "bytes": 7010,
+      "sha256": "df518951e2fcf2c29f0bdd382731331c55a50d9aeba584d9bed94516eb13df93"
+    },
+    {
+      "path": "native/usb-most-connection/src/lib.rs",
+      "mode": "100644",
+      "bytes": 401,
+      "sha256": "2c90e50b768383ee0ff0af0278bca0e26ab6a5164d5b25acd89872c541c7ebe3"
+    },
+    {
+      "path": "native/usb-most-connection/src/pairing.rs",
+      "mode": "100644",
+      "bytes": 11935,
+      "sha256": "8d50e63dc7ba7c05bdd058f98c3c90c2ea99f7a558b46775df7850914cff7d24"
+    },
+    {
+      "path": "native/usb-most-connection/src/provision.rs",
+      "mode": "100644",
+      "bytes": 15098,
+      "sha256": "ca45f2ba4b039d918c3578a0f1159a6a4a6868e9f6d8026b8a7b2aeb13c534fb"
+    },
+    {
+      "path": "native/usb-most-connection/src/qr.rs",
+      "mode": "100644",
+      "bytes": 5398,
+      "sha256": "777cb3732e2c0e7093a4fa1e80c4c84b90addb0942380fc46c135fb4b6aca41e"
+    },
+    {
+      "path": "native/usb-most-connection/src/security.rs",
+      "mode": "100644",
+      "bytes": 11789,
+      "sha256": "028c92a0930e4fdf286ef3ae932556621740f779e8ea273193fcf483f5fcf312"
+    },
+    {
+      "path": "native/usb-most-connection/src/session.rs",
+      "mode": "100644",
+      "bytes": 22755,
+      "sha256": "1d340e9086c8dc07ad31940b136f5de3e2b2540bc449cfd50ae0ccfeb02a58e2"
+    },
+    {
+      "path": "native/usb-most-connection/src/session/tests.rs",
+      "mode": "100644",
+      "bytes": 11941,
+      "sha256": "dddaf0e527f416245e9154d2c90158cffd25d08963928791466f6ef9e913e720"
+    },
+    {
+      "path": "native/usb-most-connection/src/ssh.rs",
+      "mode": "100644",
+      "bytes": 16038,
+      "sha256": "f92c0bc928ac1d5ad8407471bd47579891254e13e338e80f2f85d22ac53ff5a4"
+    },
+    {
+      "path": "native/usb-most-connection/src/ssh/tests.rs",
+      "mode": "100644",
+      "bytes": 3487,
+      "sha256": "6429edec03e5ade99e0bd6ce199cf25f52f696bcb467b7223d36ddb5070fe0a2"
+    },
+    {
+      "path": "native/usb-most-connection/src/usb_rules.rs",
+      "mode": "100644",
+      "bytes": 6013,
+      "sha256": "2efa2b7d7bb44b34137cec85788fe7a2391bc47aeef1c7ea0ad6687a231913a4"
+    },
+    {
+      "path": "native/usb-most-connection/src/usb_rules_tests.rs",
+      "mode": "100644",
+      "bytes": 5789,
+      "sha256": "2b733f010c92af913e206395d6b552b31d9bf6ff5747a30eb881905fb3ef2f06"
+    },
+    {
+      "path": "native/usb-most-connection/src/vault.rs",
+      "mode": "100644",
+      "bytes": 7167,
+      "sha256": "327aefa618c328b9f52c2d168115cdb6e2a0d3686a31e3bbc91074aac6824033"
+    },
+    {
+      "path": "native/usb-most-desktop/Cargo.toml",
+      "mode": "100644",
+      "bytes": 1799,
+      "sha256": "a4322bb04c6191fd1f4383346752d154c1a0eee565533ac1e0b517b477aa7688"
+    },
+    {
+      "path": "native/usb-most-desktop/build.rs",
+      "mode": "100644",
+      "bytes": 2792,
+      "sha256": "98de21b289009d5cfddf91f7e73fa7a3bb091fa23164101a6ffbf879cdff823d"
+    },
+    {
+      "path": "native/usb-most-desktop/examples/managed_linux_lab.rs",
+      "mode": "100644",
+      "bytes": 6709,
+      "sha256": "19216787ea8b72fe045aad19ec2f84ad213b7d6fcb38e31ddd9f577297ce6c77"
+    },
+    {
+      "path": "native/usb-most-desktop/src/admin.rs",
+      "mode": "100644",
+      "bytes": 11308,
+      "sha256": "b5f92a59502651cbeb451826879f0798986c4081031fc8089f3287ea51d71217"
+    },
+    {
+      "path": "native/usb-most-desktop/src/deployment.rs",
+      "mode": "100644",
+      "bytes": 14591,
+      "sha256": "4893055df31321e2c2cca23d259494f5ffe220a1a5ccd2f5208271e3863bac8d"
+    },
+    {
+      "path": "native/usb-most-desktop/src/deployment/tests.rs",
+      "mode": "100644",
+      "bytes": 14725,
+      "sha256": "8cf59192e79ffb52ab45b3c0419e86cfb180cc4103298c9d5503ef8f7a9ac741"
+    },
+    {
+      "path": "native/usb-most-desktop/src/deployment/windows.rs",
+      "mode": "100644",
+      "bytes": 3207,
+      "sha256": "d62a01fd3f2830c4e4ab9d6230622613532cae2767ec4e590a61bea0887018c9"
+    },
+    {
+      "path": "native/usb-most-desktop/src/deployment/windows/tests.rs",
+      "mode": "100644",
+      "bytes": 6154,
+      "sha256": "23a466030599ef7da8654a5fa03ceedeab08aeaf34d1cd7e27113be318a9c14e"
+    },
+    {
+      "path": "native/usb-most-desktop/src/linux.rs",
+      "mode": "100644",
+      "bytes": 10882,
+      "sha256": "2e882086cdc5c202f37489b3fa294ba80cfabdbd61ebfcec4b5764372a2d5995"
+    },
+    {
+      "path": "native/usb-most-desktop/src/local_ui.rs",
+      "mode": "100644",
+      "bytes": 13865,
+      "sha256": "423b0c648dc3bd37a16c5ec92529ab00ded2c16120d4cfd291f492504f7e9b80"
+    },
+    {
+      "path": "native/usb-most-desktop/src/local_ui/http_tests.rs",
+      "mode": "100644",
+      "bytes": 7493,
+      "sha256": "b37683261908fb2a7341c91766ce9061b241fd0f241f30893fb930927012cdcc"
+    },
+    {
+      "path": "native/usb-most-desktop/src/local_ui/index.html",
+      "mode": "100644",
+      "bytes": 3740,
+      "sha256": "c1be9a9adeb06971fdd6ec9b5cdacbbf75a8e3293c5b887692e61dcc82ba1a61"
+    },
+    {
+      "path": "native/usb-most-desktop/src/local_ui/linux_launcher.rs",
+      "mode": "100644",
+      "bytes": 6390,
+      "sha256": "3cd9180a24e8a2074dcf22cb46e220174af08641588c22af9da9ed5718d01d54"
+    },
+    {
+      "path": "native/usb-most-desktop/src/local_ui/listing.rs",
+      "mode": "100644",
+      "bytes": 2680,
+      "sha256": "0937d094b6c9374076618912e14ba6fe160acbac1aab6c545b0f546ef6ca191a"
+    },
+    {
+      "path": "native/usb-most-desktop/src/local_ui/rustore.json",
+      "mode": "100644",
+      "bytes": 13,
+      "sha256": "847a0ba8b95b208b690427363ed5a1f184c5fb9887abbfd6111c25e0b330b2b4"
+    },
+    {
+      "path": "native/usb-most-desktop/src/local_ui/setup.js",
+      "mode": "100644",
+      "bytes": 6781,
+      "sha256": "b44481e8b015c6566cae488a35ea3ac3071e2c2bf88e183633b632dca43df3c3"
+    },
+    {
+      "path": "native/usb-most-desktop/src/local_ui/style.css",
+      "mode": "100644",
+      "bytes": 2093,
+      "sha256": "83b68c4a8118dcbc4e8ba74cad9f3a2377d22685757a16bd9cb8522359373b82"
+    },
+    {
+      "path": "native/usb-most-desktop/src/main.rs",
+      "mode": "100644",
+      "bytes": 18347,
+      "sha256": "3a6e55f6112a80af4178eeed050aa321a7819a98c4d8e923ccf9dc73c3de40f6"
+    },
+    {
+      "path": "native/usb-most-desktop/src/managed_runtime.rs",
+      "mode": "100644",
+      "bytes": 23069,
+      "sha256": "6ff3c6c96d502ab6cbe0c48070d44c0ea9c754c72611004136c2f8a6a0f0944d"
+    },
+    {
+      "path": "native/usb-most-desktop/src/managed_runtime/transport_tests.rs",
+      "mode": "100644",
+      "bytes": 4376,
+      "sha256": "ea474671348db873c01a7336c1bd697fba59fa971011a5a39894387bb2693f24"
+    },
+    {
+      "path": "native/usb-most-desktop/src/network.rs",
+      "mode": "100644",
+      "bytes": 4545,
+      "sha256": "eeb0ba4da6e8441b3a86ac5c80f1f788244d2d149cb910f221771e77390513c6"
+    },
+    {
+      "path": "native/usb-most-desktop/src/setup.rs",
+      "mode": "100644",
+      "bytes": 10844,
+      "sha256": "1ba414e2faa851f89a691632d9d808a9b8595a6f6240b914284956440d661ee8"
+    },
+    {
+      "path": "native/usb-most-desktop/src/setup_windows.rs",
+      "mode": "100644",
+      "bytes": 6755,
+      "sha256": "9209bfccfbb9ad08defdca72f0b1809af465526d2e7744b59493b52365ff25a0"
+    },
+    {
+      "path": "native/usb-most-desktop/src/windows.rs",
+      "mode": "100644",
+      "bytes": 7771,
+      "sha256": "9e63715acc13a50aabb4717b0c91d1f8d73eb39543dbaa125a4754d0d2b7bb03"
+    },
+    {
+      "path": "native/usb-most-desktop/src/windows/tests.rs",
+      "mode": "100644",
+      "bytes": 15549,
+      "sha256": "2567dfc996cb9f8255715ef70c3a9f3c47d5af170985b7488769e83048a5caf6"
+    },
+    {
+      "path": "native/usb-most-desktop/src/windows_stack.rs",
+      "mode": "100644",
+      "bytes": 3084,
+      "sha256": "8261b7f55866298b3811b1bc6a16c28a707946d93b2759143d1a124af8f71ab0"
+    },
+    {
+      "path": "native/usb-most-platform/Cargo.toml",
+      "mode": "100644",
+      "bytes": 1824,
+      "sha256": "d97bdeb1b2bddbe0738e8ad1526ee36b4adbd32bedddb3f1e5f8c5790b45e74c"
+    },
+    {
+      "path": "native/usb-most-platform/SAFETY.txt",
+      "mode": "100644",
+      "bytes": 7098,
+      "sha256": "fd3a2d84d4c7f4c511b9348cbadcdd4f5ba77cf74d615e72171cf567f1f1c69c"
+    },
+    {
+      "path": "native/usb-most-platform/examples/eject_linux_lab.rs",
+      "mode": "100644",
+      "bytes": 5201,
+      "sha256": "d7d1c9779f891feba4bff83c45859a29d205b314b3d6b07bb5e485898d95d88e"
+    },
+    {
+      "path": "native/usb-most-platform/src/import_identity.rs",
+      "mode": "100644",
+      "bytes": 4258,
+      "sha256": "bbeaae2edb154e040b75b87338c86ae742af8494b92941df3ffa0d36c79a14a8"
+    },
+    {
+      "path": "native/usb-most-platform/src/lib.rs",
+      "mode": "100644",
+      "bytes": 281,
+      "sha256": "f455975661f7ef2d092d91da7de2ea6a437e8918a8a20705d412acc92b09acd5"
+    },
+    {
+      "path": "native/usb-most-platform/src/linux.rs",
+      "mode": "100644",
+      "bytes": 664,
+      "sha256": "0b9c9929f16f798ba8d21de75192afbe33769befe5d0ea42c6d0a4e5778ee754"
+    },
+    {
+      "path": "native/usb-most-platform/src/linux/eject.rs",
+      "mode": "100644",
+      "bytes": 10906,
+      "sha256": "ad13a52bf3a3f587eaa1a501aa82cfd16a384f794cc80b7b169299a6d6b156ae"
+    },
+    {
+      "path": "native/usb-most-platform/src/linux/owned_usb.rs",
+      "mode": "100644",
+      "bytes": 17321,
+      "sha256": "09f4981bc823871108f0d8e18954242276f33d9542631454b9bdfc1d4f25fd31"
+    },
+    {
+      "path": "native/usb-most-platform/src/linux/udisks.rs",
+      "mode": "100644",
+      "bytes": 14765,
+      "sha256": "60f69d219f8b356f3c21b989439a68aa52a39436fdfb9039a15a562c1099ed08"
+    },
+    {
+      "path": "native/usb-most-platform/src/linux/udisks/tests.rs",
+      "mode": "100644",
+      "bytes": 25380,
+      "sha256": "9a8ea6d6902c6e261d134e76dfbff70b6c1fd58249a2e86a13c99afcb8b6c877"
+    },
+    {
+      "path": "native/usb-most-platform/src/windows.rs",
+      "mode": "100644",
+      "bytes": 15088,
+      "sha256": "cf1ed26db10fd33d4de5b54d9306b831df0938d46adfd8fd4d955232f70de7fd"
+    },
+    {
+      "path": "native/usb-most-platform/src/windows/driver.rs",
+      "mode": "100644",
+      "bytes": 20652,
+      "sha256": "ca53a3545b1f47dcfec968eea9601c7489c7a0db0693ecee005f2957a0091d12"
+    },
+    {
+      "path": "native/usb-most-platform/src/windows/driver/tests.rs",
+      "mode": "100644",
+      "bytes": 3990,
+      "sha256": "86fb46c14b9cb751d896d4a88a47ca3bcc9e8c38042dbf54be2eb8aeca7029e4"
+    },
+    {
+      "path": "native/usb-most-platform/src/windows/eject.rs",
+      "mode": "100644",
+      "bytes": 18180,
+      "sha256": "634c783545fcd958ff5acda2c5c9302dbf06f861e4e054c033d27d1625ee9ca5"
+    },
+    {
+      "path": "native/usb-most-platform/src/windows/firewall.rs",
+      "mode": "100644",
+      "bytes": 9331,
+      "sha256": "c6eba052dfeea4cfc35365e0fcbb0c0bdf8893033e7466afe00b79c348aec8ed"
+    },
+    {
+      "path": "native/usb-most-platform/src/windows/service.rs",
+      "mode": "100644",
+      "bytes": 6534,
+      "sha256": "7719e5b95817847d777b001ea823cd860ca85d5af7853177ff830ec0e09fe234"
+    },
+    {
+      "path": "native/usb-most-platform/src/windows/service/install.rs",
+      "mode": "100644",
+      "bytes": 15769,
+      "sha256": "524f3260d07a56b8cf9cfbcb7a7fde157ecf0c426ecb31bd730ad74dec615bd9"
+    },
+    {
+      "path": "native/usb-most-platform/src/windows/shell_ui.rs",
+      "mode": "100644",
+      "bytes": 21736,
+      "sha256": "bdceaa757dcb06f4eb35d10b43a8ae476e0d42e6d56919f3fcbba69f81d0d5ef"
+    },
+    {
+      "path": "native/usb-most-protocol/Cargo.toml",
+      "mode": "100644",
+      "bytes": 207,
+      "sha256": "72a3c08e8daa913ec6dd8d764350d7f558548a46649b01c0849e3a4818b32a35"
+    },
+    {
+      "path": "native/usb-most-protocol/src/agent.rs",
+      "mode": "100644",
+      "bytes": 27808,
+      "sha256": "5416e4edf8b9996669151cbc59fab4e486f3fcfbfc42884ca2d4141ecda730b8"
+    },
+    {
+      "path": "native/usb-most-protocol/src/agent/tests.rs",
+      "mode": "100644",
+      "bytes": 32323,
+      "sha256": "e50227fdcee070ac2cd23c6bee8818e05c4957119bdf8484ce5f750e69030ff3"
+    },
+    {
+      "path": "native/usb-most-protocol/src/eject.rs",
+      "mode": "100644",
+      "bytes": 14147,
+      "sha256": "494121fc8c70b4f6a628da20de09ca8dd2800ff2f41c6c642ab4b1403d0c259c"
+    },
+    {
+      "path": "native/usb-most-protocol/src/lib.rs",
+      "mode": "100644",
+      "bytes": 165,
+      "sha256": "cb8c9275e60bf6708192d85c61a11a22d090ea1923d023b36209a013c1bed417"
+    },
+    {
+      "path": "native/usb-most-protocol/src/managed.rs",
+      "mode": "100644",
+      "bytes": 12804,
+      "sha256": "48b84c2f8fb0707312d30c89254b990cb6a5d9eb339e85ec04285bf51e29cbb5"
+    },
+    {
+      "path": "native/usb-most-protocol/src/managed/book.rs",
+      "mode": "100644",
+      "bytes": 9479,
+      "sha256": "e32e7bc95338128ba5ae994c11369ede5fa6a195e32d5f1ebd615c3c63c571e7"
+    },
+    {
+      "path": "native/usb-most-protocol/src/managed/publisher.rs",
+      "mode": "100644",
+      "bytes": 17475,
+      "sha256": "01c75b3a71adffd5d7d6af8285db048c383f2c772fb94d9a8281a6aafd6603c6"
+    },
+    {
+      "path": "native/usb-most-protocol/src/wire.rs",
+      "mode": "100644",
+      "bytes": 5087,
+      "sha256": "6778329f5592e390e2799cccd302fb8b94cfb08136ec39bd94f1f5482d882cf4"
+    },
+    {
+      "path": "native/usb-most-protocol/tests/storage_fixture.rs",
+      "mode": "100644",
+      "bytes": 147,
+      "sha256": "606e8bb29485cf96b752f0ce4b259eb63fdcb849c7a0f7a203c1f6cdeea84323"
+    },
+    {
+      "path": "native/usb-most/Cargo.toml",
+      "mode": "100644",
+      "bytes": 481,
+      "sha256": "7f1235a421a726f1a68790e497a8f782f843a3ca327c81f7ba99a3f034256d97"
+    },
+    {
+      "path": "native/usb-most/SAFETY.txt",
+      "mode": "100644",
+      "bytes": 12684,
+      "sha256": "535ca86de2263c54cbabe03a3f63d19280bcfd0eaf5323eaff506b5270f3afe6"
+    },
+    {
+      "path": "native/usb-most/examples/diagnostics.rs",
+      "mode": "100644",
+      "bytes": 7368,
+      "sha256": "a521f4d61816902746c8097e5625d4d59a64b38b2065a7dea09443abf6e7a16d"
+    },
+    {
+      "path": "native/usb-most/src/agent.rs",
+      "mode": "100644",
+      "bytes": 432,
+      "sha256": "10511f577f772aea2356b8be590c78c0fa3e80d50ef30000d3a03b9c5880f75f"
+    },
+    {
+      "path": "native/usb-most/src/connection_jni.rs",
+      "mode": "100644",
+      "bytes": 7309,
+      "sha256": "d1f991924c1c7b92c0984177bc08c543276667f9a3a8c464ab2b2a8f306f558f"
+    },
+    {
+      "path": "native/usb-most/src/connector.rs",
+      "mode": "100644",
+      "bytes": 4411,
+      "sha256": "2d5f7fbd094ef937f0f8cd3b6e63137be0ba72fa8430b9f385d266cb5b647b36"
+    },
+    {
+      "path": "native/usb-most/src/diagnostics.rs",
+      "mode": "100644",
+      "bytes": 5228,
+      "sha256": "8fbe584b279d631fb65fafb5c756408d843b1ddf4a038690f1532bdf9688c6ce"
+    },
+    {
+      "path": "native/usb-most/src/engine.rs",
+      "mode": "100644",
+      "bytes": 14192,
+      "sha256": "840b4ea72f71fcc8ac374e9486d0a20c3b64c6bd19e18c8cf2fb5f01ca4673ee"
+    },
+    {
+      "path": "native/usb-most/src/engine/tests.rs",
+      "mode": "100644",
+      "bytes": 19456,
+      "sha256": "1de7ea7ef3d73ea6f582573fb40abe8071b8e4668bd894f56e67112745c4f88f"
+    },
+    {
+      "path": "native/usb-most/src/interfaces.rs",
+      "mode": "100644",
+      "bytes": 3037,
+      "sha256": "f8c79d1ca306290ea82abb86bf781c8952f1b2c06b054edfa5da9a57caa3e77a"
+    },
+    {
+      "path": "native/usb-most/src/jni_api.rs",
+      "mode": "100644",
+      "bytes": 10155,
+      "sha256": "c11d37bfe6fdb568d9b501273a33d5370b54acd40166a9fd042edf5741d54cb6"
+    },
+    {
+      "path": "native/usb-most/src/lib.rs",
+      "mode": "100644",
+      "bytes": 451,
+      "sha256": "f537a41ceb77dd8f8e334b88983df9520c4d2dfd836aca97cfe950d1042bb19c"
+    },
+    {
+      "path": "native/usb-most/src/linux.rs",
+      "mode": "100644",
+      "bytes": 5884,
+      "sha256": "6bc103747a11a7553a3f68050e1a24931722f41b99306896b1fc00523feaeae4"
+    },
+    {
+      "path": "native/usb-most/src/managed_jni.rs",
+      "mode": "100644",
+      "bytes": 3112,
+      "sha256": "28e101605833a93fed469bc0bd863ad7e58af4c771d4ad058b8cfdb31899e91c"
+    },
+    {
+      "path": "native/usb-most/src/policy.rs",
+      "mode": "100644",
+      "bytes": 7729,
+      "sha256": "ffc7a9ee92796be187185ae305fde1527264e74b48fb1c3734159722f049bcce"
+    },
+    {
+      "path": "native/usb-most/src/policy/tests.rs",
+      "mode": "100644",
+      "bytes": 7496,
+      "sha256": "03b665ac2a01e403ef4b54af8599abcfa121caecb8cb993f552fe7c1b102212c"
+    },
+    {
+      "path": "native/usb-most/src/policy_jni.rs",
+      "mode": "100644",
+      "bytes": 5926,
+      "sha256": "bdbd9d05c4b5eb66ffa74ad2942af49513cb6e7878f827f8aec4bf2358cdc39c"
+    },
+    {
+      "path": "native/usb-most/src/registry.rs",
+      "mode": "100644",
+      "bytes": 2381,
+      "sha256": "ec6e94280b3ba7f46bfc976f5253465a2b633ef7e530776f0d78344d85ddc938"
+    },
+    {
+      "path": "native/usb-most/src/wan.rs",
+      "mode": "100644",
+      "bytes": 11970,
+      "sha256": "83214b3d1d8554259271603e0f73408788a4abe909df9babf5d39d756c2d333c"
+    },
+    {
+      "path": "native/usb-most/src/wan/lab.rs",
+      "mode": "100644",
+      "bytes": 5207,
+      "sha256": "b1d132ade419463d956ede2b2565421069993728b5f9505f06c858977d7d5053"
+    },
+    {
+      "path": "native/usb-most/src/wan/network_lab.rs",
+      "mode": "100644",
+      "bytes": 13663,
+      "sha256": "c925b7d7ed387fa90035e54d363aac6f122b6a56491e008c2c204b43cbcb6a88"
+    },
+    {
+      "path": "native/usb-most/src/wan/sim.rs",
+      "mode": "100644",
+      "bytes": 2769,
+      "sha256": "0274881f87fb3fc4337cb6073f084be4ba6262ecf7793ca3fb3a8afeff472083"
+    },
+    {
+      "path": "native/usb-most/src/wan/tests.rs",
+      "mode": "100644",
+      "bytes": 4100,
+      "sha256": "24b3ea6557541e3f2af49e838c0dc9d71805a088b5bb5a3f3f694bd8a55e28bb"
+    },
+    {
+      "path": "rust-toolchain.toml",
+      "mode": "100644",
+      "bytes": 244,
+      "sha256": "99ce36c83f5c0f5e3c950ff17e3b494bbb5184656ce0b7888942a41a469558cc"
+    },
+    {
+      "path": "server/usb-most-agent.service",
+      "mode": "100644",
+      "bytes": 531,
+      "sha256": "3ab938b60631d6d76ebbdbd6f6aa7ff86d306b018666d216e04b77b251ff61d6"
+    },
+    {
+      "path": "server/usb-most-desktop.service",
+      "mode": "100644",
+      "bytes": 785,
+      "sha256": "ea4ad4b0bcdb3bce55574217a8aedfcee711295772ed5721e55902a8de53b36f"
+    },
+    {
+      "path": "server/windows-driver-lock-x86_64.json",
+      "mode": "100644",
+      "bytes": 1043,
+      "sha256": "6ba2833aae2553416b599d75e4ef673fedd0240a8215174382b227643348f664"
+    },
+    {
+      "path": "server/windows-receiver-lock-x86_64.json",
+      "mode": "100644",
+      "bytes": 597,
+      "sha256": "0200b6770c0c88f1e00418e70b97bf34e0a7870ea7d6df1cff2a60be707d05e2"
+    },
+    {
+      "path": "settings.gradle",
+      "mode": "100644",
+      "bytes": 15,
+      "sha256": "4b919cfffaed71637d1ee9c89f21f4247273e14eb8433afdcd0672eba906b41f"
+    },
+    {
+      "path": "tests/android-window-fixture/AndroidManifest.xml",
+      "mode": "100644",
+      "bytes": 490,
+      "sha256": "41fb5af58dbd5875762fed0723f631c0340705ae3a8b5908c95a4a5c4887f37b"
+    },
+    {
+      "path": "tests/android-window-fixture/src/org/usbmost/lab/recreate/Runner.java",
+      "mode": "100644",
+      "bytes": 4211,
+      "sha256": "9ed73fde5dcdf0d3c342d8fe21d812aca54f5024495ef41cf353e8f75686ec66"
+    },
+    {
+      "path": "tests/android-window-fixture/src/org/usbmost/lab/recreate/Screen.java",
+      "mode": "100644",
+      "bytes": 1428,
+      "sha256": "b5f33fc4fb52fa40d8ef5222846822470dc4fdb181eff435cf8affbc38e5a9d1"
+    },
+    {
+      "path": "tests/check-rust-apk.py",
+      "mode": "100644",
+      "bytes": 6764,
+      "sha256": "3358edf2d46247f1351b41ff402662ed2073b69bb255d36e345a0054a9f9b4c0"
+    },
+    {
+      "path": "tests/fixtures/managed_usb.rs",
+      "mode": "100644",
+      "bytes": 13203,
+      "sha256": "152e12ecb449e9a065bc246c4317c69c5be0dc2fe2f861ed7ffc1d812c8515fd"
+    },
+    {
+      "path": "tests/fixtures/usb_ccid.rs",
+      "mode": "100644",
+      "bytes": 13451,
+      "sha256": "02eac497aba0e4dcbd5a62db4ffb204061b1ccbe6a6bd5398fc9c59cbf4413e2"
+    },
+    {
+      "path": "tests/fixtures/usb_storage.rs",
+      "mode": "100644",
+      "bytes": 23865,
+      "sha256": "a4c6995c7df63325cadf1d6ad8f39ccf4ce3093e78568d6296e813a775bd0a60"
+    },
+    {
+      "path": "tests/fixtures/write_fence.rs",
+      "mode": "100644",
+      "bytes": 5275,
+      "sha256": "950337ffee85adad591a347bcccb531b10b4dd36a2ac424752477919019dbe1b"
+    },
+    {
+      "path": "tests/java-isolated.sh",
+      "mode": "100644",
+      "bytes": 364,
+      "sha256": "8e5aa4fdba1bfe509b2ac0b59e1347786a177052e3f24f37f5eb5e3fbb6514e2"
+    },
+    {
+      "path": "tests/java/ComputersJniRegressionTests.java",
+      "mode": "100644",
+      "bytes": 6213,
+      "sha256": "082ded563cf0d7eabb9c01def362192d7e0429a8dcaf4af9c76ec07b1ad3e7c4"
+    },
+    {
+      "path": "tests/java/ConnectionJniRegressionTests.java",
+      "mode": "100644",
+      "bytes": 5899,
+      "sha256": "f22fcd81f7d978a070fb2110dfedc06ddb38f66a050c8aa693f60f0aca15b543"
+    },
+    {
+      "path": "tests/java/ConnectionObservationTests.java",
+      "mode": "100644",
+      "bytes": 2654,
+      "sha256": "f0d7778a8c8adffc3a9f5b61a337952b5b1b5251d9fc8f5ab09157b546681176"
+    },
+    {
+      "path": "tests/java/DiagnosticBackendTests.java",
+      "mode": "100644",
+      "bytes": 15821,
+      "sha256": "af2391229050cd682ffd0eaaf67b62263082046cc32ae61338913dfa91392825"
+    },
+    {
+      "path": "tests/java/DiagnosticJniRegressionTests.java",
+      "mode": "100644",
+      "bytes": 3214,
+      "sha256": "53e793d420cb51fb11c0f669f27de7d09294686a2caede6a65a0ce89e29a30ce"
+    },
+    {
+      "path": "tests/java/DiagnosticProtocolTests.java",
+      "mode": "100644",
+      "bytes": 5061,
+      "sha256": "06001ead1624c79723b14a38e54877debddbfd267620c642869e5d5a15d0f5df"
+    },
+    {
+      "path": "tests/java/ManagedServerRegressionTests.java",
+      "mode": "100644",
+      "bytes": 17375,
+      "sha256": "ad0df13e796b9f635688f9c25b2b109d64a18c338b12a3baec98160416993cfc"
+    },
+    {
+      "path": "tests/java/ManagementJniRegressionTests.java",
+      "mode": "100644",
+      "bytes": 5819,
+      "sha256": "8dc9f08c91b66dcf75b9d9d384cdba68c6c20b4f79f5b91cf8db4710d7769959"
+    },
+    {
+      "path": "tests/java/NativeJniRegressionTests.java",
+      "mode": "100644",
+      "bytes": 4405,
+      "sha256": "1b0a21ce53779bf559ebc8727c0ef729bf5aee3ba27cbe9ecaaedebfa1ad7faa"
+    },
+    {
+      "path": "tests/java/PolicyJniRegressionTests.java",
+      "mode": "100644",
+      "bytes": 12502,
+      "sha256": "c74e66d6bb8babe00ab9ea02daa592a76306044f43630dbab9b0fdcc52cec7ef"
+    },
+    {
+      "path": "tests/java/RegressionTests.java",
+      "mode": "100644",
+      "bytes": 19037,
+      "sha256": "8f1d418a80afd9e725f57c35f232376b917e49144b6bf2e5275fecd42ca55842"
+    },
+    {
+      "path": "tests/java/RenderedQrRegressionTests.java",
+      "mode": "100644",
+      "bytes": 1788,
+      "sha256": "ebbab5bf34071f53ae3010a765a95841597d51bf7a6f41e1c2d6e847e00667a3"
+    },
+    {
+      "path": "tests/java/WanProtocolTests.java",
+      "mode": "100644",
+      "bytes": 4999,
+      "sha256": "76a69789c1e974da3bd6121fa12d0e927a872fb172bf8ef15f7edd51c5012276"
+    },
+    {
+      "path": "tests/native/test_engine.c",
+      "mode": "100644",
+      "bytes": 4837,
+      "sha256": "fd312ad6e738ca430f3899b68245722ed09c58e4596d06a05f43b2a2eaaaf548"
+    },
+    {
+      "path": "tests/native/trace_engine.c",
+      "mode": "100644",
+      "bytes": 1002,
+      "sha256": "fc83155a866ba324445e37feeab9b801d7705736ff692dd31f706d182199e8c1"
+    },
+    {
+      "path": "tests/reference/README.txt",
+      "mode": "100644",
+      "bytes": 236,
+      "sha256": "ef4aaa4e0e1f7dc8f9d206cdc46905745fedcc3fe084ac173970fe4e6775c7ba"
+    },
+    {
+      "path": "tests/reference/urb_engine.c",
+      "mode": "100644",
+      "bytes": 5282,
+      "sha256": "33a3e455499c5b96262bdf376916c3777fc932d9d2354f71c6a2784aca2c31e8"
+    },
+    {
+      "path": "tests/reference/urb_engine.h",
+      "mode": "100644",
+      "bytes": 842,
+      "sha256": "11591d733eee04e4bdeb6ea60f844896f8bcd6295c44aece0f6b2fadc761b0f4"
+    },
+    {
+      "path": "tests/run-diagnostics.sh",
+      "mode": "100644",
+      "bytes": 1074,
+      "sha256": "5cdbcbc5eb00fca3928777a8a28729fabb4dc4d27c5b9bb85af95e28ff93ab80"
+    },
+    {
+      "path": "tests/run-java.sh",
+      "mode": "100644",
+      "bytes": 668,
+      "sha256": "365c48c67ccc4a98e59621c81660db4fb136d7d8fdd34902a86a03dd31145b95"
+    },
+    {
+      "path": "tests/run-jni.sh",
+      "mode": "100755",
+      "bytes": 1932,
+      "sha256": "0b565f20974af3f6bf4156698bfcc4cf5cbead21e8b1a8080ded097ee314475a"
+    },
+    {
+      "path": "tests/run-native.sh",
+      "mode": "100644",
+      "bytes": 289,
+      "sha256": "0f6e87a9e6165138cb733cceec537657c7bd9bf983c69689f5dea591c468b45a"
+    },
+    {
+      "path": "tests/run-rust.sh",
+      "mode": "100755",
+      "bytes": 783,
+      "sha256": "ab10d8133ebe7acbf889ebdb437cb91b0c44d3756072b61e89fb9a58d3c3fa35"
+    },
+    {
+      "path": "tests/test_android_active_soak.py",
+      "mode": "100644",
+      "bytes": 4119,
+      "sha256": "a4afb6f374d94ea26074c06a026dac437585cc867c1728e8d5afca78acaa27ce"
+    },
+    {
+      "path": "tests/test_android_idle_soak.py",
+      "mode": "100644",
+      "bytes": 1850,
+      "sha256": "87f9d568260eac7ad80847d3828129ca5d8f42aace9e877a2313a0d92f54f884"
+    },
+    {
+      "path": "tests/test_bundle_signing.py",
+      "mode": "100644",
+      "bytes": 5412,
+      "sha256": "ab7ecba585f5e93b1432733d422bcf3a676cfa6256bcc276d3fe44da922f1249"
+    },
+    {
+      "path": "tests/test_lab_tcp_delay.py",
+      "mode": "100644",
+      "bytes": 5144,
+      "sha256": "4bcfa8a56a2c0dcbee1d5b15fe49aca3e164b3a009ab51f2288232c0bba8b4a7"
+    },
+    {
+      "path": "tests/test_lab_tcp_fault.py",
+      "mode": "100644",
+      "bytes": 3091,
+      "sha256": "3f1ac1ad78f0439a98b2ba065ec391eb04da903585097836a2e93f36fa4a8ca1"
+    },
+    {
+      "path": "tests/test_linux_compatibility_evidence.py",
+      "mode": "100644",
+      "bytes": 2021,
+      "sha256": "5ba0a63433db280f168b1db1a963e044ab66ea9a9fc7d86317782510c1339632"
+    },
+    {
+      "path": "tests/test_local_network_safety.py",
+      "mode": "100644",
+      "bytes": 5727,
+      "sha256": "fdcc74302ae4b482304460f1000f7f13fc5db69d8bae193546b2c45c7e988baf"
+    },
+    {
+      "path": "tests/test_missing_driver_observer.py",
+      "mode": "100644",
+      "bytes": 3398,
+      "sha256": "d7dc798b2422a75232021bb0fa3effc202fe744bc6693064c6443297c0fe301d"
+    },
+    {
+      "path": "tests/test_mixed_usb_safety.py",
+      "mode": "100644",
+      "bytes": 7603,
+      "sha256": "531c25b7b3439ad6af2d6c363d9ef78c6d4209e607a25a5b7f71e062c5d8cd0a"
+    },
+    {
+      "path": "tests/test_mount_safety.py",
+      "mode": "100644",
+      "bytes": 3612,
+      "sha256": "5711853beb2e9fc23e7873c1a43e0cac4d2a7f9e27ed4a97afff26730b15f514"
+    },
+    {
+      "path": "tests/test_preparation_diagnosis_safety.py",
+      "mode": "100644",
+      "bytes": 6747,
+      "sha256": "80f4ed565935cb673d22d21d594e41790a34e54090bda2eee7613186b7b3ab39"
+    },
+    {
+      "path": "tests/test_profile_migration_safety.py",
+      "mode": "100644",
+      "bytes": 5415,
+      "sha256": "ba11d328ee97780c39a66a7e5b88700651b372b08fe55a1211add012bc210e92"
+    },
+    {
+      "path": "tests/test_receiver_artifact.py",
+      "mode": "100644",
+      "bytes": 5322,
+      "sha256": "4c6437c378b339e7947ca701fe2378532023af7f95744f7bd78cbb04dd974421"
+    },
+    {
+      "path": "tests/test_receiver_upgrade_safety.py",
+      "mode": "100644",
+      "bytes": 3725,
+      "sha256": "a33f9da0959dd98179086c91796b54cf28065a1d8a8d6e2830b64af62726dcd3"
+    },
+    {
+      "path": "tests/usb-fixtures/README.txt",
+      "mode": "100644",
+      "bytes": 568,
+      "sha256": "26eccb892c0637cfcac891016a0c213c3891e811bc79bd5960a388f85f2298ba"
+    },
+    {
+      "path": "tests/usb-fixtures/rutoken-lite-descriptors.bin",
+      "mode": "100644",
+      "bytes": 111,
+      "sha256": "860eae57561bfb6f2c81b22c2eeb02846f1a5fd136b484532fb89fd356144b10"
+    },
+    {
+      "path": "tests/windows/driver-layout.cpp",
+      "mode": "100644",
+      "bytes": 1408,
+      "sha256": "a0e834a1f1e5c45c0e05e2d4d4491c3a11f733b344aba2bd1dcc76d814f5116c"
+    },
+    {
+      "path": "third_party/Apache-2.0.txt",
+      "mode": "100644",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "third_party/material-icons-usb.svg",
+      "mode": "100644",
+      "bytes": 422,
+      "sha256": "3a3cf1ee41921a75503d1507896a35c160a8cc94639277a0db6861b8d17d2806"
+    },
+    {
+      "path": "third_party/material-icons-usb.txt",
+      "mode": "100644",
+      "bytes": 575,
+      "sha256": "0fddc7df8470ca2c18fb3420a63a624c83f5ed63d4bfc8d61d48bd928336a48b"
+    },
+    {
+      "path": "third_party/russh/.cargo_vcs_info.json",
+      "mode": "100644",
+      "bytes": 99,
+      "sha256": "87861dce8b2b9f101f5c70d522f08cbe4aa373a0a173ded65a67c24245c82022"
+    },
+    {
+      "path": "third_party/russh/Cargo.toml",
+      "mode": "100644",
+      "bytes": 8042,
+      "sha256": "516880b0d9a7a5dac46d019b6dc24ccfa843d0468df0143ee52e114def045418"
+    },
+    {
+      "path": "third_party/russh/Cargo.toml.orig",
+      "mode": "100644",
+      "bytes": 4226,
+      "sha256": "f58b5025ebd8fdffeef852d72a3b2ad080a61b249b71c59049522f6bf5a87a92"
+    },
+    {
+      "path": "third_party/russh/LICENSE-APACHE",
+      "mode": "100644",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "third_party/russh/README.md",
+      "mode": "100644",
+      "bytes": 41054,
+      "sha256": "a4b0139e1acf7e69677a41d1536ba2efbf67913f630d2eebee8202b01ed123da"
+    },
+    {
+      "path": "third_party/russh/USB-MOST-UPSTREAM.txt",
+      "mode": "100644",
+      "bytes": 1540,
+      "sha256": "3ca42c4df746dca7db1da89d838f13b27ee83924892704cdb6b8854151a303ee"
+    },
+    {
+      "path": "third_party/russh/benches/ciphers.rs",
+      "mode": "100644",
+      "bytes": 208,
+      "sha256": "8eed524c8e6d71b62ef484a6f75ea7695a5d2bb0d1824e430f8793d41e7d0b6f"
+    },
+    {
+      "path": "third_party/russh/examples/client_exec_interactive.rs",
+      "mode": "100644",
+      "bytes": 6981,
+      "sha256": "0c4bbd108da50165ee5594f17f6bcaf13a5cc712b65d2b56567ac0bb5ffc0f38"
+    },
+    {
+      "path": "third_party/russh/examples/client_exec_simple.rs",
+      "mode": "100644",
+      "bytes": 5536,
+      "sha256": "e13d8f4cc47e8beea5c159dd05b8b04d61cfcf18514ce63540ed0e808e430d3a"
+    },
+    {
+      "path": "third_party/russh/examples/client_open_direct_tcpip.rs",
+      "mode": "100644",
+      "bytes": 6488,
+      "sha256": "c36529b6fb22100793ae1d0a101f90a270751b7dcdaec96fc4a62b9c70e6595a"
+    },
+    {
+      "path": "third_party/russh/examples/echoserver.rs",
+      "mode": "100644",
+      "bytes": 4450,
+      "sha256": "c3a4205515be436a05dd6985b36d4521849861ab7afaccd5ee66efd14df2650d"
+    },
+    {
+      "path": "third_party/russh/examples/echoserver_certificates.rs",
+      "mode": "100644",
+      "bytes": 5265,
+      "sha256": "8ad8a45de45e5e827ebf9d346e1f004ff6fb6c86c7f6d82e5639c8e720223a44"
+    },
+    {
+      "path": "third_party/russh/examples/ratatui_app.rs",
+      "mode": "100644",
+      "bytes": 7990,
+      "sha256": "4674557265289d10a6cc944c5f80204a0f1919bf7da37d0256e3b8289f2bc423"
+    },
+    {
+      "path": "third_party/russh/examples/ratatui_shared_app.rs",
+      "mode": "100644",
+      "bytes": 7984,
+      "sha256": "bd2730bfac5871add71d06622b0d560bf3d76b1f8c1ba241b382ea8da1e1bf5e"
+    },
+    {
+      "path": "third_party/russh/examples/sftp_client.rs",
+      "mode": "100644",
+      "bytes": 3301,
+      "sha256": "14946af282d7ce2dce2b4132fc5e397ffcb5b042300f63ce81b016620c425b1c"
+    },
+    {
+      "path": "third_party/russh/examples/sftp_server.rs",
+      "mode": "100644",
+      "bytes": 5589,
+      "sha256": "abc04bf296d2aea7a5a11207b0b05f375cb78247096fbf6f092dfbf51c1bdb1a"
+    },
+    {
+      "path": "third_party/russh/examples/test.rs",
+      "mode": "100644",
+      "bytes": 2563,
+      "sha256": "88d0227e4f1da352802b72c5b6ba47519907ce5e896e16bbc002dc49761a1ebc"
+    },
+    {
+      "path": "third_party/russh/src/auth.rs",
+      "mode": "100644",
+      "bytes": 12772,
+      "sha256": "029f1c4c18e96ec748d63394b17dc9edec467a6e3477cb2ebc9d6821faeddb5d"
+    },
+    {
+      "path": "third_party/russh/src/cert.rs",
+      "mode": "100644",
+      "bytes": 2369,
+      "sha256": "dfaf38d70d54adb6f124e5adb8ac8fd0c63148dba291a2769788fd108375b35f"
+    },
+    {
+      "path": "third_party/russh/src/channels/channel_ref.rs",
+      "mode": "100644",
+      "bytes": 734,
+      "sha256": "8d6678c43cae06d095ae4cc242ae33ca1bf65efcdef9a5948d382cbffb101f06"
+    },
+    {
+      "path": "third_party/russh/src/channels/channel_stream.rs",
+      "mode": "100644",
+      "bytes": 1563,
+      "sha256": "990be739b58d69e18682575a66eee123d7055a228f71429b9fb1276ed5419b9a"
+    },
+    {
+      "path": "third_party/russh/src/channels/io/mod.rs",
+      "mode": "100644",
+      "bytes": 1214,
+      "sha256": "d058ed66458c0d5a7da50c270cb6c6a9c067c68cc328cc91a990d3ff39be8c1d"
+    },
+    {
+      "path": "third_party/russh/src/channels/io/rx.rs",
+      "mode": "100644",
+      "bytes": 2381,
+      "sha256": "6e241986dcb5f75fdf9788000fa7e9f6c0dc7500c7062fbb16cbcba0c6e0d166"
+    },
+    {
+      "path": "third_party/russh/src/channels/io/tx.rs",
+      "mode": "100644",
+      "bytes": 6186,
+      "sha256": "8c62048b5176ba6b330c5b74148a328172920ca950bfe6bddd1ba5b1a2d16767"
+    },
+    {
+      "path": "third_party/russh/src/channels/mod.rs",
+      "mode": "100644",
+      "bytes": 26024,
+      "sha256": "5285c0e988da125a9402cc72d080028860f50d22bf510b7e36e6b50013de6222"
+    },
+    {
+      "path": "third_party/russh/src/cipher/benchmark.rs",
+      "mode": "100644",
+      "bytes": 1886,
+      "sha256": "1632912cbd81f39684fdc57ef49f240677fd72c9176fa548eb9944b5d66ffeb9"
+    },
+    {
+      "path": "third_party/russh/src/cipher/block.rs",
+      "mode": "100644",
+      "bytes": 12015,
+      "sha256": "1abade93fa680ee57634f2287f6a3ad378aaf5557e21d12ed198a4620cfc33a4"
+    },
+    {
+      "path": "third_party/russh/src/cipher/cbc.rs",
+      "mode": "100644",
+      "bytes": 4592,
+      "sha256": "5349c7a22b070501fb237da568c8e4ccbf31268b393289355de17200cbac2523"
+    },
+    {
+      "path": "third_party/russh/src/cipher/chacha20poly1305.rs",
+      "mode": "100644",
+      "bytes": 4414,
+      "sha256": "461cf944d4d2fab4e0d494ad5bd0923e44795d34e03dc6556122f1a28ba4e47f"
+    },
+    {
+      "path": "third_party/russh/src/cipher/clear.rs",
+      "mode": "100644",
+      "bytes": 2751,
+      "sha256": "0d3c514e38f353f5134e939a0912e72a3e6e01cccf7f134a2304253b56a4e238"
+    },
+    {
+      "path": "third_party/russh/src/cipher/gcm.rs",
+      "mode": "100644",
+      "bytes": 5897,
+      "sha256": "f734b060f43e14aabfd8fc48891f57fab804d0f378374579b4bc3a5098a7b2e4"
+    },
+    {
+      "path": "third_party/russh/src/cipher/mod.rs",
+      "mode": "100644",
+      "bytes": 15110,
+      "sha256": "cc468cf341d61bda9ec676a61e48a20c8e314695ec3feb78f661737257d89075"
+    },
+    {
+      "path": "third_party/russh/src/client/encrypted.rs",
+      "mode": "100644",
+      "bytes": 73696,
+      "sha256": "4366e6b81d60f8a124b5865bd8f86b8dbf028d1b6639d12566a4184ff71eb2a7"
+    },
+    {
+      "path": "third_party/russh/src/client/kex.rs",
+      "mode": "100644",
+      "bytes": 20037,
+      "sha256": "d45643882cca6318d2d08f5c9296a618d67c7b8e8858967eff23169230c0f389"
+    },
+    {
+      "path": "third_party/russh/src/client/mod.rs",
+      "mode": "100644",
+      "bytes": 118355,
+      "sha256": "51e0de4f67ab2b48788f56b9297335833f679d87ddf1fd2bea8c2ef55a974cf3"
+    },
+    {
+      "path": "third_party/russh/src/client/session.rs",
+      "mode": "100644",
+      "bytes": 22492,
+      "sha256": "4380af480ec8efb82126b0fa970bee1506fc534f3ee923a6f33cc9a26038023c"
+    },
+    {
+      "path": "third_party/russh/src/client/test.rs",
+      "mode": "100644",
+      "bytes": 8068,
+      "sha256": "5f7be465dbd6449cec69ebf8e44cf8d65e04934c5942218c5ffc6124eff3e501"
+    },
+    {
+      "path": "third_party/russh/src/compression.rs",
+      "mode": "100644",
+      "bytes": 13985,
+      "sha256": "6393ce61af916d6fa9614b43f3e04496623c9471f2125d5adbb76c729b32f7bf"
+    },
+    {
+      "path": "third_party/russh/src/helpers.rs",
+      "mode": "100644",
+      "bytes": 11697,
+      "sha256": "dba6a5572aad18e881a094267210e8393d7eaad26520ec811e877bb83c93c297"
+    },
+    {
+      "path": "third_party/russh/src/kex/curve25519.rs",
+      "mode": "100644",
+      "bytes": 7376,
+      "sha256": "2afb49ef6284bede5673c31ea4ade412edacdae6b7350721d44f6f2462816e54"
+    },
+    {
+      "path": "third_party/russh/src/kex/dh/groups.rs",
+      "mode": "100644",
+      "bytes": 12330,
+      "sha256": "0699b803048c2bf750b9789a76c9243f4967bee7cb8f0e78ef873358aaec1d24"
+    },
+    {
+      "path": "third_party/russh/src/kex/dh/mod.rs",
+      "mode": "100644",
+      "bytes": 10061,
+      "sha256": "99145ccbed4de1565f29c94f6374e5697fcee5afe3fddb222fbc8017b9135099"
+    },
+    {
+      "path": "third_party/russh/src/kex/ecdh_nistp.rs",
+      "mode": "100644",
+      "bytes": 7618,
+      "sha256": "0bb7c452200130edf71be0966983ebdc311ca57154343d93eeab509ec2beaf17"
+    },
+    {
+      "path": "third_party/russh/src/kex/hybrid_mlkem.rs",
+      "mode": "100644",
+      "bytes": 13586,
+      "sha256": "4bdce3c784fc48f8bfadd48ea3c9123ad63a8b4299b1bef36fdceb4302abc5e3"
+    },
+    {
+      "path": "third_party/russh/src/kex/mod.rs",
+      "mode": "100644",
+      "bytes": 18175,
+      "sha256": "66b3b9a80159c06ea98581cf0fbc36864f1ed041b0af535f2f9964a18eee491b"
+    },
+    {
+      "path": "third_party/russh/src/kex/none.rs",
+      "mode": "100644",
+      "bytes": 1693,
+      "sha256": "8c0d847c2caadd7a2db77d34877d3182e38cb2e90ed44e3823b53361a770960d"
+    },
+    {
+      "path": "third_party/russh/src/keys/agent/client.rs",
+      "mode": "100644",
+      "bytes": 24832,
+      "sha256": "ca04213a245714a120312fbccaeca787ea629bc8bbe4080c51f0c52df9d4facf"
+    },
+    {
+      "path": "third_party/russh/src/keys/agent/mod.rs",
+      "mode": "100644",
+      "bytes": 6806,
+      "sha256": "6376cae79d8faf789b2d95b23ffd7d0bfe764214c916abe5962ddf91d6662d96"
+    },
+    {
+      "path": "third_party/russh/src/keys/agent/msg.rs",
+      "mode": "100644",
+      "bytes": 884,
+      "sha256": "359040a671c3f2a815011eb319887f13a9413fe073f43b2c63e0ac9a071f06d7"
+    },
+    {
+      "path": "third_party/russh/src/keys/agent/server.rs",
+      "mode": "100644",
+      "bytes": 17622,
+      "sha256": "dbf5adbab7dd3faa712844d19865e57a5cd825a31ecbc6dac3b347f00cd5a186"
+    },
+    {
+      "path": "third_party/russh/src/keys/format/mod.rs",
+      "mode": "100644",
+      "bytes": 4350,
+      "sha256": "867e0971d5b396acff2b7857dbc322bc5b26225a9dec3048d9e7b533db1b323e"
+    },
+    {
+      "path": "third_party/russh/src/keys/format/openssh.rs",
+      "mode": "100644",
+      "bytes": 509,
+      "sha256": "e345287a5c5af34b95740c90431e322b86ba4230be4e116b2194c7de7bd99816"
+    },
+    {
+      "path": "third_party/russh/src/keys/format/pkcs5.rs",
+      "mode": "100644",
+      "bytes": 1467,
+      "sha256": "0891a67497ac4f793fcbdb83ed3fda03430ec267a09668c5c6c0ff05b0998582"
+    },
+    {
+      "path": "third_party/russh/src/keys/format/pkcs8.rs",
+      "mode": "100644",
+      "bytes": 10270,
+      "sha256": "7ccc19246d8cfa769b6e8adfe975c23e2e7eafd3b3e58da76299c8592bd03ded"
+    },
+    {
+      "path": "third_party/russh/src/keys/format/tests.rs",
+      "mode": "100644",
+      "bytes": 4121,
+      "sha256": "977939953f4ad8db5b86d7b539f0f63bfbc6d2a2de0d1307ca3e9707b3fc7d19"
+    },
+    {
+      "path": "third_party/russh/src/keys/key.rs",
+      "mode": "100644",
+      "bytes": 6514,
+      "sha256": "a65e5672de65c30c4ed08241a89d344f1bc00defa6a61a5a835122a095d4f981"
+    },
+    {
+      "path": "third_party/russh/src/keys/known_hosts.rs",
+      "mode": "100644",
+      "bytes": 7537,
+      "sha256": "b97f0dca9172db1781f58c32c47ed786d1af87bedc6d91814f34c02b5c4dd7b9"
+    },
+    {
+      "path": "third_party/russh/src/keys/mod.rs",
+      "mode": "100644",
+      "bytes": 64846,
+      "sha256": "2d17da5dbc5338d4a6f1288dfd41c013374749cbe0ac68b2bc8dcc5bdb08320e"
+    },
+    {
+      "path": "third_party/russh/src/lib.rs",
+      "mode": "100644",
+      "bytes": 4201,
+      "sha256": "8398c8b25509efa7d56b8577ec9c46e27f8ab9b20ac0f2068e7390ddfad883a9"
+    },
+    {
+      "path": "third_party/russh/src/lib_inner.rs",
+      "mode": "100644",
+      "bytes": 17031,
+      "sha256": "226342a2066612f1b1affc059a7eeb44f0716943fa8613e49cf91e28074bf485"
+    },
+    {
+      "path": "third_party/russh/src/mac/crypto.rs",
+      "mode": "100644",
+      "bytes": 2011,
+      "sha256": "a6f8f5a98a6d342f925bb2842650b0c92e4c57c91036caf93aa2fdaa28a0b218"
+    },
+    {
+      "path": "third_party/russh/src/mac/crypto_etm.rs",
+      "mode": "100644",
+      "bytes": 1647,
+      "sha256": "36f76c3e30556c182bac25cc4b2918d6ce7f2be666531df849db4baf8fb02148"
+    },
+    {
+      "path": "third_party/russh/src/mac/mod.rs",
+      "mode": "100644",
+      "bytes": 4188,
+      "sha256": "a3418bb9fdc1cf9102ffd968811946e9c92cb4a3d50a0759f5cdb091cce6d18e"
+    },
+    {
+      "path": "third_party/russh/src/mac/none.rs",
+      "mode": "100644",
+      "bytes": 475,
+      "sha256": "c58fe761c9e07df4956a8e349f2053e2d3fd28988b99a4af7b152f73a7db1211"
+    },
+    {
+      "path": "third_party/russh/src/msg.rs",
+      "mode": "100644",
+      "bytes": 5534,
+      "sha256": "b99ac5e26c84482587e076e923fa5ed146f8aab12858d2324d231e65ab55f4c1"
+    },
+    {
+      "path": "third_party/russh/src/negotiation.rs",
+      "mode": "100644",
+      "bytes": 35448,
+      "sha256": "7669375de6eb84acad57658039f3170163ea3e828f3dc1138bc4ed0dd38550b3"
+    },
+    {
+      "path": "third_party/russh/src/parsing.rs",
+      "mode": "100644",
+      "bytes": 9656,
+      "sha256": "d146337f8d92ef3ec4d63803efc82457f0c596604f6c1eee0b78d5d61e05e095"
+    },
+    {
+      "path": "third_party/russh/src/pty.rs",
+      "mode": "100644",
+      "bytes": 3303,
+      "sha256": "db018a9139923b907999fb9870aad0e9bc93fe03d11b65752f3f08fe63c4eb3b"
+    },
+    {
+      "path": "third_party/russh/src/server/encrypted.rs",
+      "mode": "100644",
+      "bytes": 86501,
+      "sha256": "4c9e355ed91aad60225a6e17cf8ea5a9ded4b118cb711050f135b72e82cd6b0f"
+    },
+    {
+      "path": "third_party/russh/src/server/kex.rs",
+      "mode": "100644",
+      "bytes": 17167,
+      "sha256": "426e6298c78f3760100a6ceb0a7f25d144e3c4bf4583818b56fda424cdb15909"
+    },
+    {
+      "path": "third_party/russh/src/server/mod.rs",
+      "mode": "100644",
+      "bytes": 46939,
+      "sha256": "e488af05b9211cf35a61dbf26012d6c3c3c16b80c94c635b522e64410f928307"
+    },
+    {
+      "path": "third_party/russh/src/server/session.rs",
+      "mode": "100644",
+      "bytes": 69394,
+      "sha256": "83f1e60ce9b0b5d0ad80f0cc19b0b8dbae7e7629855d28a5629ed99cc3c52b19"
+    },
+    {
+      "path": "third_party/russh/src/session.rs",
+      "mode": "100644",
+      "bytes": 56150,
+      "sha256": "fa836a54dd8ecd73fe68d76a3e7f2bf878c38e6cb511a986982c5f972e279e9e"
+    },
+    {
+      "path": "third_party/russh/src/ssh_read.rs",
+      "mode": "100644",
+      "bytes": 11808,
+      "sha256": "0698ca2c71f0db5254422db1c7047151c31ace98e2ee224d510a2e6dba204e63"
+    },
+    {
+      "path": "third_party/russh/src/sshbuffer.rs",
+      "mode": "100644",
+      "bytes": 19171,
+      "sha256": "aacdb3cd254883450c9315a1486c27c0846ce1d85f1aae6fae37ff9e9af9f778"
+    },
+    {
+      "path": "third_party/russh/src/tests.rs",
+      "mode": "100644",
+      "bytes": 61510,
+      "sha256": "68831d84d782c22ccbec8d6e0e8829b5cfc56a100d4be68ce892fbf17e0196c7"
+    },
+    {
+      "path": "third_party/russh/tests/auth_agent_req_channel_reply.rs",
+      "mode": "100644",
+      "bytes": 6783,
+      "sha256": "d43028aadb8310e03de60e7733a436f9a7a3e13ee447718d9e78e28325707abb"
+    },
+    {
+      "path": "third_party/russh/tests/auth_partial_success.rs",
+      "mode": "100644",
+      "bytes": 8403,
+      "sha256": "0e3263643db58d543d7a07575c6a68f3fd07f927a9a6fa0721df0e9746d8fd84"
+    },
+    {
+      "path": "third_party/russh/tests/auth_signer_failure.rs",
+      "mode": "100644",
+      "bytes": 7139,
+      "sha256": "c289fae0cfe69261b852f5c96bf8054abf73e8f08f9f50ee9c3e377e13ce4b76"
+    },
+    {
+      "path": "third_party/russh/tests/auth_state_reset.rs",
+      "mode": "100644",
+      "bytes": 2749,
+      "sha256": "454c0c1175a8c489f1f09432cdb7bd0d10b153001bd05d5d86018c2635a577ed"
+    },
+    {
+      "path": "third_party/russh/tests/test_agent_session_bind.rs",
+      "mode": "100644",
+      "bytes": 3488,
+      "sha256": "f260065a21aa71e1b7309ef56aa23433ad92c5f845024559510179d8139356d8"
+    },
+    {
+      "path": "third_party/russh/tests/test_backpressure.rs",
+      "mode": "100644",
+      "bytes": 8107,
+      "sha256": "45abf29e194a612f33301215363b1b049a86c0b89eecdcb6a6953d87353308d6"
+    },
+    {
+      "path": "third_party/russh/tests/test_contention.rs",
+      "mode": "100644",
+      "bytes": 5811,
+      "sha256": "4a23b7cf91bb108e8dd9c746b9db455e6d453133d9054cdbdc922dc881996eb5"
+    },
+    {
+      "path": "third_party/russh/tests/test_data_stream.rs",
+      "mode": "100644",
+      "bytes": 5986,
+      "sha256": "85d4d75dc3eff500354c68bbaed3cc2219a713f19737035070713793b90c3af6"
+    },
+    {
+      "path": "third_party/russh/tests/test_keepalive_before_auth.rs",
+      "mode": "100644",
+      "bytes": 5300,
+      "sha256": "da74e8ef98718613e81bf6e07a682ce8f085be17a310dee9dbe0e068421c9f33"
+    },
+    {
+      "path": "third_party/russh/tests/test_kex_shared_secret.rs",
+      "mode": "100644",
+      "bytes": 14632,
+      "sha256": "0b9eb35276f35546be3a5ad4ed61c81d82bc5693f340e10095a079fe942dc365"
+    },
+    {
+      "path": "third_party/russh/tests/test_max_channel_packet_size.rs",
+      "mode": "100644",
+      "bytes": 6621,
+      "sha256": "d126a18d6c05680434432b67587f43409e0989dbc4fe6e3a7a9856594e13f6d8"
+    },
+    {
+      "path": "third_party/russh/tests/test_mlkem_kex.rs",
+      "mode": "100644",
+      "bytes": 11121,
+      "sha256": "30f3ff3b68220811cfe9c1574fb41c759e50aec8673ec4fdce68ee35bdff3fc9"
+    },
+    {
+      "path": "third_party/russh/tests/test_rekey_strict_kex.rs",
+      "mode": "100644",
+      "bytes": 4935,
+      "sha256": "d40f68ffe7b20a800a05411625313447cb33289603712752424be21abe9e5342"
+    },
+    {
+      "path": "third_party/russh/tests/test_server_cert.rs",
+      "mode": "100644",
+      "bytes": 8676,
+      "sha256": "3a83bc12cf9a06a73bdc49eecdf4a77633594baf4826f7b65865946d2c2b3158"
+    },
+    {
+      "path": "third_party/russh/tests/test_window_adjust.rs",
+      "mode": "100644",
+      "bytes": 4501,
+      "sha256": "bdcdd625197589512b1b04c6fecd598d2e6d82479b74851428aa41a131f7230e"
+    },
+    {
+      "path": "third_party/usbip-win2-LICENSE.txt",
+      "mode": "100644",
+      "bytes": 1333,
+      "sha256": "36d6269a243704bb117e66c67e51ce7b49e355e5ef00c0cff134e79ebf0409b6"
+    },
+    {
+      "path": "third_party/usbip-win2/SOURCE.txt",
+      "mode": "100644",
+      "bytes": 457,
+      "sha256": "37ca1efa1606d44f0dfb6142d027552f3ab78aa87397853fc34b299378eb3f15"
+    },
+    {
+      "path": "third_party/usbip-win2/include/usbip/ch9.h",
+      "mode": "100644",
+      "bytes": 617,
+      "sha256": "7a1ef3144e2289ca881670bb1c9bda6bd9988b01e318be27c5a853894ab64e26"
+    },
+    {
+      "path": "third_party/usbip-win2/include/usbip/consts.h",
+      "mode": "100644",
+      "bytes": 872,
+      "sha256": "4d02cb8f9982c9e653737bf3bfaddb3ed6b1531c241a09f199e6bbd67829fd42"
+    },
+    {
+      "path": "third_party/usbip-win2/include/usbip/vhci.h",
+      "mode": "100644",
+      "bytes": 5677,
+      "sha256": "b423adad2a0edb333ae7339f42298c80a180c531d737ead0b80fa94f832c6c7f"
+    },
+    {
+      "path": "tools/VerifyBundleSignature.java",
+      "mode": "100644",
+      "bytes": 3083,
+      "sha256": "694dac42cfc4b03b74b9716f15b057c51162d353dff5a84defce84c12ad6caef"
+    },
+    {
+      "path": "tools/android-idle-soak.py",
+      "mode": "100644",
+      "bytes": 12634,
+      "sha256": "56868c6b7080c75010b905c247393121ab6bc44639bd2acb2cf876ad5e25dba9"
+    },
+    {
+      "path": "tools/build-notices.py",
+      "mode": "100644",
+      "bytes": 6507,
+      "sha256": "8bcbb51b8e1a0b7a76e5733cf87a6736212cb5c21a8017de60fd0803a173b84d"
+    },
+    {
+      "path": "tools/build-receivers.py",
+      "mode": "100644",
+      "bytes": 4526,
+      "sha256": "530b599fd925532ce923244f948e8accefd0e70f9bef1b0a89fbeebc873ebe5f"
+    },
+    {
+      "path": "tools/build-rust.py",
+      "mode": "100755",
+      "bytes": 3571,
+      "sha256": "d4293f49894a840865ce3a3a04f63468b8eee9e120620ea37e68622600aa16a0"
+    },
+    {
+      "path": "tools/check-connection-layout.py",
+      "mode": "100644",
+      "bytes": 3798,
+      "sha256": "64fb9391f22163be4b76fd31160e8f3d8fc85906b7e3fd75a95d1171325022b8"
+    },
+    {
+      "path": "tools/check-diagnostic-export.py",
+      "mode": "100644",
+      "bytes": 11860,
+      "sha256": "600f70bec22a697cb5f46e546cdca8ab2b0c54a8a3d953a75f139e8bacbaa9e9"
+    },
+    {
+      "path": "tools/check-navigation-process.py",
+      "mode": "100644",
+      "bytes": 6809,
+      "sha256": "c54f4657fb9dad023afd1173e08d0c01b868a5cd18b7bad297acc6ccbf56947d"
+    },
+    {
+      "path": "tools/check-responsive-ui.py",
+      "mode": "100644",
+      "bytes": 14467,
+      "sha256": "114c4b8d69f719e8af62b639a5594e869d7fb1718819e28133a3929e6bf917dd"
+    },
+    {
+      "path": "tools/download_emulator.py",
+      "mode": "100644",
+      "bytes": 2947,
+      "sha256": "7b24c361441d4e17ba2f068523d552425b88fff006858d5735fb6c0fe0cc46bd"
+    },
+    {
+      "path": "tools/download_sdk.py",
+      "mode": "100644",
+      "bytes": 5135,
+      "sha256": "0c1be14bb8e702d3b8fc25f6dea08e02c82004dd2ace1a6bed5f1efdef2be4b2"
+    },
+    {
+      "path": "tools/install-agent.sh",
+      "mode": "100755",
+      "bytes": 1527,
+      "sha256": "fdf8a0a713fa4edf763d5b32c7d5b79c2e6cdb771839f60126785176aaac9f61"
+    },
+    {
+      "path": "tools/lab-windows-android-forwarding.ps1",
+      "mode": "100644",
+      "bytes": 3757,
+      "sha256": "417a238ddcafc0d4bc356eb51c5ae6cf3b9a29b7e8b5f2cc1cbc172d7643da24"
+    },
+    {
+      "path": "tools/lab-windows-process.ps1",
+      "mode": "100644",
+      "bytes": 2919,
+      "sha256": "0ba151d4f26208ca4e0aa96757aa22bc264a8cac565a6caff55141c3b541b4a5"
+    },
+    {
+      "path": "tools/lab_android_active_soak.py",
+      "mode": "100644",
+      "bytes": 6831,
+      "sha256": "563b400afd70a3b84409083f4ead70a0eb9ae43f5d03233e09d848bdb6df7779"
+    },
+    {
+      "path": "tools/lab_android_storage.py",
+      "mode": "100644",
+      "bytes": 20228,
+      "sha256": "f57126db56e73db1e18aca43503b9fcce00b7d15a24be8797ddaa58c381a7898"
+    },
+    {
+      "path": "tools/lab_live_profiles.py",
+      "mode": "100644",
+      "bytes": 6408,
+      "sha256": "991c74b51fed29da4d459ad47ac1da70dc3c67ee0ef51bb1e35c262bd3448178"
+    },
+    {
+      "path": "tools/lab_local_only_network.py",
+      "mode": "100644",
+      "bytes": 7748,
+      "sha256": "20967fe0fe66cb9e7dc29d304357560728821f9b35f3f9263d409ac32c0b2dea"
+    },
+    {
+      "path": "tools/lab_missing_driver.py",
+      "mode": "100644",
+      "bytes": 3698,
+      "sha256": "e4cd15eb786edcebfc96632625757bda53b8a8e65966927b13c65a542d7d9c50"
+    },
+    {
+      "path": "tools/lab_mixed_usb_reader.py",
+      "mode": "100644",
+      "bytes": 17315,
+      "sha256": "00f229c4886109fc61df511cefba816eb8277b720a701b7a4025da8f3d402f51"
+    },
+    {
+      "path": "tools/lab_profile_migration.py",
+      "mode": "100644",
+      "bytes": 4340,
+      "sha256": "bc3cf8c409a3a992d703d7aa62e378b00374f48f3b9cf5e21cba3949b0771c67"
+    },
+    {
+      "path": "tools/lab_receiver_upgrade.py",
+      "mode": "100644",
+      "bytes": 8940,
+      "sha256": "9666921ef4ee97d4f25e886420df4048728f370041a4d47719e5d2669902e6ee"
+    },
+    {
+      "path": "tools/lab_tcp_delay.py",
+      "mode": "100644",
+      "bytes": 4441,
+      "sha256": "e70d99927adb4ab497e58210c8d15e9995edf5f741a72cffca76734e53b4e3e5"
+    },
+    {
+      "path": "tools/lab_tcp_fault.py",
+      "mode": "100644",
+      "bytes": 5558,
+      "sha256": "38f1e415d58690e9d72dead186566f88f8d2c5a8ef4082198c2a1b19e475b7f7"
+    },
+    {
+      "path": "tools/lab_unprivileged_user.py",
+      "mode": "100644",
+      "bytes": 8646,
+      "sha256": "7217a7633b0ed8d6a328ad3b0f63458075cb7c068ecedeae86c884af9c854d4b"
+    },
+    {
+      "path": "tools/lab_usb_reader.py",
+      "mode": "100644",
+      "bytes": 1499,
+      "sha256": "e9d8478876b12dcc9c2eb05cbe32b0958d081618020f4b47025c3a4b4c2c6db0"
+    },
+    {
+      "path": "tools/linux-compatibility-e2e.py",
+      "mode": "100644",
+      "bytes": 8885,
+      "sha256": "f7de47a88ad9fb8aa2b6905c0b7bf8692d1de41a375033d78cfd5896c83d3614"
+    },
+    {
+      "path": "tools/linux-discovery-e2e.py",
+      "mode": "100644",
+      "bytes": 8145,
+      "sha256": "3593391246424eb7b3f35c2a38610db459b486329c26dea1da8b4544a5f370a5"
+    },
+    {
+      "path": "tools/linux-installer-e2e.py",
+      "mode": "100755",
+      "bytes": 6395,
+      "sha256": "6880eb84a159a1eef5ee642eb98bcdc35969b97f76ce474425f14cd5db37ae75"
+    },
+    {
+      "path": "tools/linux-reboot-e2e.py",
+      "mode": "100644",
+      "bytes": 8020,
+      "sha256": "bbe2bc9c3fd6444c4390a566e682844ba7df504c464c31bb7f78ec6acb71468b"
+    },
+    {
+      "path": "tools/linux-receiver-e2e.py",
+      "mode": "100755",
+      "bytes": 8005,
+      "sha256": "e833fe977bb7972ffd4a63e8af4397cc2fe30018d5af59925c3b6e64dc981609"
+    },
+    {
+      "path": "tools/linux-safe-eject-e2e.py",
+      "mode": "100644",
+      "bytes": 15366,
+      "sha256": "2aed42c5bf28b460154c64a121f34c3d76323ec80327c6ed364bda7fb53b12a2"
+    },
+    {
+      "path": "tools/linux-soak-e2e.py",
+      "mode": "100644",
+      "bytes": 8237,
+      "sha256": "0d191a395400e17460c7b321c49b4aead7a101ab9345d3e9d5c90102f2515979"
+    },
+    {
+      "path": "tools/linux-vm-lab.py",
+      "mode": "100644",
+      "bytes": 5156,
+      "sha256": "176ec6be14503227367b3789a3dec76ebd579f6f4763c2f7c437f2b187f0e522"
+    },
+    {
+      "path": "tools/pin-windows-receiver.py",
+      "mode": "100644",
+      "bytes": 2961,
+      "sha256": "b210a01af3fece7635c95485cc262798e3aeb9c06811582f8961898f30be6653"
+    },
+    {
+      "path": "tools/prepare-android-receiver-fixture.py",
+      "mode": "100644",
+      "bytes": 3708,
+      "sha256": "f657799bbda0d3efc760bec637c00464d4455edf20af25af74b6f6f8cfd34542"
+    },
+    {
+      "path": "tools/prepare-camera-qr-fixture.py",
+      "mode": "100644",
+      "bytes": 1010,
+      "sha256": "fcf3e27754342c1a1a329ed8745edc738866f801fb69d5c2ac53d16864fd2186"
+    },
+    {
+      "path": "tools/prepare-windows-driver-lab.ps1",
+      "mode": "100644",
+      "bytes": 6226,
+      "sha256": "972af6169c8e8316ef2af5647eeeeaf55372a86040c66deac84d572039314895"
+    },
+    {
+      "path": "tools/readonly_mount.py",
+      "mode": "100644",
+      "bytes": 2672,
+      "sha256": "c8e80d5341edaae572927a05fb601608773d263f58fef805a43bacb3173f0b02"
+    },
+    {
+      "path": "tools/receiver-probe-e2e.py",
+      "mode": "100644",
+      "bytes": 2958,
+      "sha256": "45677fe1c878d35d4823a1cffa9088e030ca5381945d755ff80a51fec8d7b156"
+    },
+    {
+      "path": "tools/receiver-ui-browser-e2e.py",
+      "mode": "100644",
+      "bytes": 9621,
+      "sha256": "a91dfcae23d45d5c908eda05c96321a209022310297bae3857562a1abba9826d"
+    },
+    {
+      "path": "tools/receiver_source.py",
+      "mode": "100644",
+      "bytes": 1646,
+      "sha256": "2aa5dc901a446b995e1e5b66eef7742c74dcab56cf86455f76e676dda4efe05e"
+    },
+    {
+      "path": "tools/run-android-connection-e2e.py",
+      "mode": "100644",
+      "bytes": 4753,
+      "sha256": "d94b4d7b2d1848091f7c807ed4294f549b10e566d33757e401356cea49828eab"
+    },
+    {
+      "path": "tools/run-android-core-e2e.py",
+      "mode": "100644",
+      "bytes": 10511,
+      "sha256": "c903b4addf1c16076c375b592ef4d372215303bc60a3b34376d642d6f28a3124"
+    },
+    {
+      "path": "tools/run-android-diagnostics-e2e.py",
+      "mode": "100644",
+      "bytes": 11016,
+      "sha256": "26729a165516619d87871dd41bf90518baa2c8f6af005adf8e317aa868e5ee27"
+    },
+    {
+      "path": "tools/run-android-os-eject-e2e.py",
+      "mode": "100644",
+      "bytes": 32379,
+      "sha256": "377a12fd7cfc7669d9cb17005eed9e40b975b010626b09f9fad14b0f3a4e671d"
+    },
+    {
+      "path": "tools/run-android-pairing-e2e.py",
+      "mode": "100644",
+      "bytes": 3099,
+      "sha256": "6607f6ebb34f7099e2795f1c891138336f7701225e950cea115ac8afe8164093"
+    },
+    {
+      "path": "tools/run-android-usb-transport-e2e.py",
+      "mode": "100644",
+      "bytes": 28503,
+      "sha256": "73f6a9dd9be95d8b376df3da29129bcd4f564a1bbc9f90329dcbc54620264265"
+    },
+    {
+      "path": "tools/run-android-window-fixture.py",
+      "mode": "100644",
+      "bytes": 4586,
+      "sha256": "e167356e73513fbc76070c3228ba59bdb9e7755316a8a3d68093b671a28400bb"
+    },
+    {
+      "path": "tools/run-computer-store-e2e.py",
+      "mode": "100644",
+      "bytes": 4109,
+      "sha256": "71490db7390b5d783e52af20682df9cf6e6b0c40cfe46dcffc2db17aeb031964"
+    },
+    {
+      "path": "tools/run-live-profiles-e2e.py",
+      "mode": "100644",
+      "bytes": 12705,
+      "sha256": "03713b0384e3423e3adab340097decd2d40b394d9b598157eb1e189dceeeb229"
+    },
+    {
+      "path": "tools/run-managed-art-e2e.py",
+      "mode": "100644",
+      "bytes": 5500,
+      "sha256": "8061a8ea88af305196d58f53df5588ce53a9b327db364ab6b3316b5f884b1ebd"
+    },
+    {
+      "path": "tools/run-navigation-e2e.py",
+      "mode": "100644",
+      "bytes": 5957,
+      "sha256": "49255e704d402f8f6d73f032c1151863f2a99af65d414c4c11e2cdff8490ebf5"
+    },
+    {
+      "path": "tools/run-network-diagnosis-e2e.py",
+      "mode": "100644",
+      "bytes": 6932,
+      "sha256": "7b1925f32c21c459116bd34df4da5554dd90207a02f65c95a5996f11831a5a75"
+    },
+    {
+      "path": "tools/run-preparation-diagnosis-e2e.py",
+      "mode": "100644",
+      "bytes": 12234,
+      "sha256": "e94a0cffc954ff94693ade10993cc5f2a6f51e94666b44951a4ff6fb7a58b915"
+    },
+    {
+      "path": "tools/run-profile-migration-e2e.py",
+      "mode": "100644",
+      "bytes": 12123,
+      "sha256": "88bcfa117602814e0dc89ff8053b3676464fc1fa8d640c654d5a974032d8a886"
+    },
+    {
+      "path": "tools/run-receiver-upgrade-e2e.py",
+      "mode": "100644",
+      "bytes": 11582,
+      "sha256": "19b7a308215b9766de035a701220dc927acce9d76ec620d8b89e1f66f3168681"
+    },
+    {
+      "path": "tools/run-release-e2e.py",
+      "mode": "100755",
+      "bytes": 15338,
+      "sha256": "ed1653d5eac420193b5e71667cd137bf2b9117db9550f13b53d6a59b0c413040"
+    },
+    {
+      "path": "tools/run-ssh-e2e.py",
+      "mode": "100644",
+      "bytes": 4681,
+      "sha256": "6108b0d947db586b77e945249c28aa3a03af0e34444ca66969caa2efdfe59ef9"
+    },
+    {
+      "path": "tools/run-ssh-netem-e2e.py",
+      "mode": "100644",
+      "bytes": 5966,
+      "sha256": "886ccc255ddcb40c44573bcef63a383409e8e8b0bae938724cbcd8c7c6ba6480"
+    },
+    {
+      "path": "tools/run-windows-android-e2e.py",
+      "mode": "100644",
+      "bytes": 21036,
+      "sha256": "22fe90983dbd97eb1d4207a074ea7c30ba6fdcf47c536738409137042c34acbd"
+    },
+    {
+      "path": "tools/run-windows-android-ssh-e2e.py",
+      "mode": "100644",
+      "bytes": 9622,
+      "sha256": "dc52b88f96141216e1580ef2690d47fbb1773d1c411013fe531f8185cac40182"
+    },
+    {
+      "path": "tools/sign-bundle.py",
+      "mode": "100644",
+      "bytes": 5120,
+      "sha256": "975e4448738561a06e350eab93cd1caf3415c3c107bd7f6cd019867df9853907"
+    },
+    {
+      "path": "tools/sign-release.sh",
+      "mode": "100644",
+      "bytes": 1002,
+      "sha256": "c28b357c2116f6192df2a75cd312edff5c2cea7ab3d70a0b37d154cdb66acb70"
+    },
+    {
+      "path": "tools/wan-netem-child.py",
+      "mode": "100644",
+      "bytes": 1613,
+      "sha256": "c5d357953c6c6658eb0db81f44ebd5f58f12d9c6e45a7b9831afdf28e4245294"
+    },
+    {
+      "path": "tools/windows-bootstrap-acl-e2e.ps1",
+      "mode": "100644",
+      "bytes": 6463,
+      "sha256": "84a1488d932263f5c4ce064360c40e19bd13b68cb93b7096c9eace09de3d29a3"
+    },
+    {
+      "path": "tools/windows-environment-evidence.ps1",
+      "mode": "100644",
+      "bytes": 2082,
+      "sha256": "4b0bb290a9a2dba0feed19608b8eb8fa69d82b6b1d0b0c01b71bff9f148358fe"
+    },
+    {
+      "path": "tools/windows-fixture-process-e2e.ps1",
+      "mode": "100644",
+      "bytes": 2618,
+      "sha256": "1ff4dd58b3e751864c78a077f78378ba5f9cef4bb2ea1054a3d39c4d8f75f229"
+    },
+    {
+      "path": "tools/windows-installer-e2e.ps1",
+      "mode": "100644",
+      "bytes": 8104,
+      "sha256": "6ed1e3fa537ae2445bb9bc799c5720308e8b0317f139a0e2e389814ad1b3ffbe"
+    },
+    {
+      "path": "tools/windows-service-e2e.ps1",
+      "mode": "100644",
+      "bytes": 6182,
+      "sha256": "e82d91a0af96de9c4ac38fa1896f70f7045d18ae6cc0642c85fb118f6fecc041"
+    },
+    {
+      "path": "tools/windows-ssh-e2e.ps1",
+      "mode": "100644",
+      "bytes": 9237,
+      "sha256": "4ce93fac34d3f3f98ef1429746c56dec7e6051337ba18fe5e98e83b0b35d50bc"
+    },
+    {
+      "path": "tools/windows_receiver_asset.py",
+      "mode": "100644",
+      "bytes": 3536,
+      "sha256": "61da40a73225e2e2b1f2d532bb94bf7a4048563ccd7e9ad6e7fc5a248505edcd"
+    }
+  ]
+}

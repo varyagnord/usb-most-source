@@ -1,0 +1,20 @@
+[package]
+name = "usb-most-native"
+version = "1.0.11"
+edition = "2024"
+license = "GPL-3.0-only"
+publish = false
+
+[features]
+diagnostics = []
+
+[lib]
+name = "usblib"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+usb-most-connection = { path = "../usb-most-connection", features = ["qr-scan"] }
+usb-most-protocol = { path = "../usb-most-protocol" }
+jni = { version = "=0.22.4", default-features = false }
+libc = "=0.2.191"
+zeroize = { version = "=1.9.1", default-features = false }

@@ -1,0 +1,187 @@
+USB Most Rust native ownership and failure contracts
+
+Scope and provenance
+The GPLv3 USB engine, JNI bridge and TCP socket configuration replace the former
+C implementation. This is a derived implementation, not a license reset.
+Android lifecycle, USB permission handling, descriptors and USB/IP coordination
+remain Java. There is no new async executor: Linux usbfs submits asynchronously;
+bounded polling runs outside the engine mutex so cancel/submit can proceed.
+
+Ownership
+Each request has a pinned Box<Request> and one fixed-capacity Vec<UnsafeCell<u8>>.
+The Vec never grows. The URB pointer and buffer pointer are established after
+preparation and the final exclusive buffer write. Moving an owning Box of bytes
+with an already exposed pointer failed Miri; using Vec and delayed pointer
+publication avoids that aliasing defect. Pin alone does not solve buffer aliases.
+The URB and payload use UnsafeCell because the kernel may write asynchronously.
+Rust must not read either while the kernel owns them. Metadata accesses are
+serialized by the engine mutex. No Rust reference to in-flight bytes escapes.
+
+A successful submit transfers a borrow to usbfs until the exact pointer is reaped.
+An unsuccessful submit retains nothing. Backend implementations must never panic
+after accepting a borrow or consuming a completion. The Linux backend only uses
+non-panicking syscalls and errno extraction. poll never accesses request memory.
+Returned pointers are matched against owned requests before dereferencing.
+Returned lengths are checked before creating slices or allocating Java arrays.
+Controls include the eight setup bytes in the kernel allocation, but actual
+payload length is checked against the data capacity, excluding setup bytes.
+
+JNI and descriptors
+JNI handles are positive, monotonically increasing IDs, never raw addresses.
+The registry clones Arc under a short lock. Closing reserves its registry slot
+until draining ends; simultaneous close is harmless and stale IDs cannot refer
+to a new session. Four slots match the server limit. Each session has a CLOEXEC
+duplicate OwnedFd; the caller's descriptor remains caller-owned. Poll retains
+an Arc and therefore the duplicate fd across concurrent close.
+JNI 0.22 typed constructors cache class/method references. EnvUnowned handles
+panic containment and Java exceptions; unwinding must not cross the JNI ABI.
+The Java Completion constructor and NativeUsb methods must remain in R8 rules.
+
+Bounds and failure modes
+Maximum payload: 1 MiB (control: 65535 bytes plus setup). Maximum pending:
+64 requests/session and four sessions/process. A separate 8 MiB/session byte
+lease is reserved before allocation and includes control setup bytes. It stays
+with the pinned request through kernel retirement and returned Completion use;
+cancel, reap alone and engine close do not release a held completion’s budget.
+Preparation/submit failure and normal buffer drop refund it; quarantine retains
+it. Exceeding the budget returns ENOMEM before USB execution. Unknown/duplicate IDs, invalid
+kinds, endpoints, lengths, queue overflow and unexpected pointers fail explicitly.
+OUT data is copied directly from Java into its final buffer; IN completion data
+is copied directly from the retired buffer into Java. There is no retry that
+could replay a cryptographic command. Retired native buffers are zeroized.
+
+Cancellation alone does not end the kernel borrow. Close cancels requests and
+reaps for at most 500 ms. If errors prevent confirmed retirement, remaining
+allocations are intentionally quarantined (forgotten), not freed. New sessions
+are then refused until process restart. Slot reservation bounds this exceptional
+retention to at most four times (8 MiB plus 64 requests of metadata), about
+32 MiB. The OS reclaims it at process exit. Sensitive in-flight buffers cannot be
+zeroized while a kernel borrow might still exist; they remain until exit in this
+exceptional case. Normal close reaps, zeroizes and releases everything.
+JNI returns failure on a subsequent open; this conservative fail-closed state
+requires restarting the app process, not merely toggling its service.
+
+Verification and limits
+Tests cover boundaries, partial/error results, control setup, duplicate/unknown
+IDs, queue saturation, cancellation, concurrent completion/close, delayed writes
+after failed close, and deterministic random traces. Miri validates the fake
+kernel's raw pointer writes and lifetimes; ASan provides a separate check.
+The actual JNI library is exercised with JVM -Xcheck:jni and on Android emulators.
+96 traces are compared against the retained C engine. NDK C and Rust compile-time
+assertions check usbdevfs UAPI for all four Android architectures.
+Mocks and emulators do not establish physical USB-token compatibility, radio
+network performance or absence of all bugs. No hardware throughput claim is made.
+
+1.0.4 policy boundary
+Pure policy owns exact IPv4 validation, bounded selection snapshots and descriptor
+framing. Up to eight isolated Selection models use monotonically increasing IDs,
+never addresses, with at most 128 devices per model. All input dimensions and IDs
+are validated before mutation. Close is idempotent and stale IDs fail safely.
+The GET_SPEED ioctl retains no pointer or fd; the Android adapter keeps its
+private UsbDeviceConnection alive until the call returns. Metadata array copies
+are bounded to 64 KiB and do not use critical JNI pins. No new unsafe buffer
+ownership or kernel borrowing mechanism is introduced.
+Android owns permissions and resource leases: generation tokens prevent callbacks
+and consent applying to replacement devices. Socket identity protects lease release;
+leases live in application inventory across service instances. Pending metadata
+work is bounded to 128 jobs, and opening a USB connection does not hold the common
+inventory monitor across the system call. These properties are exercised through
+the real Android adapter/Activity with injected system access on disposable emulators.
+
+1.0.5 interface handoff
+NativeUsb.releaseInterface borrows the live Android UsbDeviceConnection fd only
+for synchronous RELEASEINTERFACE/IOCTL CONNECT syscalls; no fd/pointer is retained.
+UsbSession's monitor excludes close while reconfiguring and outstanding URBs
+exclude configuration changes. Raw release deliberately avoids Android JNI's
+implicit CONNECT, which otherwise rebinds HID before SET_CONFIGURATION and
+causes EBUSY. Driver restoration is deferred to teardown: stop coordinator,
+join reaper, drain NativeUsb.close, reconnect each touched interface, close the
+Android connection. Partial initial claims/configuration failures also restore
+drivers. A previously released interface (EINVAL) still receives CONNECT on
+teardown. ABI struct/ioctl codes are asserted against NDK on all four ABIs.
+Pure Rust HID ownership tests reproduce the old rebind/configuration conflict;
+JVM tests validate invalid IDs/fds and real ENOTTY, keeping caller fd ownership.
+
+1.0.8 explicit diagnostic variant
+The diagnostics Cargo feature is absent from the normal native release. It adds
+bounded metadata observation after matching and safely retiring an engine request,
+plus a <=32-byte synthetic JNI round trip with no USB access. Transient FNV-1a
+copy checks are not security hashes and never enter the exported event schema.
+Rust and Java classifiers are independent; native/Java arrays containing these
+checks are cleared after comparison. No keyboard payload or coordinates exported.
+
+Only verified Logitech 046d:c52b, HID interface 2, interrupt IN 0x83/32-byte
+receivers can create a diagnostic session. Other devices always use the Rust
+backend. A mode is fixed for a whole USB connection. The alternative Java backend
+uses Android UsbRequest with one requestWait reaper and a separate serial bounded
+control worker. It never invokes Rust submit/reap on that USB connection. Common
+synchronous interface handoff and TCP socket configuration still use existing JNI;
+this experiment isolates USB transfer execution, not every Rust function.
+
+Cancellation does not retire UsbRequest or an in-progress controlTransfer. SDK
+buffers/tokens are released only after requestWait or the control call returns;
+close cancels and drains. A failed/ambiguous queue/dequeue/retirement quarantines
+requests, backend and the Android connection until process exit. No reconnect or
+interface restoration is attempted on an unretired connection. Controls are
+executed at most once with a 1500 ms timeout; cancellation is acknowledged only
+after return. Host tests include intentional unretired requests and no-replay
+checks. ART/JVM selftests use synthetic ports only; emulators cannot establish
+physical UsbRequest compatibility or the cause of radio/link-loss notifications.
+
+1.0.10 negotiated WAN input
+Registry sessions now wrap the unchanged kernel owner Engine. Normal imports
+keep its existing submit/reap/cancel behavior. Only explicit WAN IMPORT for the
+verified 046d:c52b single-configuration HID iface2/IN0x83/32 profile enables
+continuous input. The service rechecks the exact leased device before open;
+HID class alone never selects this profile. WAN uses Rust, never SDK REAP.
+
+The wrapper owns no raw pointers: Engine Completions retain already retired,
+zeroizing requests while buffered. Two physical IN URBs are replenished locally;
+client control/OUT use distinct monotonically mapped physical IDs, including
+when logical IDs are zero/negative. At most64 physical requests and2048 completed
+input reports/session. Credit acknowledgments are monotonically checked consumed
+sequence numbers, not additive grants; a duplicate cannot increase credit.
+An unconsumed report overflow fails the session explicitly. No overwrite/drop
+or fabricated mouse state is used to make the stream appear successful.
+
+The sole reaper holds the wrapper lock only for nonblocking matched REAP.
+It releases it for poll, so cancellation and credit updates can proceed.
+A configuration barrier refuses outstanding client operations, stops/reaps both
+physical reads, zeroizes buffered reports, increments epoch and resets credits.
+Java serializes stream dispatch with configuration; stale dequeued completions
+cannot cross the epoch barrier. A failed retirement is fatal; Engine.close still
+quarantines unretired requests and registry prevents further native sessions.
+
+Native Completion adds a kept (III[BZJJ)V constructor for stream epoch/sequence;
+the original five-argument ABI is preserved. wanCommand is one bounded metadata
+JNI entry point. WAN native frame/model/network selftests are diagnostic-only,
+use a fake kernel and loopback sockets, and never open/enumerate USB devices.
+
+The loopback companion validates negotiated capabilities and keeps kernel-side
+USB/IP separate from push input. It never repeats control/OUT across disconnect.
+Local UNLINK cancels only a virtual input waiter; physical continuous reads remain
+profile-owned until close/barrier. Unknown devices and older servers use generic
+USB/IP, before device execution. Data buffers and frames zeroize on normal drop.
+
+Managed-ejection metadata boundary (product integration pending)
+NativeManagement exports create/close/execute only. Inputs are checked before
+copying and bounded to52 bytes; no critical JNI pin or retained Java reference.
+Eight registry slots use nonreused positive i64 handles. Each Book contains at
+most4 publishers. Issued ImportKey counters never wrap/reuse; a withdrawn old
+key can only receive Retire, never create a new operation. A fresh random16-byte
+nonce must be supplied for each protected app-service lifetime. It is identity,
+not authentication: the SSH/TLS/local-proof and exact Android lease checks remain
+mandatory in the system adapter. No network, USB or OS ejection occurs under the
+registry mutex, which is dropped before Java output allocation. Closing a model
+only discards metadata; it neither cancels a receiver OS worker nor authorizes
+release of USB resources. The transfer engine's pointer/retirement contracts do
+not change. Real optimized host JNI has passed124 checks and4000 concurrent
+close/stale lookups; actual APK/Android lifecycle integration is still pending.
+
+Managed metadata Android integration update (2026-11-05)
+Android server/lease/UI integration is now exercised on optimized APKs for
+API26/31/34/35/36 (112 checks each), including API31 320dp/font2 and real ART/JNI.
+The OS replies and USB inventory in those Android tests are synthetic. See
+docs/SAFE-EJECT-ANDROID-UI-VALIDATION-20261105.json for exact artifacts/limits.
+Receiver lifetime coordination now calls the separately checked OS adapters;
+integrated VM/driver gates and final release verification are still required.

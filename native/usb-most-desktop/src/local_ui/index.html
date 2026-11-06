@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>USB Мост</title><link rel="stylesheet" href="/style.css"><script src="/setup.js" defer></script>
+<body><main>
+<header><span class="mark" aria-hidden="true">↔</span><div><h1>USB Мост</h1><p>USB-устройства телефона или планшета на вашем компьютере</p></div></header>
+<p id="status" role="status">Проверяем компьютер…</p>
+<section id="prepare" hidden><h2>1. Подготовить компьютер</h2><p>Установим приёмник и необходимые компоненты. Права администратора запрашивает операционная система.</p><button id="install">Подготовить</button></section>
+<section id="download" hidden>
+<h2 tabindex="-1" id="download-title">2. Установить приложение</h2>
+<p>Нужен телефон или планшет с Android 8 или новее и поддержкой USB OTG.</p>
+<div id="store-available" hidden><p>Отсканируйте QR обычной камерой Android-устройства и установите USB Мост из RuStore.</p><img id="store-qr" alt="QR-код страницы USB Моста в RuStore"><p><a id="store-link" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Открыть страницу в RuStore</a></p></div>
+<p id="store-pending" hidden>Ссылка RuStore пока недоступна. Если USB Мост уже установлен на телефоне или планшете, переходите к подключению.</p>
+<button id="app-ready">Приложение установлено — подключить</button>
+</section>
+<section id="pairing" hidden>
+<h2 tabindex="-1" id="pairing-title">3. Подключить устройство</h2>
+<p>В USB Мосте на телефоне или планшете откройте настройки подключения, выберите «QR или код» и нажмите «Сканировать QR-код».</p>
+<details id="network"><summary>Адрес компьютера</summary><label for="address">Адрес в общей сети</label><input id="address" list="addresses" autocomplete="off" maxlength="253"><datalist id="addresses"></datalist><p class="hint">Устройства должны быть в одной локальной сети или подключены через настроенный Tailscale.</p></details>
+<button id="pair">Получить новый QR-код</button>
+<div id="claim" hidden><img id="qr" alt="QR-код подключения USB Мост"><p id="expires" role="status"></p><details><summary>Код для ручного ввода</summary><textarea id="code" readonly rows="5" aria-label="Код подключения"></textarea><button id="copy" class="secondary">Копировать код</button></details></div>
+<p>После сканирования сохраните компьютер в приложении, выберите нужные USB-устройства и запустите подключение. Подтвердите разрешения Android.</p>
+<button id="back" class="secondary">Назад к установке приложения</button>
+</section>
+<section id="access" hidden><h2>Доступ устройств</h2><ul id="peers"></ul></section>
+<p id="error" role="alert"></p><footer>Прямое соединение между вашими устройствами. Без аккаунта и облачного сервиса.</footer>
+</main></body></html>

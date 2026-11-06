@@ -1,0 +1,18 @@
+{
+  "artifact": {
+    "bytes": 5097472,
+    "driver_manifest_sha256": "6ba2833aae2553416b599d75e4ef673fedd0240a8215174382b227643348f664",
+    "name": "usb-most-windows-x86_64.exe",
+    "schema": 1,
+    "sha256": "29be5131ec194cec36c83a7addc51a2b1ee808aa935212982506d62cb996b813",
+    "source_commit": "8249697f7b677a2855e24c4b6247c1f5898a6dfc",
+    "source_sha256": "00ceaf018a2fdc16da610033898d260a2b95f5c6960d209b134b30516b212614",
+    "target": "x86_64-pc-windows-msvc",
+    "version": "1.0.13"
+  },
+  "schema": 1,
+  "validation": {
+    "kind": "developer-windows-vm",
+    "run_id": null
+  }
+}

@@ -38,7 +38,8 @@
 Тег позволяет скачать исходники средствами GitHub без публикации APK.
 
 Пока это регламент для исполнителя. Автоматическая интеграция с RuStore
-не настроена. Первого source-снимка приложения в репозитории ещё нет.
+не настроена. Первый проверенный source-снимок подготовлен: v1.0.13-vc10015.
+Это не означает загрузку AAB или публикацию приложения в RuStore.
 
 Основания: [GPLv3](https://opensource.org/license/gpl-3.0),
 [GNU FAQ](https://www.gnu.org/licenses/gpl-faq.en.html#SourceAndBinaryOnDifferentSites),

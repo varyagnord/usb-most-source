@@ -1,0 +1,118 @@
+apply plugin: 'com.android.application'
+
+android {
+    ndkVersion "27.0.12077973"
+
+    namespace "org.cgutman.usbipserverforandroid"
+    compileSdk 34
+    testBuildType (project.findProperty('bridgeTestBuildType') ?: "release")
+    buildFeatures { buildConfig true }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    defaultConfig {
+        applicationId "ru.levchatkin.rutokenbridge"
+        minSdk 26
+        versionCode 10015
+        versionName "1.0.13"
+        targetSdk 34
+        testInstrumentationRunner "ru.levchatkin.rutokenbridge.SmokeInstrumentation"
+        buildConfigField "boolean", "DIAGNOSTICS", "false"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.txt'
+        }
+        diagnostic {
+            initWith release
+            versionNameSuffix "-diagnostic"
+            buildConfigField "boolean", "DIAGNOSTICS", "true"
+            matchingFallbacks = ['release']
+        }
+    }
+
+    sourceSets.main.jniLibs.srcDirs = []
+    sourceSets.main.assets.srcDir layout.buildDirectory.dir("generated/receiverAssets")
+    sourceSets.main.assets.srcDir layout.buildDirectory.dir("generated/thirdPartyNotices")
+    sourceSets.release.jniLibs.srcDirs = [layout.buildDirectory.dir("generated/rustJniLibs")]
+    sourceSets.debug.jniLibs.srcDirs = [layout.buildDirectory.dir("generated/rustJniLibs")]
+    sourceSets.diagnostic.jniLibs.srcDirs = [layout.buildDirectory.dir("generated/rustDiagnosticJniLibs")]
+    sourceSets.androidTest.assets.srcDir rootProject.file("tests/usb-fixtures")
+    if (project.hasProperty("bridgeQrTestAssets")) sourceSets.androidTest.assets.srcDir rootProject.file(project.property("bridgeQrTestAssets"))
+    if (project.hasProperty("bridgeReceiverTestAssets")) sourceSets.androidTest.assets.srcDir rootProject.file(project.property("bridgeReceiverTestAssets"))
+}
+
+dependencies {
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'androidx.activity:activity:1.9.1'
+}
+
+configurations.implementation {
+    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
+}
+
+def androidNotices = tasks.register('collectAndroidNotices') {
+    def metadata = layout.buildDirectory.file('generated/noticesInput/android.json')
+    outputs.file metadata
+    outputs.upToDateWhen { false }
+    doLast {
+        def entries = configurations.releaseRuntimeClasspath.resolvedConfiguration.resolvedArtifacts.collect { artifact ->
+            def id = artifact.moduleVersion.id
+            [group: id.group, name: id.name, version: id.version, file: artifact.file.absolutePath]
+        }.sort { a, b -> "${a.group}:${a.name}" <=> "${b.group}:${b.name}" }
+        metadata.get().asFile.parentFile.mkdirs()
+        metadata.get().asFile.text = groovy.json.JsonOutput.toJson(entries)
+    }
+}
+def thirdPartyNotices = tasks.register('buildThirdPartyNotices', Exec) {
+    dependsOn androidNotices
+    workingDir rootProject.projectDir
+    commandLine 'python3', 'tools/build-notices.py', '--android', layout.buildDirectory.file('generated/noticesInput/android.json').get().asFile, '--output', layout.buildDirectory.dir('generated/thirdPartyNotices').get().asFile
+    outputs.dir layout.buildDirectory.dir('generated/thirdPartyNotices')
+    outputs.upToDateWhen { false }
+}
+
+// Build the same native release library for production and instrumentation.
+// Cargo.lock and the dated nightly make the build reproducible.
+def receiverAssets = tasks.register('buildReceiverAssets', Exec) {
+    workingDir rootProject.projectDir
+    commandLine 'python3', 'tools/build-receivers.py', '--output', layout.buildDirectory.dir("generated/receiverAssets").get().asFile
+    inputs.files(rootProject.file('Cargo.toml'), rootProject.file('Cargo.lock'), rootProject.file('rust-toolchain.toml'), rootProject.file('tools/build-receivers.py'), rootProject.file('server/usb-most-desktop.service'))
+    inputs.dir rootProject.file('native/usb-most-desktop')
+    inputs.dir rootProject.file('native/usb-most-protocol')
+    inputs.dir rootProject.file('native/usb-most-connection')
+    inputs.dir rootProject.file('third_party/russh')
+    inputs.dir rootProject.file('native/usb-most-platform')
+    inputs.files(rootProject.file('tools/receiver_source.py'), rootProject.file('tools/windows_receiver_asset.py'), rootProject.file('server/windows-receiver-lock-x86_64.json'), rootProject.file('server/windows-driver-lock-x86_64.json'))
+    // Revalidate the external CI cache even if Gradle considers source inputs unchanged.
+    outputs.upToDateWhen { false }
+    outputs.dir layout.buildDirectory.dir("generated/receiverAssets")
+}
+def rustJni = tasks.register('buildRustJni', Exec) {
+    workingDir rootProject.projectDir
+    commandLine 'python3', 'tools/build-rust.py', '--output', layout.buildDirectory.dir('generated/rustJniLibs').get().asFile
+    inputs.files(rootProject.file('Cargo.toml'), rootProject.file('Cargo.lock'), rootProject.file('rust-toolchain.toml'), rootProject.file('.cargo/config.toml'), rootProject.file('tools/build-rust.py'))
+    inputs.dir rootProject.file('native/usb-most')
+    inputs.dir rootProject.file('native/usb-most-protocol')
+    inputs.dir rootProject.file('native/usb-most-connection')
+    inputs.dir rootProject.file('third_party/russh')
+    outputs.dir layout.buildDirectory.dir('generated/rustJniLibs')
+}
+def rustDiagnosticJni = tasks.register('buildRustDiagnosticJni', Exec) {
+    workingDir rootProject.projectDir
+    commandLine 'python3', 'tools/build-rust.py', '--diagnostic', '--output', layout.buildDirectory.dir('generated/rustDiagnosticJniLibs').get().asFile
+    inputs.files(rootProject.file('Cargo.toml'), rootProject.file('Cargo.lock'), rootProject.file('rust-toolchain.toml'), rootProject.file('.cargo/config.toml'), rootProject.file('tools/build-rust.py'))
+    inputs.dir rootProject.file('native/usb-most')
+    inputs.dir rootProject.file('native/usb-most-protocol')
+    inputs.dir rootProject.file('native/usb-most-connection')
+    inputs.dir rootProject.file('third_party/russh')
+    outputs.dir layout.buildDirectory.dir('generated/rustDiagnosticJniLibs')
+}
+tasks.matching { it.name in ['preReleaseBuild', 'preDebugBuild'] }.configureEach { dependsOn rustJni, receiverAssets, thirdPartyNotices }
+tasks.matching { it.name == 'preDiagnosticBuild' }.configureEach { dependsOn rustDiagnosticJni, receiverAssets, thirdPartyNotices }

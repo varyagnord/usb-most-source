@@ -1,0 +1,20 @@
+<resources>
+ <item name="add_quick_tile" type="id"/>
+ <item name="computer_edit_name" type="id"/>
+ <item name="add_computer" type="id"/><item name="manage_computers" type="id"/>
+ <item name="check_connection" type="id"/><item name="connection_error_help" type="id"/>
+ <item name="diagnosis_summary" type="id"/><item name="diagnosis_action" type="id"/>
+ <item name="diagnosis_refresh" type="id"/><item name="diagnosis_export" type="id"/>
+ <item name="open_settings" type="id"/><item name="change_computer" type="id"/>
+ <item name="computer_name" type="id"/><item name="save_legacy" type="id"/>
+ <item name="setup_qr" type="id"/><item name="setup_ssh" type="id"/><item name="setup_legacy" type="id"/>
+ <item name="network_vpn" type="id"/><item name="network_lan" type="id"/>
+ <item name="peer_input" type="id"/><item name="bridge_toggle" type="id"/>
+ <item name="bridge_status" type="id"/><item name="usb_device_list" type="id"/>
+ <item name="select_all" type="id"/><item name="export_log" type="id"/>
+ <item name="connection_help" type="id"/><item name="about_bridge" type="id"/>
+ <item name="privacy_notice" type="id"/><item name="privacy_scroll" type="id"/>
+ <item name="privacy_back" type="id"/><item name="privacy_access" type="id"/>
+ <item name="connection_commands" type="id"/><item name="connection_address" type="id"/>
+ <item name="bridge_surface" type="id"/>
+</resources>

@@ -1,0 +1,10 @@
+[package]
+name = "usb-most-protocol"
+version = "1.0.11"
+edition = "2024"
+license = "GPL-3.0-only"
+publish = false
+
+[dependencies]
+zeroize = { version = "=1.9.1", default-features = false }
+subtle = "=2.6.1"

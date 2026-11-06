@@ -1,0 +1,23 @@
+[Unit]
+Description=USB Most automatic USB/IP and WAN companion
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/usb-most/tablet.conf
+ExecStartPre=/usr/sbin/modprobe vhci_hcd
+ExecStart=/usr/local/bin/usb-most-agent ${USB_MOST_TABLET} 127.0.0.1:3242 --auto-attach
+Restart=on-failure
+RestartSec=5
+User=root
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+KillMode=control-group
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target

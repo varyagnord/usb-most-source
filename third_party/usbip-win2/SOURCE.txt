@@ -1,0 +1,7 @@
+Pinned driver API declarations for ABI tests only; not a rebuilt/signed driver.
+Source: https://github.com/vadimgrn/usbip-win2
+Tag v.0.9.8.1, commit55e1fa7f0c2157017b02dc1f3236e98169a535e4.
+Declaration contents retained; line endings normalized to LF.
+BSD-2-Clause license: ../usbip-win2-LICENSE.txt .
+Actual driver distributions are hash-pinned and extracted without executing them
+by native/usb-most-artifacts; only unchanged vendor inf/sys/cat are used.
