@@ -6,7 +6,7 @@
   "sourceTag": "v1.0.13-vc10015",
   "artifactType": "aab",
   "artifactSha256": "b516f6c7434cbc65b3ade927ae6cddb6aa93d09e646e638ff438383465111980",
-  "status": "prepared_not_submitted_to_RuStore",
+  "status": "superseded_before_store_submission",
   "sourceFileCount": 468,
   "sourceManifestSha256": "73d0733ea99f6122b42c55fccb8602d868c1b2ce7c4aa7765a65f33257d45cf0",
   "toolchain": {
@@ -39,5 +39,6 @@
     "Source-only snapshot includes complete production code, build inputs and selected test harnesses"
   ],
   "rustoreListingUrl": null,
-  "rustoreUploadedAt": null
+  "rustoreUploadedAt": null,
+  "replacementSourceTag": "v1.0.13-vc10016"
 }

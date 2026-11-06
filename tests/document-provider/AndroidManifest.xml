@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="ru.levchatkin.usbmost.testdocs" android:versionCode="1" android:versionName="1">
+  <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="34" />
+  <application android:label="USB Most tests" android:debuggable="true" android:allowBackup="false">
+    <provider android:name=".FaultDocuments" android:authorities="ru.levchatkin.usbmost.testdocs.documents" android:exported="true" android:grantUriPermissions="true" android:permission="android.permission.MANAGE_DOCUMENTS">
+      <intent-filter><action android:name="android.content.action.DOCUMENTS_PROVIDER" /></intent-filter>
+    </provider>
+  </application>
+</manifest>

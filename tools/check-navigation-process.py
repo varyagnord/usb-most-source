@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Actual Android process death with an unsaved SSH destination. No network or USB."""
 import argparse
+import fcntl
 import hashlib
 import json
 from pathlib import Path
@@ -8,6 +9,7 @@ import re
 import subprocess
 import time
 import xml.etree.ElementTree as ET
+from lab_android_active_soak import protect_android
 
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--adb', required=True)
@@ -16,6 +18,11 @@ p.add_argument('--apk', type=Path, required=True)
 p.add_argument('--output', type=Path, required=True)
 a = p.parse_args()
 assert re.fullmatch(r'emulator-\d+', a.serial)
+protect_android(a.serial)
+lockdir = Path(__file__).resolve().parents[1] / 'build/e2e/android-locks'
+lockdir.mkdir(parents=True, exist_ok=True)
+android_lock = (lockdir / (a.serial + '.lock')).open('a')
+fcntl.flock(android_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
 adb = [a.adb, '-s', a.serial]
 app = 'ru.levchatkin.rutokenbridge'
 act = app + '/org.cgutman.usbip.config.UsbIpConfig'

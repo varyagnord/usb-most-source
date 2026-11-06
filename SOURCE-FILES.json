@@ -44,10 +44,22 @@
       "sha256": "fe3eea6c599e23a00c08c5f5cb2320c30adc8f8687db5fcec9b79a662c53ff6b"
     },
     {
+      "path": "NOTICE.txt",
+      "mode": "100644",
+      "bytes": 1405,
+      "sha256": "945d7345a6f8724e1cf10fcba8c014400590d6ca469efa786d1ba882a37f4c8d"
+    },
+    {
+      "path": "README.txt",
+      "mode": "100644",
+      "bytes": 6680,
+      "sha256": "c7889a5047094ec5d439228c3a71ed50d9ad17a80c9c5d5777dab595d53b6d17"
+    },
+    {
       "path": "app/build.gradle",
       "mode": "100644",
       "bytes": 6538,
-      "sha256": "e2f50fac58f045b641409b8d926fecc08b71047f5301f3693cbb523e29b1ea14"
+      "sha256": "1074aa91d0d506a279a5c27ec3a5b4d0c8279914295e5d0673922adcc83a2b0a"
     },
     {
       "path": "app/lint.xml",
@@ -202,14 +214,20 @@
     {
       "path": "app/src/main/java/org/cgutman/usbip/config/ConnectionDiagnostics.java",
       "mode": "100644",
-      "bytes": 22266,
-      "sha256": "d7936c754cca0d40a0ab60df4cd6673a5c5cac5b0feadae172da09b4e35c51a0"
+      "bytes": 22146,
+      "sha256": "3ff45a7f2222c5667d327d9487aee857da0fddf54ce5517666945e46ba659525"
     },
     {
       "path": "app/src/main/java/org/cgutman/usbip/config/ConnectionSummary.java",
       "mode": "100644",
       "bytes": 1419,
       "sha256": "d2f7d0218b70eaab76718bb19430735f2838310c0550df51fbcd009becfc0dfc"
+    },
+    {
+      "path": "app/src/main/java/org/cgutman/usbip/config/DiagnosticReportWriter.java",
+      "mode": "100644",
+      "bytes": 561,
+      "sha256": "55abfc7b09a5fa46dffc677f9c347e1f7f16140a2d213261c196fe361d158b45"
     },
     {
       "path": "app/src/main/java/org/cgutman/usbip/config/LicensesActivity.java",
@@ -702,18 +720,6 @@
       "mode": "100644",
       "bytes": 345,
       "sha256": "1d77e28d3bded2f892000197d77eada249f6b1fe02370f632bced742b8bcc30c"
-    },
-    {
-      "path": "NOTICE.txt",
-      "mode": "100644",
-      "bytes": 1405,
-      "sha256": "945d7345a6f8724e1cf10fcba8c014400590d6ca469efa786d1ba882a37f4c8d"
-    },
-    {
-      "path": "README.txt",
-      "mode": "100644",
-      "bytes": 6680,
-      "sha256": "c7889a5047094ec5d439228c3a71ed50d9ad17a80c9c5d5777dab595d53b6d17"
     },
     {
       "path": "gradle.properties",
@@ -1514,6 +1520,18 @@
       "sha256": "3358edf2d46247f1351b41ff402662ed2073b69bb255d36e345a0054a9f9b4c0"
     },
     {
+      "path": "tests/document-provider/AndroidManifest.xml",
+      "mode": "100644",
+      "bytes": 707,
+      "sha256": "aefdb3d11852ca7af288dc42f22f774afba6ea44374153ad05b0e046009f767a"
+    },
+    {
+      "path": "tests/document-provider/FaultDocuments.java",
+      "mode": "100644",
+      "bytes": 5142,
+      "sha256": "6608a9487b283dbd850b92b8009f33b3a0d35b0d32cc58bdc08e2f311685c813"
+    },
+    {
       "path": "tests/fixtures/managed_usb.rs",
       "mode": "100644",
       "bytes": 13203,
@@ -1578,6 +1596,12 @@
       "mode": "100644",
       "bytes": 5061,
       "sha256": "06001ead1624c79723b14a38e54877debddbfd267620c642869e5d5a15d0f5df"
+    },
+    {
+      "path": "tests/java/DiagnosticReportWriterTest.java",
+      "mode": "100644",
+      "bytes": 3070,
+      "sha256": "83f173f3aa6bad561ec9d99e27d6d7b4b00720bb4de49e107acd72558f9c0b43"
     },
     {
       "path": "tests/java/ManagedServerRegressionTests.java",
@@ -2390,6 +2414,12 @@
       "sha256": "56868c6b7080c75010b905c247393121ab6bc44639bd2acb2cf876ad5e25dba9"
     },
     {
+      "path": "tools/build-document-provider-fixture.py",
+      "mode": "100644",
+      "bytes": 2773,
+      "sha256": "f843ff84ea50909b1ad3feea2c655fa6cbb49b8dc12e7d4b15b7a4722a19f2e2"
+    },
+    {
       "path": "tools/build-notices.py",
       "mode": "100644",
       "bytes": 6507,
@@ -2416,14 +2446,20 @@
     {
       "path": "tools/check-diagnostic-export.py",
       "mode": "100644",
-      "bytes": 11860,
-      "sha256": "600f70bec22a697cb5f46e546cdca8ab2b0c54a8a3d953a75f139e8bacbaa9e9"
+      "bytes": 20789,
+      "sha256": "25540edb43e4bd611ee76caad3ecf429a5b2c791051d030ffa27d2f21fb7e16d"
+    },
+    {
+      "path": "tools/check-killed-computer-save.py",
+      "mode": "100644",
+      "bytes": 11033,
+      "sha256": "7d17f7167bbce9da79cf21826ef00bea77366d50e04b577291b0ae752e60325b"
     },
     {
       "path": "tools/check-navigation-process.py",
       "mode": "100644",
-      "bytes": 6809,
-      "sha256": "c54f4657fb9dad023afd1173e08d0c01b868a5cd18b7bad297acc6ccbf56947d"
+      "bytes": 7132,
+      "sha256": "0e95451630cbbdaf8c8064c01d900fe976a8e81a924e485ba9d248b8ddd4c3a6"
     },
     {
       "path": "tools/check-responsive-ui.py",

@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "applicationId": "ru.levchatkin.rutokenbridge",
+  "versionName": "1.0.13",
+  "versionCode": 10016,
+  "sourceTag": "v1.0.13-vc10016",
+  "artifactType": "aab",
+  "artifactSha256": "6aea2e7d57a5b94f253fe36a2f70c7cc19b307cf7854a9808c680f83c9b11564",
+  "status": "prepared_not_submitted_to_RuStore",
+  "sourceFileCount": 474,
+  "sourceManifestSha256": "000a8bd716667418d707b80dac5ad7a4119a0b3dabccb4ceb3ef01de407250e0",
+  "toolchain": {
+    "rust": "nightly-2026-11-02; rustc 1.101.0-nightly (3e92e1a2d)",
+    "gradle": "8.7",
+    "androidGradlePlugin": "8.5.1",
+    "jdk": "OpenJDK 21.0.13",
+    "compileSdk": 34,
+    "targetSdk": 34,
+    "minSdk": 26,
+    "ndk": "27.0.12077973"
+  },
+  "validation": {
+    "fourAndroidAbis": true,
+    "nativeAndApk16KiBAlignment": true,
+    "independentSourceBuild": true,
+    "equivalence": "All APK/AAB payload entries identical except AGP no-Git metadata",
+    "androidCoreApis": [
+      26,
+      31
+    ],
+    "windows": "Windows 11 LTSC2024 26100.1742; signed driver, service identity, journal rollback, synthetic kernel HID/storage, actual Android SSH/TLS",
+    "linux": "Ubuntu 24.04.5; actual Android SSH/TLS and five-button synthetic HID",
+    "scope": "Emulators and owned VMs; no universal physical USB or all-OS claim",
+    "androidFunctionalApis": [
+      34
+    ],
+    "diagnosticCloseErrorHostChecks": 12,
+    "actualSafFaultsAfterProcessDeath": [
+      "open failure",
+      "broken write pipe",
+      "error announcement and byte-exact retry using system Downloads"
+    ],
+    "nativeValidationContinuity": "All168 native/receiver/license APK entries byte-identical to vc10015; prior Windows/Ubuntu SSH/TLS evidence retained for those exact unchanged bytes"
+  },
+  "changes": [
+    "Saved SSH trust survives endpoint edits; paired TLS host can be edited without reusing a different claim",
+    "Windows installer configures per-service SID for its constrained LAN firewall rule and preserves prior SID for rollback",
+    "Source-only snapshot includes complete production code, build inputs and selected test harnesses",
+    "Report export succeeds only after OutputStream.close completes; failures during open/write/close do not report success",
+    "Deterministic actual pending-save SIGKILL and SAF provider-failure regression harnesses included"
+  ],
+  "rustoreListingUrl": null,
+  "rustoreUploadedAt": null
+}

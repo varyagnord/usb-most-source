@@ -10,6 +10,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import shlex
 import subprocess
 import time
 import xml.etree.ElementTree as ET
@@ -24,7 +25,13 @@ p.add_argument('--process-death', action='store_true',
                help='Kill only the owned app while DocumentsUI holds the pending export')
 p.add_argument('--cancel', action='store_true',
                help='Cancel the system export and verify no document and a usable fresh preview')
+p.add_argument('--provider-apk', type=Path,
+               help='Separate emulator-only DocumentsProvider/accessibility probe APK')
+p.add_argument('--provider-fault', choices=['open', 'write'],
+               help='Use the test provider and require an actual export error, then retry successfully')
 a = p.parse_args()
+if bool(a.provider_apk) != bool(a.provider_fault) or (a.cancel and a.provider_fault):
+    p.error('Provider fault requires its APK and cannot be combined with cancellation')
 assert re.fullmatch(r'emulator-\d+', a.serial)
 protect_android(a.serial)
 lockdir = Path(__file__).resolve().parents[1] / 'build/e2e/android-locks'
@@ -61,14 +68,14 @@ def nodes():
 def box(node):
     return list(map(int, re.findall(r'\d+', node.get('bounds', ''))))
 
-def find(predicate, scroll=True):
+def find(predicate, scroll=True, min_height=24):
     for attempt in range(22):
         tree = nodes()
         for node in tree:
             if not predicate(node):
                 continue
             x, y, xx, yy = box(node)
-            if xx > x and yy - y >= 24:
+            if xx > x and yy - y >= min_height:
                 return node
         area = next((n for n in tree if n.get('scrollable') == 'true'), None)
         if scroll and area is not None:
@@ -114,16 +121,101 @@ def setup_field(label, value):
 
 report = {'status': 'running', 'checks': checks,
           'process_death': a.process_death,
-          'outcome': 'cancel' if a.cancel else 'save',
+          'outcome': 'provider-failure-' + a.provider_fault if a.provider_fault else ('cancel' if a.cancel else 'save'),
           'harness_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
           'apk_sha256': hashlib.sha256(a.apk.read_bytes()).hexdigest()}
+probe_package = 'ru.levchatkin.usbmost.testdocs'
+prior_accessibility = None
+active_recorder = None
+
+
+def provider_events():
+    return run('shell', 'run-as', probe_package, 'cat', 'files/events.txt', check=False).splitlines()
+
+
+def start_recorder(name):
+    global active_recorder
+    assert active_recorder is None
+    pidfile = '/data/local/tmp/usb-most-events-' + str(time.time_ns()) + '.pid'
+    path = a.output / (name + '-accessibility.txt')
+    stream = path.open('w')
+    script = 'echo $$ > ' + pidfile + '; exec uiautomator events'
+    child = subprocess.Popen(adb + ['shell', 'sh -c ' + shlex.quote(script)],
+                             stdout=stream, stderr=subprocess.STDOUT)
+    active_recorder = dict(child=child, stream=stream, path=path, pidfile=pidfile)
+    for _ in range(100):
+        if 'EventType:' in path.read_text():
+            pid = run('shell', 'cat', pidfile)
+            assert pid.isdecimal()
+            cmd = run('shell', 'cat', '/proc/' + pid + '/cmdline')
+            assert recorder_command(cmd)
+            active_recorder['pid'] = pid
+            active_recorder['stat'] = run('shell', 'cat', '/proc/' + pid + '/stat').rsplit(') ', 1)[1].split()[19]
+            return path
+        assert child.poll() is None, 'UI event recorder exited'
+        time.sleep(.1)
+    raise AssertionError('UI event recorder did not become ready')
+
+
+def recorder_command(cmd):
+    # The framework Launcher sets argv[0] to "uiautomator" on some API levels.
+    return cmd.split('\0')[0] == 'uiautomator' or (
+        'com.android.commands.uiautomator.Launcher' in cmd and 'events' in cmd)
+
+
+def stop_recorder():
+    global active_recorder
+    if active_recorder is None:
+        return
+    r = active_recorder
+    if r['child'].poll() is None:
+        if 'pid' not in r:
+            pid = run('shell', 'cat', r['pidfile'])
+            assert pid.isdecimal()
+            r['pid'] = pid
+        cmd = run('shell', 'cat', '/proc/' + r['pid'] + '/cmdline', check=False)
+        if not cmd:
+            r['child'].wait(timeout=10)
+            r['stream'].close()
+            active_recorder = None
+            return
+        assert recorder_command(cmd)
+        if 'stat' in r:
+            assert run('shell', 'cat', '/proc/' + r['pid'] + '/stat').rsplit(') ', 1)[1].split()[19] == r['stat']
+        run('shell', 'kill', '-TERM', r['pid'])
+    r['child'].wait(timeout=10)
+    r['stream'].close()
+    active_recorder = None
+
+
+def await_toast(path, text):
+    for _ in range(100):
+        lines = path.read_text().splitlines()
+        if any('TYPE_NOTIFICATION_STATE_CHANGED' in line and text in line for line in lines):
+            break
+        time.sleep(.1)
+    stop_recorder()
+    lines = path.read_text().splitlines()
+    return [line for line in lines if 'TYPE_NOTIFICATION_STATE_CHANGED' in line]
+
+
 try:
     verify(run('shell', 'getprop', 'ro.kernel.qemu') == '1', 'owned emulator')
     report['api'] = int(run('shell', 'getprop', 'ro.build.version.sdk'))
+    if a.provider_fault:
+        report['provider_apk_sha256'] = hashlib.sha256(a.provider_apk.read_bytes()).hexdigest()
+        if run('shell', 'pm', 'path', probe_package, check=False).startswith('package:'):
+            verify('Success' in run('uninstall', probe_package), 'previous disposable provider removed')
+        verify('Success' in run('install', '-r', str(a.provider_apk.resolve())), 'separate fault provider installed')
+        verify('Success' in run('shell', 'pm', 'clear', probe_package), 'only test provider data reset')
+        prior_accessibility = {key: run('shell', 'settings', 'get', 'secure', key)
+                               for key in ('enabled_accessibility_services', 'accessibility_enabled')}
     verify('Success' in run('install', '-r', str(a.apk.resolve())), 'exact candidate installed')
     verify('Success' in run('shell', 'pm', 'clear', app), 'isolated fixture data reset')
     run('shell', 'input', 'keyevent', 'KEYCODE_WAKEUP')
     run('shell', 'wm', 'dismiss-keyguard')
+    run('shell', 'input', 'keyevent', 'KEYCODE_HOME')
+    nodes()  # Settle the old DocumentsUI/activity task after clearing fixture data.
     run('shell', 'am', 'start', '-W', '-n', app + '/org.cgutman.usbip.config.UsbIpConfig')
     click('Настроить подключение')
     click('Через SSH')
@@ -147,7 +239,7 @@ try:
     preview_report = max((n.get('text', '') for n in nodes()
                           if n.get('text', '').startswith('USB Мост')), key=len)
     click('Сохранить')
-    filename = 'usb-most-check-e2e-' + str(time.time_ns()) + '.txt'
+    filename = ('fail-' + a.provider_fault + '-' if a.provider_fault else 'usb-most-check-e2e-') + str(time.time_ns()) + '.txt'
     replace(find(lambda n: n.get('class') == 'android.widget.EditText', scroll=False), filename)
     tree = nodes()
     # The emulator's DocumentsUI uses English labels; a Russian image is accepted too.
@@ -160,6 +252,18 @@ try:
             tap(root_button)
         tap(find(lambda n: n.get('text') in ('Downloads', 'Загрузки'), scroll=False))
         save = find(lambda n: n.get('text', '').lower() in ('save', 'сохранить')
+                    and n.get('enabled') == 'true', scroll=False)
+    if a.provider_fault:
+        tree = nodes()
+        root_button = next((n for n in tree if n.get('content-desc') in
+                            ('Show roots', 'Показать корневые каталоги', 'Open navigation drawer')), None)
+        if root_button is not None:
+            tap(root_button)
+        tap(find(lambda n: n.get('text') == 'USB Most tests'
+                 and n.get('resource-id') == 'android:id/title', scroll=False, min_height=1))
+        replace(find(lambda n: n.get('class') == 'android.widget.EditText', scroll=False), filename)
+        save = find(lambda n: n.get('resource-id', '').endswith('/button1')
+                    and n.get('text', '').lower() in ('save', 'сохранить')
                     and n.get('enabled') == 'true', scroll=False)
     if a.process_death:
         verify(save.get('package', '').endswith('documentsui'), 'system document provider owns foreground')
@@ -181,13 +285,60 @@ try:
     if a.cancel:
         run('shell', 'input', 'keyevent', 'KEYCODE_BACK')
     else:
+        if a.provider_fault:
+            error_log = start_recorder('provider-failure')
         tap(save)
+    if a.provider_fault:
+        notifications = await_toast(error_log, 'Не удалось сохранить отчёт')
+        events = provider_events()
+        (a.output/'provider-events-before-retry.txt').write_text('\n'.join(events)+'\n')
+        verify('fail-' + a.provider_fault in events, 'actual provider exercised the selected failure path')
+        verify(any('Не удалось сохранить отчёт' in n for n in notifications), 'actual app announced export failure')
+        verify(not any('Отчёт сохранён' in n for n in notifications), 'failed provider never produced a success message')
     find(lambda n: n.get('resource-id', '').endswith('/diagnosis_refresh'))
     if a.process_death:
         after = run('shell', 'pidof', app)
         verify(bool(re.fullmatch(r'\d+', after)) and before != after,
                'SAF result restored a new application process')
-    if a.cancel:
+    if a.provider_fault:
+        tap(find(lambda n: n.get('resource-id', '').endswith('/diagnosis_refresh')))
+        click('Сохранить отчёт')
+        preview = '\n'.join(n.get('text', '') for n in nodes())
+        verify('Отчёт для поддержки' in preview, 'fresh preview is usable after real provider failure')
+        verify(all(value not in preview for value in ('127.0.0.1', 'report-fixture-user', 'report-fixture-password')),
+               'retry preview excludes private fixture values')
+        approved_retry = max((n.get('text', '') for n in nodes()
+                              if n.get('text', '').startswith('USB Мост')), key=len)
+        click('Сохранить')
+        tree = nodes()
+        root_button = next((n for n in tree if n.get('content-desc') in
+                            ('Show roots', 'Показать корневые каталоги', 'Open navigation drawer')), None)
+        if root_button is not None:
+            tap(root_button)
+        tap(find(lambda n: n.get('text') in ('Downloads', 'Загрузки')
+                 and n.get('resource-id') == 'android:id/title', scroll=False, min_height=1))
+        good_name = 'write-ok-' + str(time.time_ns()) + '.txt'
+        replace(find(lambda n: n.get('class') == 'android.widget.EditText', scroll=False), good_name)
+        save = find(lambda n: n.get('resource-id', '').endswith('/button1')
+                    and n.get('text', '').lower() in ('save', 'сохранить')
+                    and n.get('enabled') == 'true', scroll=False)
+        success_log = start_recorder('provider-retry')
+        tap(save)
+        notifications = await_toast(success_log, 'Отчёт сохранён')
+        events = provider_events()
+        verify(sum('Отчёт сохранён' in n for n in notifications) == 1
+               and not any('Не удалось сохранить отчёт' in n for n in notifications),
+               'successful retry produces exactly one new success and no error')
+        path = '/sdcard/Download/' + good_name
+        actual = subprocess.run(adb + ['exec-out', 'cat', path],
+                                capture_output=True, check=True, timeout=60).stdout
+        verify(actual == approved_retry.encode('utf-8'), 'retry saved byte-exact newly approved report')
+        (a.output/'provider-events.txt').write_text('\n'.join(events)+'\n')
+        (a.output/'retry-report.txt').write_bytes(actual)
+        report['retry_document_sha256'] = hashlib.sha256(actual).hexdigest()
+        report['retry_provider'] = 'system Downloads after failing test provider'
+        find(lambda n: n.get('resource-id', '').endswith('/diagnosis_refresh'))
+    elif a.cancel:
         for directory in ('/sdcard/Download', '/sdcard/Documents'):
             probe = subprocess.run(adb + ['shell', 'test', '-e', directory + '/' + filename],
                                    capture_output=True, timeout=60)
@@ -229,5 +380,12 @@ except BaseException as error:
     report['error'] = str(error)
     raise
 finally:
+    stop_recorder()
     run('shell', 'am', 'force-stop', app, check=False)
+    if prior_accessibility is not None:
+        report['original_accessibility_settings_restored'] = all(
+            run('shell', 'settings', 'get', 'secure', key) == value
+            for key, value in prior_accessibility.items())
+        assert report['original_accessibility_settings_restored']
+        run('shell', 'am', 'force-stop', probe_package, check=False)
     (a.output/'result.json').write_text(json.dumps(report, indent=2)+'\n')

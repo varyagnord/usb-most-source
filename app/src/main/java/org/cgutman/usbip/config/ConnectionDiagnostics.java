@@ -10,7 +10,6 @@ import android.widget.*;
 import androidx.activity.ComponentActivity;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import org.cgutman.usbip.connection.ComputerRepository;
 import org.cgutman.usbip.connection.ConnectionObservation;
@@ -41,9 +40,9 @@ public final class ConnectionDiagnostics extends ComponentActivity {
             new Thread(
                     () -> {
                       boolean success = false;
-                      try (OutputStream out = getContentResolver().openOutputStream(uri)) {
-                        if (out == null) throw new java.io.IOException("output_unavailable");
-                        out.write(text.getBytes(StandardCharsets.UTF_8));
+                      try {
+                        DiagnosticReportWriter.writeAndClose(
+                            getContentResolver().openOutputStream(uri), text);
                         success = true;
                       } catch (Exception ignored) {
                       }
