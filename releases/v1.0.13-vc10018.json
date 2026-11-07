@@ -46,10 +46,12 @@
     "limits": [
       "Owned VMs/emulators and synthetic USB only",
       "Windows11 Enterprise LTSC2024 26100.9457 with existing signed controller; no all-Windows or HVCI claim",
-      "Current receiver graphical requalification and other OS matrix remain separate; prior exact17 GUI evidence retained",
-      "No real RuStore-delivered installation or physical-device compatibility claim"
-    ]
+      "No real RuStore-delivered installation or physical-device compatibility claim",
+      "Fresh OS/driver deployment, current Linux GUI, other Windows/Linux/HVCI/MOTW remain separately scoped; VM clean OS shutdown not independently confirmed"
+    ],
+    "currentWindowsGui": "Current published63 executable/ZIP, ordinary account/separate administrator real UAC reject/accept, Win32 TokenElevation/ordinary Edge, protected handoff ACL, ready page, console Ctrl+C and exact7-file cleanup passed on26100.9457"
   },
   "receiverDownloads": "https://github.com/varyagnord/usb-most-downloads/releases/tag/v1.0.13-vc10018",
-  "storeListingUrl": null
+  "storeListingUrl": null,
+  "qaMetadataUpdatedAt": "2026-11-07T19:58:50.656469+00:00"
 }
