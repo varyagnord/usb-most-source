@@ -4,9 +4,9 @@
     "driver_manifest_sha256": "6ba2833aae2553416b599d75e4ef673fedd0240a8215174382b227643348f664",
     "name": "usb-most-windows-x86_64.exe",
     "schema": 1,
-    "sha256": "c361c62b69fe2ca41f52f09e428cfa697e5cc7227d74d06110d52b8c917227aa",
-    "source_commit": "308432063cec0245460fac3f4970996cdf5cb20f",
-    "source_sha256": "4276582418ab217bcc6d734b3deaa80a8950692c607ebb1dec39069b44692d04",
+    "sha256": "63c5b07e9eb3afda22adb2c22c05ae8b387fbc58d5dc8be0d38e736260d3f081",
+    "source_commit": "029f129c1a5f228df499808b496abab614d54863",
+    "source_sha256": "fc0fdc4dfd96abfa2781983803d100c5627b9fd426d6fcb4a7bf1171a16d8b29",
     "target": "x86_64-pc-windows-msvc",
     "version": "1.0.13"
   },

@@ -59,7 +59,7 @@
       "path": "app/build.gradle",
       "mode": "100644",
       "bytes": 6538,
-      "sha256": "12f1925e5bc3ed02e5b189c15fa1afdb1040bc882c858d3d9f1d2f05360d49ec"
+      "sha256": "72eeb0d5629ef97cc4361a9497828a5d809e9c842020ffd6bbf38e70effeee0f"
     },
     {
       "path": "app/lint.xml",
@@ -130,8 +130,8 @@
     {
       "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/OsEjectionSuite.java",
       "mode": "100644",
-      "bytes": 39066,
-      "sha256": "13afc20a0e0498f7c62fd27e190ae2d3f229f876f8b21d6e09aa6a40e7a21323"
+      "bytes": 49833,
+      "sha256": "bf0fdea5dd915e8ac88ba4cd4beb3c902a810af04d25182bb2a1510d5c7b122c"
     },
     {
       "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/PairingSuite.java",
@@ -160,8 +160,8 @@
     {
       "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/SmokeInstrumentation.java",
       "mode": "100644",
-      "bytes": 81432,
-      "sha256": "55045133b2f04b91cf35ee783e3f315c4a2b5221fd9f305dd28c2ff77e0cc352"
+      "bytes": 81608,
+      "sha256": "06f04d7a92906e26cda746ae71d03f7ee6d5fd208b8a1318cc890be9c301fa7d"
     },
     {
       "path": "app/src/androidTest/java/ru/levchatkin/rutokenbridge/TransportRecoverySuite.java",
@@ -1120,14 +1120,14 @@
     {
       "path": "native/usb-most-desktop/src/network.rs",
       "mode": "100644",
-      "bytes": 4545,
-      "sha256": "eeb0ba4da6e8441b3a86ac5c80f1f788244d2d149cb910f221771e77390513c6"
+      "bytes": 6255,
+      "sha256": "1d9663a8e43674f3d04c97580101dfd3f446c242f1dfd31a2444864676547f00"
     },
     {
       "path": "native/usb-most-desktop/src/setup.rs",
       "mode": "100644",
-      "bytes": 10844,
-      "sha256": "1ba414e2faa851f89a691632d9d808a9b8595a6f6240b914284956440d661ee8"
+      "bytes": 11155,
+      "sha256": "c73c8680a432da7e68e0eee81068f8fcaab94489cce9a37c1ef8a7810caaf02b"
     },
     {
       "path": "native/usb-most-desktop/src/setup_windows.rs",
@@ -1487,7 +1487,7 @@
       "path": "server/windows-receiver-lock-x86_64.json",
       "mode": "100644",
       "bytes": 597,
-      "sha256": "66b37058d92fe2742effd5098617c6d3dfa5316cbe48838d8703306d17a6401f"
+      "sha256": "e0a74dc9a7780f2add954f605a8f5937e0556e391a4c47605ff3cd8b0e6f0883"
     },
     {
       "path": "settings.gradle",
@@ -2498,16 +2498,28 @@
       "sha256": "0ba151d4f26208ca4e0aa96757aa22bc264a8cac565a6caff55141c3b541b4a5"
     },
     {
+      "path": "tools/lab_active_receiver_upgrade.py",
+      "mode": "100644",
+      "bytes": 7920,
+      "sha256": "fcde0b8c03f8f96047c68675bd2d7fa34c2b02e41da719d5a6ea13ff16956623"
+    },
+    {
       "path": "tools/lab_android_active_soak.py",
       "mode": "100644",
       "bytes": 6831,
       "sha256": "563b400afd70a3b84409083f4ead70a0eb9ae43f5d03233e09d848bdb6df7779"
     },
     {
+      "path": "tools/lab_android_reboot.py",
+      "mode": "100644",
+      "bytes": 8516,
+      "sha256": "e2d37a34ad5c3ed7fcffc05ad6bd904ed9827d532d3900d02b2d8f77f52eb48e"
+    },
+    {
       "path": "tools/lab_android_storage.py",
       "mode": "100644",
-      "bytes": 20228,
-      "sha256": "f57126db56e73db1e18aca43503b9fcce00b7d15a24be8797ddaa58c381a7898"
+      "bytes": 21530,
+      "sha256": "e2cde60bc14b03b780644cf31657abfb120e505877206b1fe7267be782f184c1"
     },
     {
       "path": "tools/lab_live_profiles.py",
@@ -2686,8 +2698,8 @@
     {
       "path": "tools/run-android-os-eject-e2e.py",
       "mode": "100644",
-      "bytes": 32379,
-      "sha256": "377a12fd7cfc7669d9cb17005eed9e40b975b010626b09f9fad14b0f3a4e671d"
+      "bytes": 43480,
+      "sha256": "842290d1efa961c1579b566170b6ce2817b915236a8c4c8ae8f6857b2b2707b6"
     },
     {
       "path": "tools/run-android-pairing-e2e.py",

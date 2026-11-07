@@ -43,6 +43,9 @@ final class OsEjectionSuite {
   private QemuUsbBackend backend;
   private File directory;
   private String marker;
+  private String rebootStage;
+  private boolean rebootAllowBusy, rebootBusy;
+  private boolean receiverReboot, receiverRebootWindow, receiverUpgrade;
   private final JSONArray outcomes = new JSONArray();
 
   OsEjectionSuite(Instrumentation test) {
@@ -88,9 +91,15 @@ final class OsEjectionSuite {
         owned[1] = repository.isBusy();
       });
       ConnectionObservation.State state = observed[0];
+      if (rebootAllowBusy && "computer_busy".equals(state.failure)) {
+        check(!state.active && !connected, "cold Busy never claims a connected service");
+        rebootBusy = true;
+        return;
+      }
       if ((state.failure != null && !(revoking && state.failure.equals("pairing_required")))
-          || (!revoking && state.phase.equals("reconnecting")))
+          || (!revoking && !receiverRebootWindow && state.phase.equals("reconnecting")))
         throw new AssertionError("actual service connection " + state.phase + ":" + state.failure);
+      if (receiverRebootWindow && !state.phase.equals("connected")) connected = false;
       if (state.phase.equals("connected")) {
         if (!owned[0] || !owned[1])
           throw new AssertionError("connected observation without service/repository owner");
@@ -228,6 +237,11 @@ final class OsEjectionSuite {
           "exact TLS identity retained");
     } finally {
       Arrays.fill(editor, (byte) 0);
+    }
+    if (receiverUpgrade) {
+      screenshot("receiver-upgrade-idle");
+      phase("RECEIVER_UPGRADE_IDLE");
+      host("receiver-upgraded");
     }
     connected = false;
     visible("Запустить мост", true);
@@ -618,6 +632,131 @@ final class OsEjectionSuite {
     phase("LOCAL_NETWORK_DIAGNOSIS");
   }
 
+  private JSONObject savedRebootCredentials(String computerId) throws Exception {
+    byte[] editor = repository.edit(computerId, repository.snapshot().revision)
+        .get(15, TimeUnit.SECONDS);
+    try {
+      JSONObject connection = new JSONObject(new String(editor, StandardCharsets.UTF_8))
+          .getJSONObject("connection");
+      JSONObject secret = connection.getJSONObject("credentials");
+      String token = secret.optString("token", "");
+      check(!token.isEmpty() && secret.isNull("pair_code") && secret.isNull("pair_nonce"),
+          "actual service persisted token and retired one-time claim");
+      byte[] raw = token.getBytes(StandardCharsets.UTF_8);
+      byte[] digest;
+      try { digest = java.security.MessageDigest.getInstance("SHA-256").digest(raw); }
+      finally { Arrays.fill(raw, (byte) 0); }
+      return new JSONObject().put("computer_id", computerId)
+          .put("pin", connection.getJSONObject("profile").getString("server_pin"))
+          .put("token_digest", android.util.Base64.encodeToString(digest, android.util.Base64.NO_WRAP));
+    } finally { Arrays.fill(editor, (byte) 0); }
+  }
+
+  private void receiverReboot(String computerId, UsbInventory inventory, UsbDevice disk)
+      throws Exception {
+    JSONObject before = savedRebootCredentials(computerId);
+    check(UsbIpService.running && repository.isBusy() && backend.attached.get() == 1,
+        "receiver reboot starts with actual active service/import");
+    check(backend.submitted.get() > 10 && backend.completed.get() > 10,
+        "real storage URBs before receiver reboot");
+    receiverRebootWindow = true;
+    screenshot("receiver-reboot-active");
+    phase("PC_REBOOT_PENDING");
+    await(() -> !connected, "receiver shutdown loses actual connected observation", 120);
+    check(UsbIpService.running && repository.isBusy(), "Android service retained while PC is down");
+    visible("Восстановление подключения…", false);
+    await(() -> {
+      UsbInventory.Item item = inventory.item(disk.getDeviceId());
+      return item != null && !item.selected && !item.approved && !item.inUse;
+    }, "receiver loss retires import and storage grants", 30);
+    screenshot("receiver-reboot-disconnected");
+    phase("PC_REBOOT_DISCONNECTED");
+    host("receiver-restarted");
+    await(() -> connected, "same Android service reconnects after actual PC boot", 120);
+    JSONObject after = savedRebootCredentials(computerId);
+    check(before.toString().equals(after.toString()), "same saved computer/TLS identity/token after PC boot");
+    UsbInventory.Item item = inventory.item(disk.getDeviceId());
+    check(!item.selected && !item.approved && !item.inUse,
+        "automatic TLS reconnect never renews storage consent");
+    visible("Защищённое подключение", false);
+    screenshot("receiver-reboot-reconnected");
+    phase("PC_REBOOT_RECONNECTED");
+    host("receiver-verified");
+    visible("Остановить мост", true);
+    await(() -> !UsbIpService.running && !repository.isBusy(), "stop after PC reboot", 20);
+    receiverRebootWindow = false;
+    phase("PC_REBOOT_RECOVERED");
+  }
+
+  private void rebootResume(String computerId, UsbInventory inventory, UsbDevice disk)
+      throws Exception {
+    File checkpointFile = new File(context.getNoBackupFilesDir(), "reboot-checkpoint.json");
+    check(checkpointFile.length() > 0 && checkpointFile.length() < 4096, "bounded reboot checkpoint");
+    byte[] bytes = new byte[(int) checkpointFile.length()];
+    try (DataInputStream in = new DataInputStream(new FileInputStream(checkpointFile))) {
+      in.readFully(bytes); check(in.read() == -1, "exact reboot checkpoint");
+    }
+    JSONObject before = new JSONObject(new String(bytes, StandardCharsets.UTF_8));
+    JSONObject current = savedRebootCredentials(computerId);
+    check(before.getString("computer_id").equals(current.getString("computer_id"))
+        && before.getString("pin").equals(current.getString("pin"))
+        && before.getString("token_digest").equals(current.getString("token_digest")),
+        "same saved computer, TLS identity and Keystore-decrypted token after real boot");
+    UsbInventory.Item item = inventory.item(disk.getDeviceId());
+    check(!UsbIpService.running && !repository.isBusy(), "boot does not invent an active service");
+    check(item != null && !item.selected && !item.approved && !item.inUse,
+        "new boot cannot inherit old storage selection/consent/import");
+    visible("Запустить мост", false);
+    screenshot("reboot-stopped-unselected");
+    rebootAllowBusy = true;
+    visible("Запустить мост", true);
+    await(() -> connected || rebootBusy, "postboot actual connection or truthful first-use Busy", 90);
+    if (rebootBusy) {
+      await(() -> !UsbIpService.running && !repository.isBusy(), "Busy closes actual service", 15);
+      visible("Не удалось подключиться: компьютер занят другим подключением", false);
+      screenshot("reboot-busy-no-false-success");
+    }
+    File outcome = new File(directory, "reboot-first-attempt.json");
+    try (FileOutputStream output = new FileOutputStream(outcome)) {
+      output.write(new JSONObject().put("busy", rebootBusy).put("connected", connected)
+          .toString().getBytes(StandardCharsets.UTF_8));
+      output.getFD().sync();
+    }
+    phase("REBOOT_FIRST_ATTEMPT");
+    host("reboot-continue");
+    if (rebootBusy) {
+      visible("Запустить мост", true);
+      long until = SystemClock.elapsedRealtime() + 15000;
+      while ("computer_busy".equals(ConnectionObservation.forProfile(
+          repository.snapshot().connectionKey()).failure)) {
+        check(SystemClock.elapsedRealtime() < until, "new explicit attempt clears prior Busy observation");
+        Thread.sleep(40);
+      }
+      rebootBusy = false;
+    }
+    rebootAllowBusy = false;
+    await(() -> connected, "actual saved-token connection after old CONTROL retires", 90);
+    check(outcome.delete(), "own first-attempt observation removed");
+    main(() -> {
+      try {
+        UsbIpService owner = service();
+        Field adapter = UsbIpService.class.getDeclaredField("usbRequests");
+        adapter.setAccessible(true);
+        check(owner != null && adapter.get(owner) == owner, "postboot service uses default Android USB adapter");
+      } catch (Exception error) { throw new AssertionError(error); }
+    });
+    item = inventory.item(disk.getDeviceId());
+    check(!item.selected && !item.approved && !item.inUse,
+        "reconnect still requires fresh explicit storage consent");
+    phase("REBOOT_RECONNECTED");
+    host("reboot-connected");
+    visible("Остановить мост", true);
+    await(() -> !UsbIpService.running && !repository.isBusy(), "postboot service stops cleanly", 15);
+    check(checkpointFile.delete(), "own reboot checkpoint removed");
+    screenshot("reboot-finished");
+    phase("REBOOT_RECOVERED");
+  }
+
   int run() throws Exception {
     try (InputStream input =
         new ParcelFileDescriptor.AutoCloseInputStream(
@@ -629,7 +768,10 @@ final class OsEjectionSuite {
           "emulator only");
     }
     directory = context.getExternalFilesDir(null);
-    File configFile = new File(directory, "os-ejection-fixture.json");
+    boolean privateResume = ((SmokeInstrumentation) test).osRebootResume();
+    File configFile = privateResume
+        ? new File(context.getNoBackupFilesDir(), "reboot-test-fixture.json")
+        : new File(directory, "os-ejection-fixture.json");
     check(configFile.length() > 0 && configFile.length() < 16384, "bounded private config");
     byte[] raw = new byte[(int) configFile.length()];
     try (DataInputStream input = new DataInputStream(new FileInputStream(configFile))) {
@@ -640,6 +782,8 @@ final class OsEjectionSuite {
     foregroundService = config.optBoolean("foreground_service", false);
     localOnlyNetwork = config.optBoolean("local_only_network", false);
     check(!localOnlyNetwork || foregroundService, "local network requires actual service");
+    receiverReboot = config.optBoolean("receiver_reboot", false);
+    receiverUpgrade = config.optBoolean("receiver_upgrade", false);
     remoteRevocation = config.optBoolean("remote_revocation", false);
     manualFallback = config.optBoolean("manual_fallback", false);
     profileAction = config.optString("profile_action", "");
@@ -660,7 +804,20 @@ final class OsEjectionSuite {
     ComputerRepository repo = ComputerRepository.get(context);
     repository = repo;
     repo.ready().get(30, TimeUnit.SECONDS);
-    repo.reset().get(30, TimeUnit.SECONDS);
+    rebootStage = config.optString("reboot_stage", "");
+    check(!privateResume || (rebootStage.equals("resume")
+        && config.getJSONObject("secret").length() == 0), "private postboot fixture has no pairing secret");
+    check(rebootStage.isEmpty() || (foregroundService
+        && (rebootStage.equals("before") || rebootStage.equals("resume"))
+        && profileAction.isEmpty() && !manualFallback && !remoteRevocation
+        && config.optInt("active_soak_seconds", 0) == 0), "bounded reboot scenario");
+    check(!receiverReboot || (foregroundService && rebootStage.isEmpty()
+        && profileAction.isEmpty() && !manualFallback && !remoteRevocation
+        && config.optInt("active_soak_seconds", 0) == 0), "bounded receiver reboot");
+    check(!receiverUpgrade || (foregroundService && !receiverReboot && rebootStage.isEmpty()
+        && profileAction.isEmpty() && !manualFallback && !remoteRevocation
+        && config.optInt("active_soak_seconds", 0) == 0), "bounded active receiver upgrade");
+    if (!rebootStage.equals("resume")) repo.reset().get(30, TimeUnit.SECONDS);
     if (!profileAction.isEmpty()) {
       byte[] command = new JSONObject().put("op", "add").put("revision", repo.snapshot().revision)
           .put("name", "Другой компьютер").put("activate", true)
@@ -670,7 +827,7 @@ final class OsEjectionSuite {
       finally { Arrays.fill(command, (byte) 0); }
       neighborId = repo.snapshot().activeId;
     }
-    repo.change(
+    if (!rebootStage.equals("resume")) repo.change(
             new JSONObject()
                 .put("op", "add")
                 .put("revision", repo.snapshot().revision)
@@ -722,9 +879,13 @@ final class OsEjectionSuite {
       main(() -> {
         fixture.permissions.add(disk.getDeviceId());
         fixture.connect(disk, UsbFixture.descriptor(8, false));
-        inventory.select(
+        if (!rebootStage.equals("resume")) inventory.select(
             disk.getDeviceId(), inventory.item(disk.getDeviceId()).generation, true, true);
       });
+      if (rebootStage.equals("resume")) {
+        rebootResume(computerId, inventory, disk);
+        return checks;
+      }
       await(() -> inventory.item(disk.getDeviceId()).ready, "storage descriptor ready", 10);
       if (foregroundService) {
         startService(inventory, disk, config);
@@ -759,6 +920,33 @@ final class OsEjectionSuite {
       if (localOnlyNetwork) localNetworkDiagnosis();
       phase("READY");
       host("held");
+      if (receiverReboot) {
+        receiverReboot(computerId, inventory, disk);
+        return checks;
+      }
+      if (rebootStage.equals("before")) {
+        JSONObject checkpoint = savedRebootCredentials(computerId);
+        check(UsbIpService.running && repository.isBusy() && backend.attached.get() == 1,
+            "reboot begins with actual selected storage and service");
+        check(backend.submitted.get() > 10 && backend.completed.get() > 10,
+            "storage URBs completed before reboot");
+        File file = new File(context.getNoBackupFilesDir(), "reboot-checkpoint.json");
+        try (FileOutputStream output = new FileOutputStream(file)) {
+          output.write(checkpoint.toString().getBytes(StandardCharsets.UTF_8));
+          output.getFD().sync();
+        }
+        JSONObject resume = new JSONObject(config.toString()).put("reboot_stage", "resume")
+            .put("secret", new JSONObject());
+        File next = new File(context.getNoBackupFilesDir(), "reboot-test-fixture.json");
+        try (FileOutputStream output = new FileOutputStream(next)) {
+          output.write(resume.toString().getBytes(StandardCharsets.UTF_8));
+          output.getFD().sync();
+        }
+        screenshot("reboot-active");
+        phase("REBOOT_PENDING");
+        host("reboot-must-interrupt");
+        throw new AssertionError("Android reboot never occurred");
+      }
       if (!profileAction.isEmpty()) cancelStorageProfileActions(computerId, inventory, disk);
       int soakSeconds = config.optInt("active_soak_seconds", 0);
       if (soakSeconds != 0) activeSoak(inventory, disk, soakSeconds);
@@ -836,6 +1024,10 @@ final class OsEjectionSuite {
       field.set(app, original);
       main(inventory::close);
       check(configFile.delete(), "private fixture removed");
+      if (privateResume) {
+        File external = new File(directory, "os-ejection-fixture.json");
+        check(!external.exists() || external.delete(), "own original external fixture removed by its app UID");
+      }
     }
   }
 }

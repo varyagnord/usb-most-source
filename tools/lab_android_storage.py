@@ -108,10 +108,11 @@ def main():
         print(json.dumps(dict(status='ready', tools=tools)), flush=True)
         return
     mode = sys.argv[2:3]
-    assert mode in ([], ['manual'], ['two-volumes'], ['two-volumes-writer'])
+    assert mode in ([], ['manual'], ['two-volumes'], ['two-volumes-writer'], ['reboot'])
     soak_seconds = int(sys.argv[3]) if len(sys.argv) == 4 else 0
     if len(sys.argv) > 4 or not (soak_seconds == 0 or 60 <= soak_seconds <= 28800):
         raise ValueError('Bounded owned active soak duration required')
+    interrupted = mode == ['reboot']
     manual = mode == ['manual']
     active_writer = mode == ['two-volumes-writer']
     two_volumes = mode == ['two-volumes'] or active_writer
@@ -304,8 +305,29 @@ def main():
             assert writer.ready.wait(timeout=120), 'first owned synced write deadline'
             writes_before_eject = writer.count()
             assert writes_before_eject > 0 and writer.thread.is_alive()
+        if interrupted:
+            os.sync()  # Known committed checkpoint, not a claim about in-flight writes.
         report('held', imported=imported.name, bytes=sum(c['bytes'] for c in contents),
                sha256=own_hash, volumes=contents, synced_writes_before_eject=writes_before_eject)
+        if interrupted:
+            command('interrupted')
+            held.close(); held = None
+            until(lambda: not candidates(serials[0], True), 'old import survives Android reboot', seconds=90)
+            for path in mounts:
+                run(['/usr/bin/umount', str(path)], timeout=120)
+                assert not os.path.ismount(path)
+            neighbor_ok()
+            run(['/usr/sbin/usbip', 'unbind', '-b', physical[0].name]); exported = False
+            restored = block(physical[0])
+            for dev, mountpoint, expected in zip(volumes(physical[0], restored), mounts, hashes):
+                run(['/usr/bin/mount', '-t', 'ext4', '-o', 'ro,noload', str(dev), str(mountpoint)])
+                assert digest(mountpoint / 'fixture.txt') == expected
+                run(['/usr/bin/umount', str(mountpoint)])
+            neighbor_ok()
+            report('interrupted_verified', readback_sha256=own_hash, volumes_readback=contents,
+                   neighbor_unchanged=True, original_import_retired=True,
+                   checkpoint_synced_before_interrupt=True, safe_ejection_claimed=False)
+            return
         command('manual' if manual else 'busy')
         assert os.path.ismount(mounts[-1]) and digest(data_files[-1]) == hashes[-1]
         if two_volumes:

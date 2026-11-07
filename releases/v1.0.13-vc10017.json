@@ -6,7 +6,7 @@
   "sourceTag": "v1.0.13-vc10017",
   "artifactType": "aab",
   "artifactSha256": "fd3655252b69500afdb62ab00322dee6c847902e9e9e76e35600828acc1b203a",
-  "status": "prepared_not_submitted_to_RuStore",
+  "status": "held_before_submission_legacy_Linux_listener_restart_defect",
   "sourceFileCount": 474,
   "sourceManifestSha256": "8f20aefb9c92f72aa9714c2f64a336e53ccc114db175b30594bba952c9a7b2e0",
   "toolchain": {
@@ -46,5 +46,6 @@
   },
   "receiverDownloads": "https://github.com/varyagnord/usb-most-downloads/releases/tag/v1.0.13-vc10017",
   "storeListingUrl": null,
-  "metadataNote": "README version heading in the immutable17 tag still reflects prior16 metadata; corrected on main without moving the tag. App source/versionCode, SOURCE-FILES and this tag release record are17."
+  "metadataNote": "README version heading in the immutable17 tag still reflects prior16 metadata; corrected on main without moving the tag. App source/versionCode, SOURCE-FILES and this tag release record are17.",
+  "replacementSourceTag": "v1.0.13-vc10018"
 }

@@ -26,6 +26,12 @@ fn bind(address: SocketAddr) -> io::Result<tokio::net::TcpListener> {
         use std::os::windows::io::AsSocket;
         usb_most_platform::windows::exclusive_socket(socket.as_socket())?;
     }
+    // Linux retains actively closed connections in TIME_WAIT after shutdown.
+    // Set this on every generation so a receiver can reopen its fixed port;
+    // an occupied listening socket is still exclusive (no SO_REUSEPORT).
+    // Windows keeps SO_EXCLUSIVEADDRUSE above and must not enable this flag.
+    #[cfg(target_os = "linux")]
+    socket.set_reuse_address(true)?;
     socket.set_nonblocking(true)?;
     socket.bind(&address.into())?;
     socket.listen(128)?;
@@ -102,6 +108,36 @@ impl Drop for Announcement {
 mod tests {
     use super::*;
     use tokio::io::{AsyncReadExt, AsyncWriteExt};
+    #[cfg(target_os = "linux")]
+    #[tokio::test]
+    async fn public_listener_rebinds_after_accepted_connection_active_close() {
+        for ipv6 in [false, true] {
+            let (listener, dual_stack) = listener(0).unwrap();
+            if ipv6 && !dual_stack {
+                continue;
+            }
+            let port = listener.local_addr().unwrap().port();
+            let address = if ipv6 {
+                format!("[::1]:{port}")
+            } else {
+                format!("127.0.0.1:{port}")
+            };
+            let mut client = tokio::net::TcpStream::connect(address).await.unwrap();
+            let (mut accepted, _) = listener.accept().await.unwrap();
+            accepted.write_all(b"synced").await.unwrap();
+            // The server actively closes, as when stopping a receiver. Read
+            // the FIN before closing the client to leave a server TIME_WAIT.
+            accepted.shutdown().await.unwrap();
+            let mut received = Vec::new();
+            client.read_to_end(&mut received).await.unwrap();
+            assert_eq!(received, b"synced");
+            drop(client);
+            drop(accepted);
+            drop(listener);
+            let (_rebound, _) = super::listener(port)
+                .expect("receiver must reopen its configured port after an active close");
+        }
+    }
     #[tokio::test]
     async fn public_listener_accepts_ipv4_and_ipv6_without_a_second_insecure_port() {
         let (listener, v6) = listener(0).unwrap();

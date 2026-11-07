@@ -199,7 +199,11 @@ impl deployment::Services for Systemd {
         )
     }
     fn health(&mut self) -> io::Result<()> {
-        let end = Instant::now() + Duration::from_secs(45);
+        // A pre-reuseaddr receiver can leave its public port in TIME_WAIT.
+        // The new service is restarted by systemd while those legacy sockets
+        // expire. One bounded 90s health window covers that first migration;
+        // subsequent generations can rebind immediately. Never bypass health.
+        let end = Instant::now() + Duration::from_secs(90);
         while Instant::now() < end {
             if let Ok(admin::Response::Health { ref status }) =
                 admin::request(&self.root, &admin::Request::Health)

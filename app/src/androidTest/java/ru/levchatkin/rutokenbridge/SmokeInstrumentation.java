@@ -40,6 +40,9 @@ public final class SmokeInstrumentation extends Instrumentation {
   private boolean usbRulesResume;
   private boolean managedEjectionOnly;
   private boolean osEjectionOnly;
+  private boolean osRebootResume;
+
+  boolean osRebootResume() { return osRebootResume; }
   private boolean diagnosticsOnly;
   private String migrationStage;
   private String liveProfilesStage;
@@ -90,6 +93,7 @@ public final class SmokeInstrumentation extends Instrumentation {
     usbTransition = args == null ? "rotate" : args.getString("usb-transition", "rotate");
     managedEjectionOnly = args != null && "managed-ejection".equals(args.getString("suite"));
     osEjectionOnly = args != null && "os-ejection".equals(args.getString("suite"));
+    osRebootResume = osEjectionOnly && "true".equals(args.getString("reboot-resume"));
     diagnosticsOnly = args != null && "diagnostics".equals(args.getString("suite"));
     migrationStage = args != null && "migration-connection".equals(args.getString("suite"))
         ? args.getString("stage", "connect") : null;

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Actual Android UI/Java server/Rust/TLS -> owned Fedora VHCI/UDisks2.
+"""Actual Android UI/Java server/Rust/TLS -> owned Linux VHCI/UDisks2.
 
 Only Android usbfs is replaced by a test-APK proxy to two newly created QEMU
 images. No physical USB, borrowed VM, arbitrary disk, or recursive cleanup.
@@ -7,15 +7,21 @@ The default explicit session does not exercise the foreground-service
 coordinator; --foreground-service uses the real saved computer and service.
 """
 from pathlib import Path
+
+if not __debug__:
+    raise SystemExit("Refuse optimized Python: owned storage checks must remain enabled")
 import argparse
 import fcntl
 import base64
 import hashlib
+import gzip
+import zipfile
 import json
 import os
 import re
 import select
 import socket
+import shutil
 import subprocess
 import time
 from lab_local_only_network import OwnedLocalNetwork
@@ -31,6 +37,11 @@ p.add_argument('--test-apk', type=Path, required=True)
 p.add_argument('--lab', type=Path, required=True)
 p.add_argument('--output', type=Path, required=True)
 p.add_argument('--tag', required=True)
+p.add_argument('--android-reboot', action='store_true', help='Real Android reboot during actual service storage import; known synced checkpoint only')
+p.add_argument('--android-update-from', type=Path, help='Install this older test-signed APK initially, then update to --apk during active storage')
+p.add_argument('--receiver-update-to', type=Path, help='Pinned fixed native receiver override; original Android client APK remains unchanged')
+p.add_argument('--receiver-update-from', type=Path, help='Pinned previous vc10016 Linux receiver: refuse active replacement, then update after Safe and idle')
+p.add_argument('--android-owner', type=Path, help='Exact live emulator owner record required for reboot')
 p.add_argument('--usb-ports', required=True, help='Two explicit vacant ports, e.g. 1,2 or 4.6,4.7')
 p.add_argument('--delay-ms', type=int, default=0, help='Delay each direction of actual TLS bytes')
 p.add_argument('--jitter-ms', type=int, default=0)
@@ -55,10 +66,65 @@ p.add_argument('--trace-udisks', action='store_true',
 p.add_argument('--local-only-network', action='store_true',
                help='Owned emulator only: reject public internet and verify actual service/diagnosis over local Wi-Fi')
 a = p.parse_args()
+assert not a.receiver_update_to or a.receiver_update_from, 'Fixed receiver override requires upgrade scenario'
+assert not (a.android_reboot and a.android_update_from), 'Choose one real interruption'
+android_interrupt = bool(a.android_reboot or a.android_update_from)
+assert not a.receiver_update_from or (a.foreground_service and a.android_owner
+    and not (android_interrupt or a.profile_action or a.revoke or a.manual_fallback
+             or a.active_soak_seconds or a.delay_ms or a.local_only_network or a.trace_udisks)), 'Receiver upgrade requires an isolated actual-service scenario'
+assert not android_interrupt or (a.foreground_service and a.android_owner
+    and not (a.local_only_network or a.revoke or a.manual_fallback or a.profile_action
+             or a.two_volumes or a.active_writer or a.active_soak_seconds or a.delay_ms))
+android_owner = json.loads(a.android_owner.read_text()) if a.android_owner else None
+if android_owner:
+    assert android_owner['serial'] == a.serial
+    assert process_identity(android_owner['qemu']['pid']) == android_owner['qemu']
 assert not a.local_only_network or a.foreground_service
 lab, output = a.lab.resolve(), a.output.resolve()
 assert lab.is_relative_to(ROOT / 'build/vm-lab') and output.is_relative_to(ROOT / 'build/e2e')
+if shutil.disk_usage(ROOT).free < 2*1024**3:
+    raise RuntimeError('Retain host disk reserve before creating owned test images')
 protect_android(a.serial)
+update_versions = None
+if a.android_update_from:
+    sdk = a.adb.resolve().parent.parent
+    aapt = sdk/'build-tools/34.0.0/aapt2'
+    signer = sdk/'build-tools/34.0.0/apksigner'
+    metadata = []
+    certificates = []
+    for apk in (a.android_update_from, a.apk, a.test_apk):
+        assert apk.resolve().is_relative_to(ROOT/'build') and apk.is_file()
+        cert = subprocess.check_output([str(signer), 'verify', '--print-certs', str(apk.resolve())], text=True)
+        certificates.append(re.search(r'Signer #1 certificate SHA-256 digest: ([0-9a-f]{64})', cert)[1])
+    assert len(set(certificates)) == 1, 'Only identical synthetic test certificates'
+    assert certificates[0] == '385463ffad1511243d7ef6152f844e4bf6bcd582414306711f7398dd59b22616', 'Never use production signing keys in this fixture'
+    for apk in (a.android_update_from, a.apk):
+        text = subprocess.check_output([str(aapt), 'dump', 'badging', str(apk.resolve())], text=True)
+        package = re.search(r"package: name='([^']+)' versionCode='([0-9]+)'", text)
+        assert package and package[1] == 'ru.levchatkin.rutokenbridge'
+        metadata.append(int(package[2]))
+    assert metadata[0] < metadata[1], 'Actual upgrade required, no same-version reinstall'
+    update_versions = dict(source_version=metadata[0], target_version=metadata[1], test_certificate_sha256=certificates[0])
+if a.receiver_update_from:
+    from lab_active_receiver_upgrade import OLD, CURRENT, FIXED
+    assert a.receiver_update_from.resolve().is_relative_to(ROOT/'build') and a.receiver_update_from.is_file()
+    assert hashlib.sha256(a.receiver_update_from.read_bytes()).hexdigest() == OLD, 'Only the pinned previous receiver is permitted'
+    sdk = a.adb.resolve().parent.parent
+    for apk in (a.apk, a.test_apk):
+        cert = subprocess.check_output([str(sdk/'build-tools/34.0.0/apksigner'), 'verify', '--print-certs', str(apk.resolve())], text=True)
+        assert 'Signer #1 certificate SHA-256 digest: 385463ffad1511243d7ef6152f844e4bf6bcd582414306711f7398dd59b22616' in cert, 'Synthetic test certificate required'
+    with zipfile.ZipFile(a.apk) as archive:
+        payload = gzip.decompress(archive.read('assets/receivers/usb-most-linux-x86_64.gz.bin'))
+    bundled_receiver_sha256 = hashlib.sha256(payload).hexdigest()
+    assert bundled_receiver_sha256 in (CURRENT,FIXED), 'Exact known bundled receiver required'
+    if a.receiver_update_to:
+        assert a.receiver_update_to.resolve().is_relative_to(ROOT/'build') and a.receiver_update_to.is_file()
+        payload = a.receiver_update_to.read_bytes()
+        assert hashlib.sha256(payload).hexdigest()==FIXED, 'Only pinned fixed source056ee2b binary override'
+    receiver_target_sha256 = hashlib.sha256(payload).hexdigest()
+android_locks = ROOT/'build/e2e/android-locks'; android_locks.mkdir(exist_ok=True)
+android_lock = (android_locks/(a.serial+'.lock')).open('a')
+fcntl.flock(android_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
 serials = owned_serials(a.tag)
 assert 0 <= a.jitter_ms <= a.delay_ms <= 250
 assert not a.revoke or a.foreground_service
@@ -76,7 +142,8 @@ pid = int((lab / 'pid').read_text())
 cmd = Path('/proc', str(pid), 'cmdline').read_bytes()
 qemu_identity = process_identity(pid)
 assert b'qemu-system-x86_64' in cmd and str(lab / 'guest.qcow2').encode() in cmd
-assert b'qemu-xhci,id=eject113-xhci' in cmd and b'usb-host' not in cmd
+assert b'qemu-xhci,id=eject113-xhci' in cmd
+assert not any(word in cmd for word in (b'usb-host', b'vfio-pci', b'-virtfs', b'-fsdev', b'/dev/sd', b'/dev/nvme'))
 # Share the long-soak lock before any Android action or guest mutation.
 lab_lock = (lab / 'soak.lock').open('a')
 fcntl.flock(lab_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -89,6 +156,7 @@ adb = [str(a.adb.resolve()), '-s', a.serial]
 
 
 def android(*args):
+    if android_owner: assert process_identity(android_owner['qemu']['pid']) == android_owner['qemu']
     return subprocess.run(adb + list(args), check=True, capture_output=True, text=True, timeout=60).stdout.strip()
 
 
@@ -105,11 +173,21 @@ report = dict(status='running', scope=__doc__, serial=a.serial, lab=str(lab),
               test_apk_sha256=hashlib.sha256(a.test_apk.read_bytes()).hexdigest(), phases=[], guest=[])
 if a.foreground_service:
     report['scope'] = ('Actual UI start/stop, saved computer, durable pairing, ConnectionController, '
-                       'foreground service, service-owned Java server, TLS and Fedora UDisks2. '
+                       'foreground service, service-owned Java server, TLS and the owned Linux UDisks2. '
                        'Test APK injects the USB request/managed-lease adapter before connection admission. '
                        'Android usbfs/UsbSession and the service-specific sessions-map binder are replaced; '
                        'no physical hardware claim.')
 report['foreground_service'] = a.foreground_service
+report['android_reboot'] = a.android_reboot
+report['android_lifecycle_event'] = 'apk_update' if a.android_update_from else 'kernel_reboot' if a.android_reboot else None
+report['apk_update_versions'] = update_versions
+report['receiver_active_upgrade'] = bool(a.receiver_update_from)
+if a.receiver_update_from:
+    report['receiver_upgrade_target_sha256'] = receiver_target_sha256
+    report['client_embedded_receiver_sha256'] = bundled_receiver_sha256
+    report['native_receiver_override'] = bool(a.receiver_update_to)
+report['initial_apk_sha256'] = hashlib.sha256((a.android_update_from or a.apk).read_bytes()).hexdigest()
+report['android_owner'] = android_owner
 report['profile_action'] = a.profile_action
 report['remote_revocation'] = a.revoke
 report['manual_fallback'] = a.manual_fallback
@@ -126,6 +204,9 @@ report['harness_sources'] = {
     str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
     for path in (Path(__file__).resolve(), ROOT / 'tools/lab_android_storage.py', ROOT / 'tools/lab_tcp_delay.py', ROOT / 'tools/lab_local_only_network.py', ROOT / 'tools/lab_android_active_soak.py')
 }
+
+if a.receiver_update_from:
+    report['harness_sources']['tools/lab_active_receiver_upgrade.py'] = hashlib.sha256((ROOT/'tools/lab_active_receiver_upgrade.py').read_bytes()).hexdigest()
 
 
 def save():
@@ -243,6 +324,21 @@ def peers():
     return ids
 
 
+receiver_upgrade_attempted = False
+
+def receiver_upgrade(action):
+    settings = dict(action=action, tag=a.tag, target_sha256=receiver_target_sha256)
+    if action == 'prepare':
+        settings['old_binary'] = base64.b64encode(a.receiver_update_from.read_bytes()).decode()
+    helper = (ROOT/'tools/lab_active_receiver_upgrade.py').read_text()
+    result = subprocess.run(ssh+['sudo -n python3 -'], input='SETTINGS='+repr(settings)+'\n'+helper,
+                            text=True, capture_output=True, timeout=180)
+    if result.returncode:
+        (output/('receiver-upgrade-'+action+'.stderr')).write_text(result.stderr)
+        raise RuntimeError('Owned receiver upgrade '+action+' failed; recovery files retained')
+    return json.loads(result.stdout)
+
+
 try:
     if local_network:
         local_network.prepare()
@@ -256,6 +352,9 @@ try:
     receiver_hash = identity.stdout.split()[0]
     assert re.fullmatch(r'[a-f0-9]{64}', receiver_hash)
     report['receiver'] = dict(version=state['version'], sha256=receiver_hash)
+    if a.receiver_update_from:
+        receiver_upgrade_attempted = True
+        report['receiver_upgrade_preparation'] = receiver_upgrade('prepare')
     save()
     usb = monitor('info usb')
     used = set(re.findall(r'Port ([0-9.]+),', usb))
@@ -283,7 +382,7 @@ try:
         attached.append((f'and-{a.tag}-usb{index}', drive))
         unattached_drives.pop()
     report['images_retained'] = images; save()
-    guest_mode = (' two-volumes-writer' if a.active_writer else ' manual' if a.manual_fallback
+    guest_mode = (' reboot' if android_interrupt else ' two-volumes-writer' if a.active_writer else ' manual' if a.manual_fallback
                   else ' two-volumes' if a.two_volumes else '')
     if a.active_soak_seconds:
         guest_mode += ' ' + str(a.active_soak_seconds)
@@ -388,6 +487,8 @@ finally:
         code = 'usbmost:1:' + base64.urlsafe_b64encode(json.dumps(pair, separators=(',', ':')).encode()).decode().rstrip('=')
     config = dict(scope='owned-emulator-QEMU-storage', marker=marker, backend_port=backend_port,
                   foreground_service=a.foreground_service,
+                  reboot_stage='before' if android_interrupt else '',
+                  receiver_upgrade=bool(a.receiver_update_from),
                   profile_action=a.profile_action or '',
                   local_only_network=a.local_only_network,
                   active_soak_seconds=a.active_soak_seconds,
@@ -398,7 +499,16 @@ finally:
     private = output / 'os-ejection-fixture.json'
     private.write_text(json.dumps(config)); private.chmod(0o600)
     android('shell', 'am', 'force-stop', app)
-    for apk in (a.apk, a.test_apk):
+    if a.android_update_from:
+        installed = android('shell', 'pm', 'path', app).splitlines()
+        assert len(installed) == 1 and installed[0].startswith('package:/data/app/'), 'Known owned lab app must already be present'
+        installed_hash = android('shell', 'sha256sum', installed[0][8:]).split()[0]
+        allowed_hashes = {hashlib.sha256(x.read_bytes()).hexdigest() for x in (a.apk, a.android_update_from)}
+        assert installed_hash in allowed_hashes, 'Refuse resetting an unknown installed application'
+        assert android('uninstall', app) == 'Success', 'Reset only the known synthetic lab baseline'
+        report['known_synthetic_baseline_reset_before_seeding_old_version'] = True
+        save()
+    for apk in (a.android_update_from or a.apk, a.test_apk):
         android('install', '-r', str(apk.resolve()))
     android('shell', 'pm', 'clear', app)
     android('shell', 'settings', 'put', 'global', 'hidden_api_policy', '1')
@@ -412,7 +522,10 @@ finally:
     if proxy is not None:
         report['processes']['delay_proxy'] = process_identity(proxy.pid)
     save()
-    phase('READY'); command('mount'); guest_phase('held', seconds=240); release('held')
+    phase('READY'); command('mount'); guest_phase('held', seconds=240)
+    if a.receiver_update_from:
+        report['receiver_upgrade_active_refusals'] = receiver_upgrade('busy');save()
+    release('held')
     if a.active_soak_seconds:
         phase('SOAK_READY')
         active_soak(a.active_soak_seconds, android=android, command=command,
@@ -420,7 +533,49 @@ finally:
                     save=save, report=report, qemu=qemu_identity,
                     instrumentation=instrumentation, directory=directory, marker=marker)
         release('soaked'); phase('SOAK_DONE')
-    if a.manual_fallback:
+    if android_interrupt:
+        phase('REBOOT_PENDING')
+        from lab_android_reboot import reboot_active_service
+        instrumentation, instrument_log = reboot_active_service(
+            adb=adb, owner=android_owner, report=report, save=save, output=output,
+            config=config, private=private, fixture_file=fixture_file,
+            instrumentation=instrumentation, instrument_log=instrument_log,
+            upgrade_apk=a.apk if a.android_update_from else None,
+            expected_upgrade_version=update_versions['target_version'] if update_versions else None)
+        command('interrupted'); guest_phase('interrupted_verified', seconds=180)
+        guest_phase('cleaned'); assert guest.wait(timeout=15) == 0
+        phase('REBOOT_FIRST_ATTEMPT')
+        outcome = json.loads(android('shell', 'cat', directory+'/reboot-first-attempt.json'))
+        assert type(outcome['busy']) is bool and type(outcome['connected']) is bool
+        assert outcome['connected'] is not outcome['busy']
+        report['postboot_first_attempt'] = outcome
+        if outcome['busy']:
+            deadline = time.monotonic()+120
+            observations = []
+            while True:
+                health = admin({'op': 'health'})['status']
+                observations.append(dict(connected=health['connected'], active=health['active']))
+                if not health['connected'] and health['active'] == 0:
+                    break
+                assert time.monotonic() < deadline, 'old receiver CONTROL failed to retire naturally'
+                time.sleep(.5)
+            report['postboot_old_control_retirement'] = observations
+        release('reboot-continue')
+        phase('REBOOT_RECONNECTED')
+        deadline = time.monotonic()+20
+        report['postboot_health_samples'] = []
+        while True:
+            health = admin({'op': 'health'})['status']
+            report['postboot_health_samples'].append(dict(connected=health['connected'], active=health['active']))
+            save()
+            assert health['active'] == 0, 'postboot must never reuse old import'
+            if health['connected']:
+                break
+            assert time.monotonic() < deadline, 'actual receiver did not observe postboot connection'
+            time.sleep(.2)
+        report['postboot_empty_reconnect'] = dict(connected=True, active=0)
+        release('reboot-connected'); phase('REBOOT_RECOVERED')
+    elif a.manual_fallback:
         phase('MANUAL'); command('manual'); guest_phase('manual_verified', seconds=300)
         health = admin({'op': 'health'})['status']
         assert health['connected'] and health['active'] == 1, 'manual readback must precede service stop'
@@ -440,6 +595,10 @@ finally:
         assert peers() == prior_peers, 'revocation changed unrelated peers'
         report['revocation'] = dict(one_new_owned_peer_revoked=True, previous_peers_unchanged=True)
         release('revoked')
+    if a.receiver_update_from:
+        phase('RECEIVER_UPGRADE_IDLE')
+        report['receiver_upgrade_applied'] = receiver_upgrade('update');save()
+        release('receiver-upgraded')
     assert instrumentation.wait(timeout=120 if a.foreground_service else 40) == 0
     text = (output / 'instrumentation.log').read_text()
     assert 'INSTRUMENTATION_CODE: -1' in text and 'FAIL ' not in text, 'instrumentation failed'
@@ -447,7 +606,9 @@ finally:
     assert matched, 'missing actual check count'
     report.update(api=int(matched[1]), checks=int(matched[2]))
     if a.foreground_service:
-        if a.profile_action == 'forget':
+        if android_interrupt:
+            assert 'PASS OS_EJECT_REBOOT_RECOVERED' in text
+        elif a.profile_action == 'forget':
             assert 'PASS OS_EJECT_PROFILE_FORGOTTEN' in text, 'safe profile forget did not finish'
         else:
             assert 'PASS OS_EJECT_SERVICE_REPEAT' in text, 'service repeat did not finish'
@@ -471,9 +632,13 @@ finally:
     if a.manual_fallback:
         assert 'PASS OS_EJECT_MANUAL_VERIFIED' in text
         command('stopped'); guest_phase('verified')
-    command('quit'); guest_phase('cleaned'); assert guest.wait(timeout=15) == 0
+    if not android_interrupt:
+        command('quit'); guest_phase('cleaned'); assert guest.wait(timeout=15) == 0
     android('pull', directory + '/os-ejection-proof', str(output / 'screenshots'))
-    android('pull', directory + '/os-ejection-states.json', str(output / 'states.json'))
+    if android_interrupt:
+        report['os_ejection_states'] = 'not_requested_interruption_is_not_safe_ejection'
+    else:
+        android('pull', directory + '/os-ejection-states.json', str(output / 'states.json'))
     if local_network:
         assert 'PASS OS_EJECT_LOCAL_NETWORK_DIAGNOSIS' in text
         local_network.assert_isolated('after_actual_service_checks')
@@ -585,6 +750,11 @@ finally:
                                             previous_peers_preserved=True)
         except Exception as e:
             errors.append('owned pairing retained: ' + type(e).__name__)
+    if receiver_upgrade_attempted:
+        try:
+            report['receiver_upgrade_restoration'] = receiver_upgrade('restore')
+        except Exception as e:
+            errors.append('receiver upgrade restoration retained: '+str(e))
     if local_network:
         try:
             local_network.close()
