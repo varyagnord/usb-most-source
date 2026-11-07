@@ -16,7 +16,7 @@ android {
     defaultConfig {
         applicationId "ru.levchatkin.rutokenbridge"
         minSdk 26
-        versionCode 10016
+        versionCode 10017
         versionName "1.0.13"
         targetSdk 34
         testInstrumentationRunner "ru.levchatkin.rutokenbridge.SmokeInstrumentation"

@@ -83,6 +83,18 @@ impl Drop for Handoff {
     }
 }
 pub async fn launch() -> io::Result<()> {
+    // Install handlers before spawning: dropping the in-flight launch closes its
+    // lifetime pipe and runs Handoff::drop even when the terminal sends SIGINT.
+    let mut interrupt = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::interrupt())?;
+    let mut terminate = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())?;
+    tokio::select! {
+        result = launch_inner() => result,
+        _ = interrupt.recv() => Ok(()),
+        _ = terminate.recv() => Ok(()),
+    }
+}
+
+async fn launch_inner() -> io::Result<()> {
     if !std::path::Path::new("/usr/bin/pkexec").is_file()
         || !std::path::Path::new("/usr/bin/xdg-open").is_file()
     {
@@ -91,16 +103,22 @@ pub async fn launch() -> io::Result<()> {
     let mut helper = tokio::process::Command::new("/usr/bin/pkexec")
         .arg(std::env::current_exe()?)
         .arg("--setup-elevated")
-        .stdin(Stdio::null())
+        .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::inherit())
+        .kill_on_drop(true)
         .spawn()?;
+    // No input protocol: EOF alone revokes the privileged UI's lifetime. This
+    // also works when the launcher is killed and cannot execute destructors.
+    let _lifetime = helper.stdin.take().ok_or_else(super::invalid)?;
     let stdout = helper.stdout.take().ok_or_else(super::invalid)?;
     let url = tokio::time::timeout(Duration::from_secs(180), read_url(stdout))
         .await
         .map_err(|_| io::ErrorKind::TimedOut)??;
     let handoff = Handoff::create(&url)?;
     let mut browser = tokio::process::Command::new("/usr/bin/xdg-open")
+        // A terminal interrupt must not kill the user's browser process group.
+        .process_group(0)
         .arg(&handoff.file)
         .stdin(Stdio::null())
         .stdout(Stdio::null())
@@ -122,9 +140,51 @@ pub async fn launch() -> io::Result<()> {
         Err(io::ErrorKind::Other.into())
     }
 }
+
+pub(super) async fn parent_closed() -> io::Result<()> {
+    let fd = rustix::io::dup(std::io::stdin())?;
+    wait_for_owner(fd).await
+}
+
+async fn wait_for_owner(fd: std::os::fd::OwnedFd) -> io::Result<()> {
+    // The checked constructor verifies FIFO/read access and owns registration;
+    // no raw descriptor manipulation or blocking runtime thread is necessary.
+    let mut input = tokio::net::unix::pipe::Receiver::from_owned_fd(fd)?;
+    // Both EOF and unsolicited input close the UI, never execute input.
+    input.read_u8().await.map(|_| ()).or_else(|error| {
+        if error.kind() == io::ErrorKind::UnexpectedEof {
+            Ok(())
+        } else {
+            Err(error)
+        }
+    })
+}
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[tokio::test]
+    async fn elevated_ui_lifetime_waits_for_owner_and_stops_on_eof_or_input() {
+        use std::io::Write;
+        for send_input in [false, true] {
+            let (reader, mut writer) = std::io::pipe().unwrap();
+            let lifetime = wait_for_owner(reader.into());
+            tokio::pin!(lifetime);
+            assert!(
+                tokio::time::timeout(Duration::from_millis(20), &mut lifetime)
+                    .await
+                    .is_err()
+            );
+            if send_input {
+                writer.write_all(b"x").unwrap();
+            } else {
+                drop(writer);
+            }
+            tokio::time::timeout(Duration::from_secs(1), lifetime)
+                .await
+                .unwrap()
+                .unwrap();
+        }
+    }
     #[tokio::test]
     async fn handoff_accepts_only_bounded_generated_loopback_capabilities() {
         let url = format!("http://127.0.0.1:43210/#{}", "X".repeat(43));

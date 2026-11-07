@@ -6,7 +6,7 @@
   "sourceTag": "v1.0.13-vc10016",
   "artifactType": "aab",
   "artifactSha256": "6aea2e7d57a5b94f253fe36a2f70c7cc19b307cf7854a9808c680f83c9b11564",
-  "status": "prepared_not_submitted_to_RuStore",
+  "status": "superseded_before_submission_linux_gui_shutdown",
   "sourceFileCount": 474,
   "sourceManifestSha256": "000a8bd716667418d707b80dac5ad7a4119a0b3dabccb4ceb3ef01de407250e0",
   "toolchain": {

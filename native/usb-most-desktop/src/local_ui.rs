@@ -266,9 +266,9 @@ pub async fn launch(elevated: bool) -> io::Result<()> {
         }
         return linux_launcher::launch().await;
     }
-    serve().await
+    serve(elevated).await
 }
-pub async fn serve() -> io::Result<()> {
+pub async fn serve(_parent_bound: bool) -> io::Result<()> {
     #[cfg(unix)]
     if rustix::process::geteuid().as_raw() != 0 {
         return Err(io::ErrorKind::PermissionDenied.into());
@@ -319,8 +319,20 @@ pub async fn serve() -> io::Result<()> {
         operation: Mutex::new(()),
         listing: listing::parse(include_str!("local_ui/rustore.json")).map_err(|_| invalid())?,
     });
-    axum::serve(listener, router(context)).with_graceful_shutdown(async {
-        tokio::select! { _ = tokio::signal::ctrl_c() => {}, _ = tokio::time::sleep(Duration::from_secs(1800)) => {} }
+    axum::serve(listener, router(context)).with_graceful_shutdown(async move {
+        let owner_closed = async {
+            #[cfg(target_os = "linux")]
+            if _parent_bound {
+                let _ = linux_launcher::parent_closed().await;
+                return;
+            }
+            std::future::pending::<()>().await;
+        };
+        tokio::select! {
+            _ = tokio::signal::ctrl_c() => {},
+            _ = tokio::time::sleep(Duration::from_secs(1800)) => {},
+            _ = owner_closed => {},
+        }
     }).await
 }
 #[cfg(test)]

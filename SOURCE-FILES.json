@@ -59,7 +59,7 @@
       "path": "app/build.gradle",
       "mode": "100644",
       "bytes": 6538,
-      "sha256": "1074aa91d0d506a279a5c27ec3a5b4d0c8279914295e5d0673922adcc83a2b0a"
+      "sha256": "12f1925e5bc3ed02e5b189c15fa1afdb1040bc882c858d3d9f1d2f05360d49ec"
     },
     {
       "path": "app/lint.xml",
@@ -1054,8 +1054,8 @@
     {
       "path": "native/usb-most-desktop/src/local_ui.rs",
       "mode": "100644",
-      "bytes": 13865,
-      "sha256": "423b0c648dc3bd37a16c5ec92529ab00ded2c16120d4cfd291f492504f7e9b80"
+      "bytes": 14232,
+      "sha256": "0f2a0359b44abd34b2d84066368903c79b78ce70c6de249517e661ecb5759742"
     },
     {
       "path": "native/usb-most-desktop/src/local_ui/http_tests.rs",
@@ -1072,8 +1072,8 @@
     {
       "path": "native/usb-most-desktop/src/local_ui/linux_launcher.rs",
       "mode": "100644",
-      "bytes": 6390,
-      "sha256": "3cd9180a24e8a2074dcf22cb46e220174af08641588c22af9da9ed5718d01d54"
+      "bytes": 8817,
+      "sha256": "c89819d69f862a50883e2ac9b822e71dd99084b1f27a5058799555f119c4a0c6"
     },
     {
       "path": "native/usb-most-desktop/src/local_ui/listing.rs",
@@ -1487,7 +1487,7 @@
       "path": "server/windows-receiver-lock-x86_64.json",
       "mode": "100644",
       "bytes": 597,
-      "sha256": "0200b6770c0c88f1e00418e70b97bf34e0a7870ea7d6df1cff2a60be707d05e2"
+      "sha256": "66b37058d92fe2742effd5098617c6d3dfa5316cbe48838d8703306d17a6401f"
     },
     {
       "path": "settings.gradle",

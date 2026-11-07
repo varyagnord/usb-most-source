@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "applicationId": "ru.levchatkin.rutokenbridge",
+  "versionName": "1.0.13",
+  "versionCode": 10017,
+  "sourceTag": "v1.0.13-vc10017",
+  "artifactType": "aab",
+  "artifactSha256": "fd3655252b69500afdb62ab00322dee6c847902e9e9e76e35600828acc1b203a",
+  "status": "prepared_not_submitted_to_RuStore",
+  "sourceFileCount": 474,
+  "sourceManifestSha256": "8f20aefb9c92f72aa9714c2f64a336e53ccc114db175b30594bba952c9a7b2e0",
+  "toolchain": {
+    "rust": "nightly-2026-11-02; rustc 1.101.0-nightly (3e92e1a2d)",
+    "gradle": "8.7",
+    "androidGradlePlugin": "8.5.1",
+    "jdk": "OpenJDK 21.0.13",
+    "compileSdk": 34,
+    "targetSdk": 34,
+    "minSdk": 26,
+    "ndk": "27.0.12077973"
+  },
+  "changes": [
+    "Linux setup handles SIGINT/SIGTERM, keeps browser in a separate process group and revokes elevated local UI on owner lifetime-pipe EOF",
+    "Rebuilt and verified pinned Linux/Windows receivers; Android JNI and license payloads unchanged from10016"
+  ],
+  "validation": {
+    "independentSourceBuild": true,
+    "equivalence": "All APK/AAB uncompressed payload entries identical except AGP no-Git metadata",
+    "fourAndroidAbis": true,
+    "nativeAndApk16KiBAlignment": true,
+    "licenseNotices": 265,
+    "androidCoreApis": [
+      26,
+      31
+    ],
+    "androidCoreChecksEach": 1124,
+    "windows": "Exact Win11 LTSC2024 26100.1742, current MSVC/signed kernel/service SID/journal/HID/RAM storage/SSH/TLS; current APK on Android12 SSH/TLS two imports each",
+    "linux": "Ubuntu24.04.5, current APK on Android8 SSH/TLS two imports each; actual PolicyKit separate admin/ordinary browser and SIGINT/SIGTERM/EOF cleanup with existing ready receiver",
+    "limits": [
+      "Owned VMs/emulators and synthetic USB only",
+      "Current Windows interactive UAC is not newly retested for rebuilt EXE; prior exact29be evidence retained",
+      "Fresh graphical Linux installation, other distributions/Windows releases and HVCI remain separate cases",
+      "No real RuStore delivery or all-device claim"
+    ]
+  },
+  "receiverDownloads": "https://github.com/varyagnord/usb-most-downloads/releases/tag/v1.0.13-vc10017",
+  "storeListingUrl": null
+}
