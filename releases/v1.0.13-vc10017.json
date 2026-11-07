@@ -41,8 +41,10 @@
       "Current Windows interactive UAC is not newly retested for rebuilt EXE; prior exact29be evidence retained",
       "Fresh graphical Linux installation, other distributions/Windows releases and HVCI remain separate cases",
       "No real RuStore delivery or all-device claim"
-    ]
+    ],
+    "productionAabUpgrade": "API34 application-certificate16 to bundletool-generated17 APKset preserved UID, Keystore and byte-exact encrypted saved-computer catalog; no real store delivery"
   },
   "receiverDownloads": "https://github.com/varyagnord/usb-most-downloads/releases/tag/v1.0.13-vc10017",
-  "storeListingUrl": null
+  "storeListingUrl": null,
+  "metadataNote": "README version heading in the immutable17 tag still reflects prior16 metadata; corrected on main without moving the tag. App source/versionCode, SOURCE-FILES and this tag release record are17."
 }
